@@ -1,5 +1,5 @@
 public class Product {
-    String type;
+    
     String model;
     String description;
     double displaySize;
@@ -8,8 +8,7 @@ public class Product {
     double sellPrice;
     String itemId;
 
-    public Product(String type, String model, String description, double displaySize, double storageCap, double purchPrice, double sellPrice, String itemId) {
-        this.type = type;
+    public Product(String model, String description, double displaySize, double storageCap, double purchPrice, double sellPrice, String itemId) 
         this.model = model;
         this.description = description;
         this.displaySize = displaySize;
@@ -17,14 +16,6 @@ public class Product {
         this.purchPrice = purchPrice;
         this.sellPrice = sellPrice;
         this.itemId = itemId;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getModel() {
