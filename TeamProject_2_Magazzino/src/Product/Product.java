@@ -1,14 +1,19 @@
-public class Product {
-    
-    String model;
-    String description;
-    double displaySize;
-    double storageCap;
-    double purchPrice;
-    double sellPrice;
-    String itemId;
+package Product;
 
-    public Product(String model, String description, double displaySize, double storageCap, double purchPrice, double sellPrice, String itemId) 
+public class Product {
+    public TipoProdotti tipo;
+    private String model;
+    private String producer;
+    private String description;
+    private double displaySize;
+    private double storageCap;
+    private double purchPrice;
+    private double sellPrice;
+    private String itemId;
+
+    public Product(TipoProdotti tipo,String producer, String model, String description, double displaySize, double storageCap, double purchPrice, double sellPrice, String itemId){
+        this.tipo = tipo;
+        this.producer = producer;
         this.model = model;
         this.description = description;
         this.displaySize = displaySize;
@@ -18,6 +23,9 @@ public class Product {
         this.itemId = itemId;
     }
 
+    public TipoProdotti getTipo() {return tipo;    }
+
+    public void setTipo(TipoProdotti tipo) {this.tipo = tipo;    }
     public String getModel() {
         return model;
     }
@@ -72,5 +80,19 @@ public class Product {
 
     public void setItemId(String itemId) {
         this.itemId = itemId;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "tipo=" + tipo +
+                ", model='" + model + '\'' +
+                ", description='" + description + '\'' +
+                ", displaySize=" + displaySize +
+                ", storageCap=" + storageCap +
+                ", purchPrice=" + purchPrice +
+                ", sellPrice=" + sellPrice +
+                ", itemId='" + itemId + '\'' +
+                '}';
     }
 }
