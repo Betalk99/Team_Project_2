@@ -13,6 +13,9 @@ public class Main {
 
         System.out.println(Ricerca.ricercaPerTipo(magazzino));
 
+        ArrayList<Product> cartContent = new ArrayList<Product>();
+
+
 
     }
 }
