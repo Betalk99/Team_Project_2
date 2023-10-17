@@ -11,6 +11,8 @@ public class Main {
 
         ProductBase.baseProd(magazzino); //richiamare oggetti precaricati arraylist magazzino
 
-        System.out.println(magazzino);
+        System.out.println(Ricerca.ricercaPerTipo(magazzino));
+
+
     }
 }
