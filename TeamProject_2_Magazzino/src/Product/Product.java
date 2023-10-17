@@ -11,7 +11,7 @@ public class Product {
     private double sellPrice;
     private String itemId;
 
-    public Product(TipoProdotti tipo,String producer, String model, String description, double displaySize, double storageCap, double purchPrice, double sellPrice, String itemId){
+    public Product(TipoProdotti tipo, String producer, String model, String description, double displaySize, double storageCap, double purchPrice, double sellPrice, String itemId) {
         this.tipo = tipo;
         this.producer = producer;
         this.model = model;
@@ -23,9 +23,14 @@ public class Product {
         this.itemId = itemId;
     }
 
-    public TipoProdotti getTipo() {return tipo;    }
+    public TipoProdotti getTipo() {
+        return tipo;
+    }
 
-    public void setTipo(TipoProdotti tipo) {this.tipo = tipo;    }
+    public void setTipo(TipoProdotti tipo) {
+        this.tipo = tipo;
+    }
+
     public String getModel() {
         return model;
     }
@@ -82,14 +87,16 @@ public class Product {
         this.itemId = itemId;
     }
 
+
     @Override
     public String toString() {
         return "Product{" +
                 "tipo=" + tipo +
                 ", model='" + model + '\'' +
+                ", producer='" + producer + '\'' +
                 ", description='" + description + '\'' +
                 ", displaySize=" + displaySize +
-                ", storageCap=" + storageCap +
+                ", storageCap=" + storageCap + "gb" +
                 ", purchPrice=" + purchPrice +
                 ", sellPrice=" + sellPrice +
                 ", itemId='" + itemId + '\'' +
