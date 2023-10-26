@@ -20,7 +20,7 @@ public class Main {
 
     }
 
-    public static void usoGestionaleScelta(ArrayList<Product> magazzino){
+    public static void usoGestionaleScelta(ArrayList<Product> magazzino)throws InputMismatchException{
         boolean isTrue = false;
         while (isTrue == false) {
             try {
