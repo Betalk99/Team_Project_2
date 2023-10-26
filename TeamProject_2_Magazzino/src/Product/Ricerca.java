@@ -54,6 +54,9 @@ public class Ricerca {
     }
 
 
+
+
+
     @Override
     public String toString() {
         return "Ricerca{}";
