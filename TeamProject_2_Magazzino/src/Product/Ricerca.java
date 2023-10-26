@@ -53,7 +53,7 @@ public class Ricerca {
         return dispositiviTipo;
     }
 
-    public static void ricercaPerModello(ArrayList<Product> magazzino) throws InputMismatchException {
+    public static void ricercaPerModello(ArrayList<Product> magazzino){
          System.out.println("Ricerca per modello dei dispositivi in magazzino con relativo ID : ");
          for(int i=0;i< magazzino.size();i++){
              System.out.println("> " + i + " < " + magazzino.get(i).getModel());
@@ -71,12 +71,17 @@ public class Ricerca {
                 double rangeIni = in.nextDouble();
                 System.out.println("A");
                 double rangeFin = in.nextDouble();
-
+                boolean inRange = false;
                 for(int i=0;i< magazzino.size();i++){
                     if(magazzino.get(i).getSellPrice() > rangeIni && magazzino.get(i).getSellPrice() < rangeFin){
                         System.out.println(magazzino.get(i));
+                        inRange = true;
                     }
                 }
+                if(inRange == false){
+                    System.out.println("Non abbiamo prodotti con questo range nel nostro magazzino ");
+                }
+
                 System.out.println("Vuoi effettuare altra ricerca per range di prezzo? 1/Si - 2/No");
                 int stay = in.nextInt();
                 if(stay == 2){
@@ -94,9 +99,4 @@ public class Ricerca {
 
 
 
-
-    @Override
-    public String toString() {
-        return "Ricerca{}";
-    }
 }
