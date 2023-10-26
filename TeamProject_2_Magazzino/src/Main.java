@@ -8,11 +8,10 @@ public class Main {
         ArrayList<Product> magazzino = new ArrayList<>();  // arraylist magazzino
         Stock mag = new Stock(magazzino);
 
-
         ProductBase.baseProd(magazzino); //richiamare oggetti precaricati arraylist magazzino
 
-        System.out.println(Ricerca.ricercaPerTipo(magazzino));
-
-
+        System.out.println(Ricerca.ricercaPerTipo(magazzino)); //ricerca per tipo
+        Ricerca.ricercaPerModello(magazzino); //ricerca per modello
+        Ricerca.ricercaPerRangePrezzo(magazzino); //ricerca per range di prezzo (sell price/prezzo di vendita)
     }
 }
