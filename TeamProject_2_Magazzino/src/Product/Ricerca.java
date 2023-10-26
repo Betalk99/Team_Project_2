@@ -53,6 +53,44 @@ public class Ricerca {
         return dispositiviTipo;
     }
 
+    public static void ricercaPerModello(ArrayList<Product> magazzino) throws InputMismatchException {
+         System.out.println("Ricerca per modello dei dispositivi in magazzino con relativo ID : ");
+         for(int i=0;i< magazzino.size();i++){
+             System.out.println("> " + i + " < " + magazzino.get(i).getModel());
+         }
+    }
+
+    public static void ricercaPerRangePrezzo(ArrayList<Product> magazzino) throws InputMismatchException{
+
+        boolean isTrue = false;
+        while (isTrue == false){
+            try {
+                Scanner in = new Scanner(System.in);
+                System.out.println("Ricerca dispositivi per Range ");
+                System.out.println("Da");
+                double rangeIni = in.nextDouble();
+                System.out.println("A");
+                double rangeFin = in.nextDouble();
+
+                for(int i=0;i< magazzino.size();i++){
+                    if(magazzino.get(i).getSellPrice() > rangeIni && magazzino.get(i).getSellPrice() < rangeFin){
+                        System.out.println(magazzino.get(i));
+                    }
+                }
+                System.out.println("Vuoi effettuare altra ricerca per range di prezzo? 1/Si - 2/No");
+                int stay = in.nextInt();
+                if(stay == 2){
+                    isTrue = true;
+                }
+            }catch (InputMismatchException e){
+                System.out.println("Utilizza un numero");
+                isTrue = false;
+            }
+
+        }
+    }
+
+
 
 
 
