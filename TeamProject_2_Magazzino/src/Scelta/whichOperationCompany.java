@@ -1,4 +1,5 @@
 package Scelta;
+
 import Carrello.cartManagement;
 import Product.*;
 
@@ -9,13 +10,13 @@ import java.util.Scanner;
 public class whichOperationCompany {
     public static void oper(ArrayList<Product> stock) throws InputMismatchException {
         boolean isTrue = false;
-        while (!isTrue){
+        while (!isTrue) {
             try {
                 Scanner in = new Scanner(System.in);
                 System.out.println("""
                         Hello dear user, please select one of the following options:\s
                          1) Add product/s to stock\s
-                         2) Remove product/s to stock\s
+                         2) Remove product/s from stock\s
                          3) Cart creation\s
                          4) Add product/s to cart\s
                          5) View products \s
@@ -23,8 +24,9 @@ public class whichOperationCompany {
                          7) Search by product brand\s
                          8) Search by product model\s
                          9) Search by product's cost range""");
+
                 int category = in.nextInt();
-                switch (category){
+                switch (category) {
                     case 1: //aggiunta prodotto a magazzino
                         break;
                     case 2: //scarico merce da magazzino
@@ -54,16 +56,13 @@ public class whichOperationCompany {
                 }
                 System.out.println("Would you like to make other researches? 1)Yes   2)No");
                 int stay = in.nextInt();
-                if(stay == 2){
+                if (stay == 2) {
                     isTrue = true;
                 }
-            }catch (InputMismatchException e){
+            } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
-                isTrue=false;
+                isTrue = false;
             }
         }
-
-
-
     }
 }

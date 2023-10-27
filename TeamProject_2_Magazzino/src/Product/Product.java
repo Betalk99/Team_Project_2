@@ -1,42 +1,34 @@
 package Product;
 
 public class Product {
-    public TipoProdotti tipo;
+    public ProductTypes type;
     private String model;
-    private String producer;
+    private String brand;
     private String description;
     private double displaySize;
     private double storageCap;
-    private double purchPrice;
+    private double purchasePrice;
     private double sellPrice;
     private String itemId;
 
-    public Product(TipoProdotti tipo, String producer, String model, String description, double displaySize, double storageCap, double purchPrice, double sellPrice, String itemId) {
-        this.tipo = tipo;
-        this.producer = producer;
+    public Product(ProductTypes type, String brand, String model, String description, double displaySize, double storageCap, double purchasePrice, double sellPrice, String itemId) {
+        this.type = type;
+        this.brand = brand;
         this.model = model;
         this.description = description;
         this.displaySize = displaySize;
         this.storageCap = storageCap;
-        this.purchPrice = purchPrice;
+        this.purchasePrice = purchasePrice;
         this.sellPrice = sellPrice;
         this.itemId = itemId;
     }
 
-    public TipoProdotti getTipo() {
-        return tipo;
+    public ProductTypes getType() {
+        return type;
     }
 
-    public void setTipo(TipoProdotti tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getProducer() {
-        return producer;
-    }
-
-    public void setProducer(String producer) {
-        this.producer = producer;
+    public void setType(ProductTypes type) {
+        this.type = type;
     }
 
     public String getModel() {
@@ -71,12 +63,12 @@ public class Product {
         this.storageCap = storageCap;
     }
 
-    public double getPurchPrice() {
-        return purchPrice;
+    public double getPurchasePrice() {
+        return purchasePrice;
     }
 
-    public void setPurchPrice(double purchPrice) {
-        this.purchPrice = purchPrice;
+    public void setPurchasePrice(double purchasePrice) {
+        this.purchasePrice = purchasePrice;
     }
 
     public double getSellPrice() {
@@ -95,25 +87,26 @@ public class Product {
         this.itemId = itemId;
     }
 
+    public String getBrand() {
+        return brand;
+    }
 
-
-
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
     @Override
     public String toString() {
         return "Product{" +
-                "tipo=" + tipo +
+                "type=" + type +
                 ", model='" + model + '\'' +
-                ", producer='" + producer + '\'' +
+                ", producer='" + brand + '\'' +
                 ", description='" + description + '\'' +
                 ", displaySize=" + displaySize +
-                ", storageCap=" + storageCap + "gb" +
-                ", purchPrice=" + purchPrice +
+                ", storageCap=" + storageCap + " GB" +
+                ", purchasePrice=" + purchasePrice +
                 ", sellPrice=" + sellPrice +
                 ", itemId='" + itemId + '\'' +
                 '}';
     }
-
-
-
 }

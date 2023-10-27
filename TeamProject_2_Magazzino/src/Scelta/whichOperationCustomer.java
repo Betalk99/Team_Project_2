@@ -22,6 +22,7 @@ public class whichOperationCustomer {
                          5) Search by product brand\s
                          6) Search by product model\s
                          7) Search by product's price range""");
+
                 int category = in.nextInt();
                 switch (category) {
                     case 1: //creazione carrello

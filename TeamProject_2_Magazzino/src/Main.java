@@ -16,7 +16,6 @@ public class Main {
         softwareUsageSelection(stock); // richiamo funzione per accedere alla scelta
         ArrayList<Product> cart = new ArrayList<>();
     }
-
     public static void softwareUsageSelection(ArrayList<Product> stock) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {

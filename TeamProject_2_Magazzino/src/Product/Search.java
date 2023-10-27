@@ -14,7 +14,7 @@ public class Search {
                 switch (category) {
                     case 1:
                         for (Product products : stock) {
-                            if (products.getTipo() == TipoProdotti.notebook) {
+                            if (products.getType() == ProductTypes.notebook) {
                                 devicesByType.add(products);
                                 isTrue = true;
                             }
@@ -22,7 +22,7 @@ public class Search {
                         break;
                     case 2:
                         for (Product products : stock) {
-                            if (products.getTipo() == TipoProdotti.smartphone) {
+                            if (products.getType() == ProductTypes.smartphone) {
                                 devicesByType.add(products);
                                 isTrue = true;
                             }
@@ -30,7 +30,7 @@ public class Search {
                         break;
                     case 3:
                         for (Product products : stock) {
-                            if (products.getTipo() == TipoProdotti.tablet) {
+                            if (products.getType() == ProductTypes.tablet) {
                                 devicesByType.add(products);
                                 isTrue = true;
                             }
@@ -105,7 +105,7 @@ public class Search {
                 Arrays.sort(rangeValues);
                 boolean inRange = false;
                 for (int i = 0; i < stock.size(); i++) {
-                    if (stock.get(i).getPurchPrice() >= rangeValues[0] && stock.get(i).getPurchPrice() <= rangeValues[1]) {
+                    if (stock.get(i).getPurchasePrice() >= rangeValues[0] && stock.get(i).getPurchasePrice() <= rangeValues[1]) {
                         System.out.println(stock.get(i));
                         inRange = true;
                     }

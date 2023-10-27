@@ -7,7 +7,7 @@ import java.util.*;
 public class cartManagement {
 
     public static ArrayList<Product> creation() {
-        ArrayList<Product> cart = new ArrayList<Product>();
+        ArrayList<Product> cart = new ArrayList<>();
         return cart;
     }
 
@@ -26,7 +26,7 @@ public class cartManagement {
 
                     System.out.println("Please select the index of the product you want to add to your cart:");
                     for (int i = 0; i < stock.size(); i++) {
-                        System.out.println(stock.get(i).getProducer() + " " + stock.get(i).getModel() + " Index: " + (i + 1));
+                        System.out.println(stock.get(i).getBrand() + " " + stock.get(i).getModel() + " Index: " + (i + 1));
                     }
                     int answer = in.nextInt();
                     if (1 <= answer && answer <= stock.size()) {
