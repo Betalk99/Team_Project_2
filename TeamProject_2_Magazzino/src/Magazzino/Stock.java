@@ -11,7 +11,7 @@ public class Stock {
     @Override
     public String toString() {
         return "Stock{" +
-                "listaProdotti=" + listaProdotti +
+                "listaProdotti=" + listaProdotti + "\n" +
                 '}';
     }
 }

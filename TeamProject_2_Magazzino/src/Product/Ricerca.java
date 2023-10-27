@@ -8,7 +8,6 @@ public class Ricerca {
         while (isTrue == false){
             try {
             Scanner in = new Scanner(System.in);
-
                 System.out.println("Salve gentile cliente selezioni una tra le seguenti categorie: \n 1 = tablet \n 2 = notebook \n 3 = smartphone");
                 int categoria = in.nextInt();
                 switch (categoria) {

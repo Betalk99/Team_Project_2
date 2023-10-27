@@ -14,9 +14,9 @@ public class Main {
         ProductBase.baseProd(magazzino); //richiamare oggetti precaricati arraylist magazzino
         ArrayList<Product> carrello = new ArrayList<>();
 
+
+
         usoGestionaleScelta(magazzino); // richiamo funzione per accedere alla scelta
-
-
 
     }
 

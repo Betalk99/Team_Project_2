@@ -2,10 +2,7 @@ package Carrello;
 
 import Product.Product;
 
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class gestioneCarrello {
 
@@ -14,6 +11,10 @@ public class gestioneCarrello {
         return carrello;
     }
     public static ArrayList<Product> gestione (ArrayList<Product> carrello, ArrayList<Product> magazzino) {
+        ArrayList<Product> arrayTemp = new ArrayList<>();
+        arrayTemp.clear();
+
+        arrayTemp = magazzino;
 
         Scanner in = new Scanner(System.in);
         boolean stay = true;
@@ -24,11 +25,12 @@ public class gestioneCarrello {
 
                     System.out.println("Prego selezionare l'indice del prodotto che intende aggiungere al carrello.");
                     for (int i = 0; i < magazzino.size(); i++) {
-                        System.out.println(magazzino.get(i).getProducer() + "" + magazzino.get(i).getModel() + " Indice: " + i + 1);
+                        System.out.println(magazzino.get(i).getProducer() + "" + magazzino.get(i).getModel() + " Indice: " + (i + 1));
                     }
                     int risposta = in.nextInt();
                     if(1 <= risposta && risposta <= magazzino.size()) {
-                        carrello.add(magazzino.get(risposta-1));
+                        carrello.add(arrayTemp.get(risposta-1));
+                        arrayTemp.remove(risposta-1);
                         stay4 = false;
                     } else {
                         System.out.println("Non hai inserito un indice valido.");
@@ -58,23 +60,25 @@ public class gestioneCarrello {
         }
         boolean stay3 = true;
         while (stay3) {
-            System.out.println("Per procedere con l'acquisto dei beni presenti nel carrello digitare '1'. \n Per svuotare il carrello digitare '2'.");
-            String answer = in.next();
-            if (Objects.equals(answer, "1")) {
-                for (int i = 0; i < carrello.size(); i++) {
-                    magazzino.remove(carrello.get(i));
+            try {
+                System.out.println("Per procedere con l'acquisto dei beni presenti nel carrello digitare '1'. \n Per svuotare il carrello digitare '2'.");
+                int answer = in.nextInt();
+                if (answer == 1) {
+                    magazzino = arrayTemp;
+                    stay3 = false;
+                } else if (answer == 2) {
+                    carrello.clear();
+                    stay3 = false;
+                } else {
+                    System.out.println("Non hai digitato una risposta valida.");
+                    stay3 = true;
                 }
-                stay3 = false;
-            } else if (Objects.equals(answer, "2")) {
-                carrello.clear();
-                stay3 = false;
-            } else {
-                System.out.println("Non hai digitato una risposta valida.");
-                stay3 = true;
+            }catch (NoSuchElementException e){
+                System.out.println("Inserisci un numero");
             }
         }
 
-        in.close();
-        return carrello;
+        return magazzino;
     }
+
 }
