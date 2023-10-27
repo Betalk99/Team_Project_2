@@ -14,7 +14,7 @@ public class Main {
         Stock mag = new Stock(stock);
         ProductBase.baseProd(stock); //richiamare oggetti precaricati arraylist magazzino
         softwareUsageSelection(stock); // richiamo funzione per accedere alla scelta
-        ArrayList<Product> carrello = new ArrayList<>();
+        ArrayList<Product> cart = new ArrayList<>();
 
 
 
