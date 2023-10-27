@@ -1,24 +1,17 @@
 package Magazzino;
-
 import Product.*;
-
 import java.util.ArrayList;
-
 public class Stock {
-    public ArrayList<Product> productList;
+    public ArrayList<Product> listaProdotti;
 
     public Stock(ArrayList<Product> listaProdotti) {
-        this.productList = listaProdotti;
+        this.listaProdotti = listaProdotti;
     }
 
     @Override
     public String toString() {
         return "Stock{" +
-<<<<<<< HEAD
-                "listaProdotti=" + productList +
-=======
                 "listaProdotti=" + listaProdotti + "\n" +
->>>>>>> Develhope
                 '}';
     }
 }
