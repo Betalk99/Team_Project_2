@@ -15,11 +15,7 @@ public class Main {
         ProductBase.baseProd(stock); //richiamare oggetti precaricati arraylist magazzino
         softwareUsageSelection(stock); // richiamo funzione per accedere alla scelta
         ArrayList<Product> cart = new ArrayList<>();
-
-
-
     }
-
     public static void softwareUsageSelection(ArrayList<Product> stock) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {
@@ -28,9 +24,9 @@ public class Main {
                 System.out.println("Hello, who is going to use this management system? \n1-Customer \n2-Company user");
                 int a = in.nextInt();
                 if (a == 1) {
-                    whichOperationUser.oper(stock);
+                    whichOperationCustomer.oper(stock);
                 } else if (a == 2) {
-                    whichOperationAgency.oper(stock);
+                    whichOperationCompany.oper(stock);
                 }
                 System.out.println("Would you like to keep searching? 1)Yes   2)No");
                 int stay = in.nextInt();

@@ -1,6 +1,6 @@
 package Product;
 
-public enum TipoProdotti {
+public enum ProductTypes {
     tablet,
     smartphone,
     notebook
