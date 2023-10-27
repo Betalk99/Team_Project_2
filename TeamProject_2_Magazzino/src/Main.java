@@ -15,9 +15,6 @@ public class Main {
         ProductBase.baseProd(stock); //richiamare oggetti precaricati arraylist magazzino
         softwareUsageSelection(stock); // richiamo funzione per accedere alla scelta
         ArrayList<Product> cart = new ArrayList<>();
-
-
-
     }
 
     public static void softwareUsageSelection(ArrayList<Product> stock) throws InputMismatchException {
