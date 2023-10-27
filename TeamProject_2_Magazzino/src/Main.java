@@ -9,42 +9,34 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
-        ArrayList<Product> magazzino = new ArrayList<>();  // arraylist magazzino
-        Stock mag = new Stock(magazzino);
-        ProductBase.baseProd(magazzino); //richiamare oggetti precaricati arraylist magazzino
-
-
-        usoGestionaleScelta(magazzino); // richiamo funzione per accedere alla scelta
-
-
+        ArrayList<Product> stock = new ArrayList<>();  // arraylist magazzino
+        Stock mag = new Stock(stock);
+        ProductBase.baseProd(stock); //richiamare oggetti precaricati arraylist magazzino
+        softwareUsageSelection(stock); // richiamo funzione per accedere alla scelta
 
     }
 
-    public static void usoGestionaleScelta(ArrayList<Product> magazzino)throws InputMismatchException{
+    public static void softwareUsageSelection(ArrayList<Product> stock) throws InputMismatchException {
         boolean isTrue = false;
-        while (isTrue == false) {
+        while (!isTrue) {
             try {
                 Scanner in = new Scanner(System.in);
-                System.out.println("Salve, chi desidera utilizzare questo gestionale: \n1-Utente \n2-Azienda ");
+                System.out.println("Hello, who is going to use this management system? \n1-Customer \n2-Company user");
                 int a = in.nextInt();
-                if(a == 1){
-                    whichOperationUser.oper(magazzino);
-                }else if(a == 2){
-                    whichOperationAgency.oper(magazzino);
+                if (a == 1) {
+                    whichOperationCustomer.oper(stock);
+                } else if (a == 2) {
+                    whichOperationCompany.oper(stock);
                 }
-                System.out.println("Vuoi effettuare altra ricerca? 1-Si - 2-No");
+                System.out.println("Would you like to keep searching? 1)Yes   2)No");
                 int stay = in.nextInt();
-                if(stay == 2){
+                if (stay == 2) {
                     isTrue = true;
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Utilizza un numero tra 1, 2");
+                System.out.println("Please use a number between 1 (Yes) or 2 (No)");
                 isTrue = false;
             }
-
         }
-
     }
-
-
 }
