@@ -3,7 +3,7 @@ package Product;
 public class Product {
     public TipoProdotti tipo;
     private String model;
-    private String producer;
+    private String brand;
     private String description;
     private double displaySize;
     private double storageCap;
@@ -11,9 +11,9 @@ public class Product {
     private double sellPrice;
     private String itemId;
 
-    public Product(TipoProdotti tipo, String producer, String model, String description, double displaySize, double storageCap, double purchPrice, double sellPrice, String itemId) {
+    public Product(TipoProdotti tipo, String brand, String model, String description, double displaySize, double storageCap, double purchPrice, double sellPrice, String itemId) {
         this.tipo = tipo;
-        this.producer = producer;
+        this.brand = brand;
         this.model = model;
         this.description = description;
         this.displaySize = displaySize;
@@ -29,14 +29,6 @@ public class Product {
 
     public void setTipo(TipoProdotti tipo) {
         this.tipo = tipo;
-    }
-
-    public String getProducer() {
-        return producer;
-    }
-
-    public void setProducer(String producer) {
-        this.producer = producer;
     }
 
     public String getModel() {
@@ -95,16 +87,20 @@ public class Product {
         this.itemId = itemId;
     }
 
+    public String getBrand() {
+        return brand;
+    }
 
-
-
+    public void setBrand(String brand) {
+        this.brand = brand;
+    }
 
     @Override
     public String toString() {
         return "Product{" +
                 "tipo=" + tipo +
                 ", model='" + model + '\'' +
-                ", producer='" + producer + '\'' +
+                ", producer='" + brand + '\'' +
                 ", description='" + description + '\'' +
                 ", displaySize=" + displaySize +
                 ", storageCap=" + storageCap + "gb" +
