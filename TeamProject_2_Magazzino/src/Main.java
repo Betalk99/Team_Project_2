@@ -9,10 +9,14 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+<<<<<<< HEAD
         ArrayList<Product> stock = new ArrayList<>();  // arraylist magazzino
         Stock mag = new Stock(stock);
         ProductBase.baseProd(stock); //richiamare oggetti precaricati arraylist magazzino
         softwareUsageSelection(stock); // richiamo funzione per accedere alla scelta
+        ArrayList<Product> carrello = new ArrayList<>();
+
+>>>>>>> Develhope
 
     }
 

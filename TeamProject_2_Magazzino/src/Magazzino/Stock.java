@@ -14,7 +14,11 @@ public class Stock {
     @Override
     public String toString() {
         return "Stock{" +
+<<<<<<< HEAD
                 "listaProdotti=" + productList +
+=======
+                "listaProdotti=" + listaProdotti + "\n" +
+>>>>>>> Develhope
                 '}';
     }
 }
