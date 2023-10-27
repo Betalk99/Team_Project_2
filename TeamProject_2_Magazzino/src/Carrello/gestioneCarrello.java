@@ -28,7 +28,7 @@ public class gestioneCarrello {
                     }
                     int risposta = in.nextInt();
                     if(1 <= risposta && risposta <= magazzino.size()) {
-                        carrello.add(magazzino.get(risposta));
+                        carrello.add(magazzino.get(risposta-1));
                         stay4 = false;
                     } else {
                         System.out.println("Non hai inserito un indice valido.");
