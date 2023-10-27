@@ -31,6 +31,14 @@ public class Product {
         this.tipo = tipo;
     }
 
+    public String getProducer() {
+        return producer;
+    }
+
+    public void setProducer(String producer) {
+        this.producer = producer;
+    }
+
     public String getModel() {
         return model;
     }
