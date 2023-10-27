@@ -12,7 +12,7 @@ public class Main {
         ArrayList<Product> magazzino = new ArrayList<>();  // arraylist magazzino
         Stock mag = new Stock(magazzino);
         ProductBase.baseProd(magazzino); //richiamare oggetti precaricati arraylist magazzino
-
+        ArrayList<Product> carrello = new ArrayList<>();
 
         usoGestionaleScelta(magazzino); // richiamo funzione per accedere alla scelta
 

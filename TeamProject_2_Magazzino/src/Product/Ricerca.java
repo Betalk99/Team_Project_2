@@ -1,8 +1,5 @@
 package Product;
-import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Ricerca {
     public static ArrayList<Product> ricercaPerTipo(ArrayList<Product> magazzino) throws InputMismatchException{
@@ -60,20 +57,59 @@ public class Ricerca {
          }
     }
 
-    public static void ricercaPerRangePrezzo(ArrayList<Product> magazzino) throws InputMismatchException{
+    public static void ricercaPerRangePrezzoVendita(ArrayList<Product> magazzino) throws InputMismatchException{
 
         boolean isTrue = false;
         while (isTrue == false){
             try {
+                double[] rangeValues = new double[2];
                 Scanner in = new Scanner(System.in);
                 System.out.println("Ricerca dispositivi per Range ");
                 System.out.println("Da");
-                double rangeIni = in.nextDouble();
+                rangeValues[0] = in.nextDouble();
                 System.out.println("A");
-                double rangeFin = in.nextDouble();
+                rangeValues[1] = in.nextDouble();
+                Arrays.sort(rangeValues);
                 boolean inRange = false;
                 for(int i=0;i< magazzino.size();i++){
-                    if(magazzino.get(i).getSellPrice() > rangeIni && magazzino.get(i).getSellPrice() < rangeFin){
+                    if(magazzino.get(i).getSellPrice() >= rangeValues[0] && magazzino.get(i).getSellPrice() <= rangeValues[1]){
+                        System.out.println(magazzino.get(i));
+                        inRange = true;
+                    }
+                }
+                if(inRange == false){
+                    System.out.println("Non abbiamo prodotti con questo range nel nostro magazzino ");
+                }
+
+                System.out.println("Vuoi effettuare altra ricerca per range di prezzo? 1/Si - 2/No");
+                int stay = in.nextInt();
+                if(stay == 2){
+                    isTrue = true;
+                }
+            }catch (InputMismatchException e){
+                System.out.println("Utilizza un numero");
+                isTrue = false;
+            }
+
+        }
+    }
+
+    public static void ricercaPerRangePrezzoAcquisto(ArrayList<Product> magazzino) throws InputMismatchException{
+
+        boolean isTrue = false;
+        while (isTrue == false){
+            try {
+                double[] rangeValues = new double[2];
+                Scanner in = new Scanner(System.in);
+                System.out.println("Ricerca dispositivi per Range ");
+                System.out.println("Da");
+                rangeValues[0] = in.nextDouble();
+                System.out.println("A");
+                rangeValues[1] = in.nextDouble();
+                Arrays.sort(rangeValues);
+                boolean inRange = false;
+                for(int i=0;i< magazzino.size();i++){
+                    if(magazzino.get(i).getPurchPrice() >= rangeValues[0] && magazzino.get(i).getPurchPrice() <= rangeValues[1]){
                         System.out.println(magazzino.get(i));
                         inRange = true;
                     }

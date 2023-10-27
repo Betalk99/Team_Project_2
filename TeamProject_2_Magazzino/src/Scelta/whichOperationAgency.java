@@ -1,4 +1,5 @@
 package Scelta;
+import Carrello.gestioneCarrello;
 import Magazzino.*;
 import Product.*;
 
@@ -21,8 +22,10 @@ public class whichOperationAgency {
                     case 2: //scarico merce da magazzino ?
                         break;
                     case 3: //creazione carrello
+                        gestioneCarrello.creazioneCarrello();
                         break;
                     case 4: // aggiunta elemento al carrello
+                        gestioneCarrello.gestione(gestioneCarrello.creazioneCarrello(), magazzino);
                         break;
                     case 5: // stampare tutti i dispositivi nel magazzino
                         break;
@@ -35,6 +38,7 @@ public class whichOperationAgency {
                         Ricerca.ricercaPerModello(magazzino);
                         break;
                     case 9: // ricerca per range di prezzo di acquisto
+                        Ricerca.ricercaPerRangePrezzoAcquisto(magazzino);
                         break;
                     default:
                         System.out.println("Operazione non in elenco");
