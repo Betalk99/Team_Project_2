@@ -28,7 +28,7 @@ public class Main {
                 } else if (a == 2) {
                     whichOperationCompany.oper(stock);
                 }
-                System.out.println("Would you like to keep searching? 1)Yes   2)No");
+                System.out.println("would you like to carry out other actions? 1)Yes   2)No");
                 int stay = in.nextInt();
                 if (stay == 2) {
                     isTrue = true;

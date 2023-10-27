@@ -32,6 +32,7 @@ public class whichOperationCustomer {
                         cartManagement.management(cartManagement.creation(), stock);
                         break;
                     case 3: // stampare tutti i dispositivi nel magazzino
+                        Search.productsView(stock);
                         break;
                     case 4: // ricerca per tipo di dispositivo fatta da Antonio Troiano
                         System.out.println(Search.byType(stock));
