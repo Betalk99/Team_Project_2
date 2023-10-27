@@ -125,4 +125,10 @@ public class Search {
             }
         }
     }
+
+    public static void productsView(ArrayList<Product> stock) {
+        for (int i = 0; i < stock.size(); i++) {
+            System.out.println(stock.get(i));
+        }
+    }
 }
