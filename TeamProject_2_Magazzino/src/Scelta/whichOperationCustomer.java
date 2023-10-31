@@ -61,8 +61,6 @@ public class whichOperationCustomer {
             } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
                 isTrue = false;
-            } catch (Exception e) {
-                throw new RuntimeException(e);
             }
         }
     }
