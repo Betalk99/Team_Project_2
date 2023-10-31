@@ -47,10 +47,10 @@ public class cartManagement {
             while (stay2) {
                 System.out.println("Would you like to keep purchasing products? Please enter 'Yes' or 'No'");
                 String answer = in.next();
-                if (Objects.equals(answer.toLowerCase(), "no")) {
+                if (Objects.equals(answer.toLowerCase(), "No")) {
                     stay = false;
                     stay2 = false;
-                } else if (Objects.equals(answer.toLowerCase(), "sì") || Objects.equals(answer.toLowerCase(), "si")) {
+                } else if (Objects.equals(answer.toLowerCase(), "Yes") || Objects.equals(answer.toLowerCase(), "yes")) {
                     stay = true;
                     stay2 = false;
                 } else {

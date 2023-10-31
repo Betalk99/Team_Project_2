@@ -38,6 +38,7 @@ public class whichOperationCustomer {
                         System.out.println(Search.byType(stock));
                         break;
                     case 5: // ricerca per brand
+                            Search.byBrand(stock);
                         break;
                     case 6: // ricerca per modello
                         Search.byModel(stock);
@@ -60,6 +61,8 @@ public class whichOperationCustomer {
             } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
                 isTrue = false;
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         }
     }
