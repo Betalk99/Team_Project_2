@@ -2,10 +2,6 @@ package Product;
 
 import java.util.*;
 
-//import static sun.jvm.hotspot.HelloWorld.e;
-
-//import static sun.jvm.hotspot.HelloWorld.e;
-
 public class Search {
     public static ArrayList<Product> byType(ArrayList<Product> stock) throws InputMismatchException {
         ArrayList<Product> devicesByType = new ArrayList<>();
