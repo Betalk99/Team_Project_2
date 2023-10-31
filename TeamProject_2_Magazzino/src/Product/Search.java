@@ -131,4 +131,43 @@ public class Search {
             System.out.println(stock.get(i));
         }
     }
+
+    public static void byBrand(ArrayList<Product> stock) {
+        boolean stay = false;
+        while (!stay) {
+            Scanner sc = new Scanner(System.in);
+            Set<String> uniqueProducers = new TreeSet<>();
+            System.out.println("These are the product brands available in our stock");
+            for (int i = 0; i < stock.size(); i++) {
+                uniqueProducers.add(stock.get(i).getBrand());
+            }
+
+            System.out.println(uniqueProducers);
+            System.out.println("For which of these brands would you like to see available products?");
+            String selectedBrand = sc.nextLine();
+
+            for (int j = 0; j < stock.size(); j++) {
+                if (stock.get(j).getBrand().equals(selectedBrand)) {
+                    System.out.println(stock.get(j));
+                }
+            }
+            boolean stay2 = false;
+            while (!stay2) {
+                try {
+                    System.out.println("Would you like to search other products based on brand?\n1)Yes   2)No");
+                    int answer = sc.nextInt();
+                    if (answer == 1) {
+                        stay2 = true;
+                    } else if (answer == 2) {
+                        stay = true;
+                        stay2 = true;
+                    } else {
+                        throw new Exception("Please select a value between 1 or 2\n");
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        }
+    }
 }

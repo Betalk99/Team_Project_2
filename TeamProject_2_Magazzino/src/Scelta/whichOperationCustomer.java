@@ -38,6 +38,7 @@ public class whichOperationCustomer {
                         System.out.println(Search.byType(stock));
                         break;
                     case 5: // ricerca per brand
+                            Search.byBrand(stock);
                         break;
                     case 6: // ricerca per modello
                         Search.byModel(stock);
