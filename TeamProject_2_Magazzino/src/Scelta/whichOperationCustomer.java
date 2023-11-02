@@ -8,7 +8,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class whichOperationCustomer {
-    public static void oper(ArrayList<Product> stock) throws InputMismatchException {
+    public static void oper(ArrayList<Product> stock, ArrayList<Product> cart) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {
             try {
@@ -25,11 +25,11 @@ public class whichOperationCustomer {
 
                 int category = in.nextInt();
                 switch (category) {
-                    case 1: //creazione carrello
-                        cartManagement.creation();
+                    case 1: //gestisci il tuo carello
+                        cartManagement.operCar(stock,cart);
                         break;
                     case 2: // aggiunta elemento al carrello
-                        cartManagement.management(cartManagement.creation(), stock);
+                        cartManagement.management(cart, stock);
                         break;
                     case 3: // stampare tutti i dispositivi nel magazzino
                         Search.productsView(stock);

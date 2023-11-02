@@ -6,9 +6,32 @@ import java.util.*;
 
 public class cartManagement {
 
-    public static ArrayList<Product> creation() {
-        ArrayList<Product> cart = new ArrayList<>();
-        return cart;
+    public static void operCar(ArrayList<Product> stock,ArrayList<Product> car){
+        Scanner sc = new Scanner(System.in);
+//        System.out.println(stock);
+        System.out.println("""
+                        Hello dear customer, please select one of the following options:
+                         1) Cart status\s
+                         2) Remove product/s to cart\s
+                         3) Get empty cart\s
+                         4) Proceed to checkout\s
+                         5) -----""");;
+
+
+        int operCarr = sc.nextInt();
+        switch (operCarr){
+            case 1://controllo stato carrello
+                System.out.println(car);
+                break;
+            case 2://rimozione elementi da carrello
+                break;
+            case 3://svuota carello
+                break;
+            case 4://Finalizza acquisti
+                break;
+            case 5://
+                break;
+        }
     }
 
     public static ArrayList<Product> management(ArrayList<Product> cart, ArrayList<Product> stock) {
@@ -81,6 +104,6 @@ public class cartManagement {
                 System.out.println("Please insert an integer number");
             }
         }
-        return stock;
+        return arrayTemp;
     }
 }
