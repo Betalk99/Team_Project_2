@@ -108,6 +108,7 @@ public class cartManagement {
         return arrayTemp;
     }
 
+
     public static ArrayList<Product> removeId(ArrayList<Product> cart){
         boolean stay = true;
 

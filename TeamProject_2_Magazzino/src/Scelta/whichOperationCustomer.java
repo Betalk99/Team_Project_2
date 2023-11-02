@@ -14,6 +14,7 @@ public class whichOperationCustomer {
             try {
                 Scanner in = new Scanner(System.in);
                 System.out.println("""
+
                         Hello dear customer, please select one of the following options:
                          1) Cart Management\s
                          2) View products\s
@@ -21,6 +22,7 @@ public class whichOperationCustomer {
                          4) Search by product brand\s
                          5) Search by product model\s
                          6) Search by product's price range""");
+
 
                 int category = in.nextInt();
                 switch (category) {
