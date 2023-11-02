@@ -14,10 +14,10 @@ public class whichOperationCustomer {
             try {
                 Scanner in = new Scanner(System.in);
                 System.out.println("""
-                        Hello dear customer, please select one of the following options:
-                         1) Cart creation\s
-                         2) Add product/s to cart\s
-                         3) View products\s
+                       Hello dear customer, please select one of the following options:
+                         1) Manage your cart\s
+                         2) --\s
+                         3) View products in the stock\s
                          4) Search by product type\s
                          5) Search by product brand\s
                          6) Search by product model\s
