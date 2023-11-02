@@ -1,18 +1,18 @@
 package Carrello;
 
-import Product.Product;
+import Product.*;
 
 import java.util.*;
 
 public class cartManagement {
 
-    public static void operCar(ArrayList<Product> stock,ArrayList<Product> car){
+    public static void operCar(ArrayList<Product> stock,ArrayList<Product> cart){
         Scanner sc = new Scanner(System.in);
 //        System.out.println(stock);
         System.out.println("""
                         Hello dear customer, please select one of the following options:
                          1) Cart status\s
-                         2) Remove product/s to cart\s
+                         2) Remove product/s to cart via ID\s
                          3) Get empty cart\s
                          4) Proceed to checkout\s
                          5) -----""");;
@@ -21,9 +21,10 @@ public class cartManagement {
         int operCarr = sc.nextInt();
         switch (operCarr){
             case 1://controllo stato carrello
-                System.out.println(car);
+                System.out.println(cart);
                 break;
-            case 2://rimozione elementi da carrello
+            case 2://rimozione elementi da carrello tramite id
+                removeId(cart);
                 break;
             case 3://svuota carello
                 break;
@@ -106,4 +107,36 @@ public class cartManagement {
         }
         return arrayTemp;
     }
+
+    public static ArrayList<Product> removeId(ArrayList<Product> cart){
+        boolean stay = true;
+
+//        Tablet tablet1 = new Tablet(ProductTypes.tablet, "Samsung", "Galaxy Tab S6 Lite", "con pen in dotazione", 10.4, 128, 120.00, 298.00, "011");
+//        cart.add(tablet1);
+
+        while(stay) {
+            Scanner in = new Scanner(System.in);
+            for (Product i : cart) {
+                System.out.println(i);
+            }
+
+            System.out.println("Which device do you want to remove from your cart? \n Indicate the id : ");
+            String idRemove = in.next();
+
+            for (int i = 0; i < cart.size(); i++) {
+                if (cart.get(i).getItemId() == idRemove) {
+                    cart.remove(i);
+                }
+            }
+            System.out.println("Do you want to delete some other elements? 1/Yes - 2/No");
+            int i= in.nextInt();
+            if(i == 2){
+                stay = false;
+            }
+        }
+
+        return cart;
+    }
+
+
 }

@@ -15,38 +15,34 @@ public class whichOperationCustomer {
                 Scanner in = new Scanner(System.in);
                 System.out.println("""
                         Hello dear customer, please select one of the following options:
-                         1) Cart creation\s
-                         2) Add product/s to cart\s
-                         3) View products\s
-                         4) Search by product type\s
-                         5) Search by product brand\s
-                         6) Search by product model\s
-                         7) Search by product's price range""");
+                         1) Cart Management\s
+                         2) View products\s
+                         3) Search by product type\s
+                         4) Search by product brand\s
+                         5) Search by product model\s
+                         6) Search by product's price range""");
 
                 int category = in.nextInt();
                 switch (category) {
                     case 1: //gestisci il tuo carello
                         cartManagement.operCar(stock,cart);
                         break;
-                    case 2: // aggiunta elemento al carrello
-                        cartManagement.management(cart, stock);
-                        break;
-                    case 3: // stampare tutti i dispositivi nel magazzino
+                    case 2: // stampare tutti i dispositivi nel magazzino
                         Search.productsView(stock);
                         break;
-                    case 4: // ricerca per tipo di dispositivo fatta da Antonio Troiano
+                    case 3: // ricerca per tipo di dispositivo fatta da Antonio Troiano
                         System.out.println(Search.byType(stock));
                         break;
-                    case 5: // ricerca per brand
+                    case 4: // ricerca per brand
                             Search.byBrand(stock);
                         break;
-                    case 6: // ricerca per modello
+                    case 5: // ricerca per modello
                         Search.byModel(stock);
                         break;
-                    case 7: // ricerca per range di prezzo (sell price/prezzo di vendita)
+                    case 6: // ricerca per range di prezzo (sell price/prezzo di vendita)
                         Search.bySellPriceRange(stock);
                         break;
-                    case 8: // ricerca per range di costo (cost /prezzo di costo)
+                    case 7: // ricerca per range di costo (cost /prezzo di costo)
                         Search.byCostPriceRange(stock);
                         break;
                     default:
