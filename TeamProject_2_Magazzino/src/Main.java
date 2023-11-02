@@ -13,10 +13,11 @@ public class Main {
         ArrayList<Product> stock = new ArrayList<>();  // arraylist magazzino
         Stock mag = new Stock(stock);
         ProductBase.baseProd(stock); //richiamare oggetti precaricati arraylist magazzino
-        softwareUsageSelection(stock); // richiamo funzione per accedere alla scelta
+
         ArrayList<Product> cart = new ArrayList<>();
+        softwareUsageSelection(stock,cart);// richiamo funzione per accedere alla scelta
     }
-    public static void softwareUsageSelection(ArrayList<Product> stock) throws InputMismatchException {
+    public static void softwareUsageSelection(ArrayList<Product> stock, ArrayList<Product> cart) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {
             try {
@@ -24,9 +25,9 @@ public class Main {
                 System.out.println("Hello, who is going to use this management system? \n1-Customer \n2-Company user");
                 int a = in.nextInt();
                 if (a == 1) {
-                    whichOperationCustomer.oper(stock);
+                    whichOperationCustomer.oper(stock,cart);
                 } else if (a == 2) {
-                    whichOperationCompany.oper(stock);
+                    whichOperationCompany.oper(stock,cart);
                 }
                 System.out.println("would you like to carry out other actions? 1)Yes   2)No");
                 int stay = in.nextInt();
