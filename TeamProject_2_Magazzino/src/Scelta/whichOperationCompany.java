@@ -3,6 +3,7 @@ package Scelta;
 import Carrello.cartManagement;
 import Product.*;
 
+import Carrello.*;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
