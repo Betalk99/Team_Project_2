@@ -7,7 +7,14 @@ import java.util.*;
 
 public class cartManagement {
 
+    public static ArrayList<Product> arrayTemp = new ArrayList<Product>();
+
     public static void operCar(ArrayList<Product> stock, ArrayList<Product> cart) {
+
+        arrayTemp.clear();
+
+        arrayTemp = stock;
+
         Scanner sc = new Scanner(System.in);
 //        System.out.println(stock);
         boolean stay = true;
@@ -28,17 +35,17 @@ public class cartManagement {
                     System.out.println(cart);
                     break;
                 case "2"://rimozione elementi da carrello tramite id
-                    removeId(cart);
+                    removeId(cart, arrayTemp);
                     break;
                 case "3"://svuota carello
                     break;
                 case "4"://Finalizza acquisti
-                    buyProducts(cart,stock);
+                    buyProducts(cart,stock, arrayTemp);
                     break;
                 case "5"://Aggiunta prodotti al carrello
                     management(cart, stock);
                 case "6"://Prezzo totale dei prodotti nel carrello.
-                    cartTotal(cart);
+                    cartTotal(cart, arrayTemp);
                     break;
             }
             boolean stay2 = true;
@@ -62,10 +69,6 @@ public class cartManagement {
     }
 
     public static ArrayList<Product> management(ArrayList<Product> cart, ArrayList<Product> stock) {
-        ArrayList<Product> arrayTemp = new ArrayList<>();
-        arrayTemp.clear();
-
-        arrayTemp = stock;
 
         Scanner in = new Scanner(System.in);
         boolean stay = true;
@@ -115,7 +118,7 @@ public class cartManagement {
     }
 
 
-    public static ArrayList<Product> removeId(ArrayList<Product> cart) {
+    public static ArrayList<Product> removeId(ArrayList<Product> cart, ArrayList<Product> arrayTemp) {
         boolean stay = true;
 
 //        Tablet tablet1 = new Tablet(ProductTypes.tablet, "Samsung", "Galaxy Tab S6 Lite", "con pen in dotazione", 10.4, 128, 120.00, 298.00, "011");
@@ -145,7 +148,7 @@ public class cartManagement {
         return cart;
     }
 
-    public static ArrayList<Product> buyProducts (ArrayList<Product> cart, ArrayList<Product> stock) {
+    public static ArrayList<Product> buyProducts (ArrayList<Product> cart, ArrayList<Product> stock, ArrayList<Product> arrayTemp) {
         ArrayList<Product> finalizedPurchases = new ArrayList<>();
         for(int i = 0; i < cart.size(); i++) {
             stock.remove(cart.get(i));
@@ -155,7 +158,8 @@ public class cartManagement {
         return finalizedPurchases;
     }
 
-    public static void cartTotal (ArrayList<Product> cart1) {
+
+    public static void cartTotal (ArrayList<Product> cart1, ArrayList<Product> arrayTemp) {
         double totalPrice = 0;
         for(int i = 0; i < cart1.size(); i++) {
             totalPrice += cart1.get(i).getSellPrice();
