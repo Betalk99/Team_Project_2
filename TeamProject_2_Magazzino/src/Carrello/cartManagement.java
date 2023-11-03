@@ -15,11 +15,12 @@ public class cartManagement {
             System.out.println("""
                     Hello dear customer, please select one of the following options:
                      1) Cart status\s
-                     2) Remove product/s to cart via ID\s
-                     3) Get empty cart\s
-                     4) Proceed to checkout\s
-                     5) Add products to your cart\s
-                     6) Get the total price of the items in the cart""");
+                     2) Add product/s to cart via ID\s
+                     3) Remove product/s to cart via ID\s
+                     4) Get empty cart\s
+                     5) Proceed to checkout\s
+                     6) Add products to your cart\s
+                     7) Get the total price of the items in the cart""");
 
 
             String operCarr = sc.nextLine();
@@ -27,19 +28,23 @@ public class cartManagement {
                 case "1"://controllo stato carrello
                     System.out.println(cart);
                     break;
-                case "2"://rimozione elementi da carrello tramite id
+                case "2"://aggiunta elementi da carrello tramite id
+                    addId(stock,cart);
+                    break;
+                case "3"://rimozione elementi da carrello tramite id
                     removeId(cart);
                     break;
-                case "3"://svuota carello
+                case "4"://svuota carello
                     break;
-                case "4"://Finalizza acquisti
+                case "5"://Finalizza acquisti
                     buyProducts(cart,stock);
                     break;
-                case "5"://Aggiunta prodotti al carrello
+                case "6"://Aggiunta prodotti al carrello
                     management(cart, stock);
-                case "6"://Prezzo totale dei prodotti nel carrello.
+                case "7"://Prezzo totale dei prodotti nel carrello.
                     cartTotal(cart);
                     break;
+
             }
             boolean stay2 = true;
             while(stay2) {
@@ -114,6 +119,24 @@ public class cartManagement {
         return arrayTemp;
     }
 
+    public static void addId(ArrayList<Product> stock,ArrayList<Product> cart){
+        boolean stay = true;
+        while (stay){
+            Scanner in = new Scanner(System.in);
+            System.out.println(stock);
+            System.out.println("Which device do you want to add from your cart? \n Indicate the id : ");
+
+            String idAdd = in.next();
+           // System.out.println(idAdd);
+            for(int i=0;i<stock.size();i++){
+                if(stock.get(i).getItemId().equals(idAdd)){
+                    cart.add(stock.get(i));
+                }
+            }
+            stay=false;
+        }
+//        System.out.println(cart);
+    }
 
     public static ArrayList<Product> removeId(ArrayList<Product> cart) {
         boolean stay = true;
