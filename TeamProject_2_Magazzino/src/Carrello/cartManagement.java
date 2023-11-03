@@ -26,11 +26,12 @@ public class cartManagement {
             System.out.println("""
                     Hello dear customer, please select one of the following options:
                      1) Cart status\s
-                     2) Remove product/s to cart via ID\s
-                     3) Get empty cart\s
-                     4) Proceed to checkout\s
-                     5) Add products to your cart\s
-                     6) Get the total price of the items in the cart""");
+                     2) Add product/s to cart via ID\s
+                     3) Remove product/s to cart via ID\s
+                     4) Get empty cart\s
+                     5) Proceed to checkout\s
+                     6) Add products to your cart\s
+                     7) Get the total price of the items in the cart""");
 
 
             String operCarr = sc.nextLine();
@@ -38,10 +39,14 @@ public class cartManagement {
                 case "1"://controllo stato carrello
                     System.out.println(cart);
                     break;
+
                 case "2"://rimozione elementi da carrello tramite id
                     removeId(cart, arrayTemp);
+                case "2"://aggiunta elementi da carrello tramite id
+                    addId(stock,cart);
                     break;
-                case "3"://svuota carello
+                case "3"://rimozione elementi da carrello tramite id
+                    removeId(cart);
                     break;
                 case "4"://Finalizza acquisti
                     buyProducts(cart,stock, arrayTemp);
@@ -52,6 +57,7 @@ public class cartManagement {
                 case "6"://Prezzo totale dei prodotti nel carrello.
                     cartTotal(cart);
                     break;
+
             }
             boolean stay2 = true;
             while(stay2) {
@@ -72,30 +78,6 @@ public class cartManagement {
         }
 
     }
-
-//    public static void addProduct(ArrayList<Product> cart,ArrayList<Product> stock, ArrayList<Product> arrayTemp){
-//        Scanner in = new Scanner(System.in);
-//        for(Product i : arrayTemp){
-//            System.out.println(i);
-//        }
-//
-//        System.out.println("Dammi in da aggiungere");
-//        int a = in.nextInt();
-//
-//        cart.add(arrayTemp.get(a));
-//        arrayTemp.remove(a);
-//
-//        System.out.println("Magazzino: ");
-//        for (Product i : stock){
-//            System.out.println(i);
-//        }
-//
-//        System.out.println("arr: ");
-//        for (Product i : arrayTemp){
-//            System.out.println(i);
-//        }
-//
-//    }
 
     public static void addProdCart(ArrayList<Product> cart,ArrayList<Product> stock, ArrayList<Product> arrayTemp) {
 
@@ -145,7 +127,8 @@ public class cartManagement {
 
     }
 
-    public static ArrayList<Product> removeId(ArrayList<Product> cart, ArrayList<Product> arrayTemp) {
+    public static ArrayList<Product> removeId(ArrayList<Product> cart) {
+
         boolean stay = true;
 
         while (stay) {
