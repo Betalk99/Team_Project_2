@@ -2,12 +2,23 @@ package Carrello;
 
 import Product.*;
 
+import java.awt.desktop.SystemEventListener;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.*;
 
 public class cartManagement {
 
-    public static void operCar(ArrayList<Product> stock, ArrayList<Product> cart) {
+
+    public static Map<OffsetDateTime, ArrayList<Product>> receipt = new LinkedHashMap<>();
+
+    public static void inz (ArrayList<Product> stock, ArrayList<Product> cart, ArrayList<Product> arrayTemp){
+        arrayTemp.addAll(stock);
+        operCar(stock, cart, arrayTemp);
+    }
+
+    public static void operCar(ArrayList<Product> stock, ArrayList<Product> cart, ArrayList<Product> arrayTemp) {
+
         Scanner sc = new Scanner(System.in);
 //        System.out.println(stock);
         boolean stay = true;
@@ -28,20 +39,22 @@ public class cartManagement {
                 case "1"://controllo stato carrello
                     System.out.println(cart);
                     break;
+
+                case "2"://rimozione elementi da carrello tramite id
+                    removeId(cart, arrayTemp);
                 case "2"://aggiunta elementi da carrello tramite id
                     addId(stock,cart);
                     break;
                 case "3"://rimozione elementi da carrello tramite id
                     removeId(cart);
                     break;
-                case "4"://svuota carello
+                case "4"://Finalizza acquisti
+                    buyProducts(cart,stock, arrayTemp);
                     break;
-                case "5"://Finalizza acquisti
-                    buyProducts(cart,stock);
+                case "5"://Aggiunta prodotti al carrello
+                    addProdCart(cart,stock, arrayTemp);
                     break;
-                case "6"://Aggiunta prodotti al carrello
-                    management(cart, stock);
-                case "7"://Prezzo totale dei prodotti nel carrello.
+                case "6"://Prezzo totale dei prodotti nel carrello.
                     cartTotal(cart);
                     break;
 
@@ -66,11 +79,7 @@ public class cartManagement {
 
     }
 
-    public static ArrayList<Product> management(ArrayList<Product> cart, ArrayList<Product> stock) {
-        ArrayList<Product> arrayTemp = new ArrayList<>();
-        arrayTemp.clear();
-
-        arrayTemp = stock;
+    public static void addProdCart(ArrayList<Product> cart,ArrayList<Product> stock, ArrayList<Product> arrayTemp) {
 
         Scanner in = new Scanner(System.in);
         boolean stay = true;
@@ -80,13 +89,14 @@ public class cartManagement {
                 try {
 
                     System.out.println("Please select the index of the product you want to add to your cart:");
-                    for (int i = 0; i < stock.size(); i++) {
-                        System.out.println(stock.get(i).getBrand() + " " + stock.get(i).getModel() + " Index: " + (i + 1));
+                    for (int i = 0; i < arrayTemp.size(); i++) {
+                        System.out.println(arrayTemp.get(i).getBrand() + " " + arrayTemp.get(i).getModel() + " Index: " + (i + 1));
                     }
                     int answer = in.nextInt();
-                    if (1 <= answer && answer <= stock.size()) {
+                    if (1 <= answer && answer <= arrayTemp.size()) {
                         cart.add(arrayTemp.get(answer - 1));
                         arrayTemp.remove(answer - 1);
+
                         stay4 = false;
                     } else {
                         System.out.println("Unavailable answer inserted");
@@ -115,34 +125,11 @@ public class cartManagement {
             }
         }
 
-
-        return arrayTemp;
-    }
-
-    public static void addId(ArrayList<Product> stock,ArrayList<Product> cart){
-        boolean stay = true;
-        while (stay){
-            Scanner in = new Scanner(System.in);
-            System.out.println(stock);
-            System.out.println("Which device do you want to add from your cart? \n Indicate the id : ");
-
-            String idAdd = in.next();
-           // System.out.println(idAdd);
-            for(int i=0;i<stock.size();i++){
-                if(stock.get(i).getItemId().equals(idAdd)){
-                    cart.add(stock.get(i));
-                }
-            }
-            stay=false;
-        }
-//        System.out.println(cart);
     }
 
     public static ArrayList<Product> removeId(ArrayList<Product> cart) {
-        boolean stay = true;
 
-//        Tablet tablet1 = new Tablet(ProductTypes.tablet, "Samsung", "Galaxy Tab S6 Lite", "con pen in dotazione", 10.4, 128, 120.00, 298.00, "011");
-//        cart.add(tablet1);
+        boolean stay = true;
 
         while (stay) {
             Scanner in = new Scanner(System.in);
@@ -154,8 +141,11 @@ public class cartManagement {
             String idRemove = in.next();
 
             for (int i = 0; i < cart.size(); i++) {
-                if (cart.get(i).getItemId() == idRemove) {
-                    cart.remove(i);
+                if (cart.get(i).getItemId().equals(idRemove)) {
+                    Product a = cart.get(i); // creo oggetto temp
+                    arrayTemp.add(a); // aggiungo oggetto temp
+
+                    cart.remove(i); // rimozione oggetto da carrello
                 }
             }
             System.out.println("Do you want to delete some other elements? 1/Yes - 2/No");
@@ -164,26 +154,48 @@ public class cartManagement {
                 stay = false;
             }
         }
-
         return cart;
     }
 
-    public static ArrayList<Product> buyProducts (ArrayList<Product> cart, ArrayList<Product> stock) {
+    public static ArrayList<Product> buyProducts (ArrayList<Product> cart, ArrayList<Product> stock, ArrayList<Product> arrayTemp) {
         ArrayList<Product> finalizedPurchases = new ArrayList<>();
+
         for(int i = 0; i < cart.size(); i++) {
-            stock.remove(cart.get(i));
             finalizedPurchases.add(cart.get(i));
         }
+
+        receipt.put(OffsetDateTime.now(), finalizedPurchases);
+        System.out.println("scontrino" + receipt);
+
+        System.out.println("Magazzino: ");
+        for (Product i : stock){
+            System.out.println(i);
+        }
+
+        System.out.println("Array Temporaneo magazzino ");
+        for (Product i : arrayTemp){
+            System.out.println(i);
+        }
+
+        stock.clear();
+        stock.addAll(arrayTemp);
         cart.clear();
+
+        System.out.println("Magazzino: ");
+        for (Product i : stock){
+            System.out.println(i);
+        }
+
         return finalizedPurchases;
     }
 
-    public static void cartTotal (ArrayList<Product> cart1) {
+
+    public static void cartTotal (ArrayList<Product> cart) {
         double totalPrice = 0;
-        for(int i = 0; i < cart1.size(); i++) {
-            totalPrice += cart1.get(i).getSellPrice();
+        for(int i = 0; i < cart.size(); i++) {
+            totalPrice += cart.get(i).getSellPrice();
         }
-        System.out.println(totalPrice);
+        System.out.println("Total price of the cart " + totalPrice);
     }
 
 

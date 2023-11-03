@@ -1,6 +1,7 @@
 package Scelta;
 
 import Carrello.cartManagement;
+import Magazzino.Stock;
 import Product.*;
 
 import java.util.ArrayList;
@@ -8,7 +9,7 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class whichOperationCustomer {
-    public static void oper(ArrayList<Product> stock, ArrayList<Product> cart) throws InputMismatchException {
+    public static void oper(ArrayList<Product> stock, ArrayList<Product> cart, ArrayList<Product> arrayTemp) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {
             try {
@@ -27,12 +28,12 @@ public class whichOperationCustomer {
                 int category = in.nextInt();
                 switch (category) {
                     case 1: //gestisci il tuo carello
-                        cartManagement.operCar(stock,cart);
+                        cartManagement.inz(stock,cart,arrayTemp);
                         break;
                     case 2: // stampare tutti i dispositivi nel magazzino
-                        Search.productsView(stock);
+                        Stock.printStock(stock);
                         break;
-                    case 3: // ricerca per tipo di dispositivo fatta da Antonio Troiano
+                    case 3: // ricerca per tipo di dispositivo
                         System.out.println(Search.byType(stock));
                         break;
                     case 4: // ricerca per brand
@@ -43,9 +44,6 @@ public class whichOperationCustomer {
                         break;
                     case 6: // ricerca per range di prezzo (sell price/prezzo di vendita)
                         Search.bySellPriceRange(stock);
-                        break;
-                    case 7: // ricerca per range di costo (cost /prezzo di costo)
-                        Search.byCostPriceRange(stock);
                         break;
                     default:
                         System.out.println("Unlisted operation");
