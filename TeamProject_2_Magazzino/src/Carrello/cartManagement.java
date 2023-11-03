@@ -185,7 +185,11 @@ public class cartManagement {
         }
 
         receipt.put(OffsetDateTime.now(), finalizedPurchases);
-        System.out.println("scontrino" + receipt);
+//        System.out.println("scontrino" + receipt);
+
+        for(Map.Entry<OffsetDateTime, ArrayList<Product>> entry : receipt.entrySet()){
+            System.out.println(entry);
+        }
 
         stock.clear();
         stock.addAll(arrayTemp);
@@ -193,8 +197,6 @@ public class cartManagement {
 
         return finalizedPurchases;
     }
-
-
     public static void cartTotal (ArrayList<Product> cart) {
         double totalPrice = 0;
         for(int i = 0; i < cart.size(); i++) {
