@@ -4,18 +4,15 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Stock {
-    public ArrayList<Product> listaProdotti;
+    private ArrayList<Product> listaProdotti = new ArrayList<>();
 
-    public Stock(ArrayList<Product> listaProdotti) {
+    public ArrayList<Product> getListaProdotti() {
+        return listaProdotti;
+    }
+
+    public void setListaProdotti(ArrayList<Product> listaProdotti) {
         this.listaProdotti = listaProdotti;
     }
-
-    public static void printStock(ArrayList<Product> listaProdotti){
-        for(Product i : listaProdotti){
-            System.out.println(i);
-        }
-    }
-
 
     @Override
     public String toString() {

@@ -1,5 +1,6 @@
 package Carrello;
 
+import Magazzino.Stock;
 import Product.*;
 
 import java.awt.desktop.SystemEventListener;
@@ -12,12 +13,12 @@ public class cartManagement {
 
     public static Map<OffsetDateTime, ArrayList<Product>> receipt = new LinkedHashMap<>();
 
-    public static void inz (ArrayList<Product> stock, ArrayList<Product> cart, ArrayList<Product> arrayTemp){
-        arrayTemp.addAll(stock);
+    public static void inz (Stock stock, Cart cart, ArrayList<Product> arrayTemp){
+        arrayTemp.addAll(stock.getListaProdotti());
         operCar(stock, cart, arrayTemp);
     }
 
-    public static void operCar(ArrayList<Product> stock, ArrayList<Product> cart, ArrayList<Product> arrayTemp) {
+    public static void operCar(Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
 
         Scanner sc = new Scanner(System.in);
 //        System.out.println(stock);
@@ -55,7 +56,7 @@ public class cartManagement {
                     cartTotal(cart);
                     break;
                 case "7":
-                    cart.clear();
+                    cart.getCart().clear();
                     break;
             }
             boolean stay2 = true;
@@ -78,7 +79,7 @@ public class cartManagement {
 
     }
 
-    public static void addId(ArrayList<Product> arrayTemp,ArrayList<Product> cart){
+    public static void addId(ArrayList<Product> arrayTemp, Cart cart){
         boolean stay = true;
         while (stay){
             Scanner in = new Scanner(System.in);
@@ -89,7 +90,7 @@ public class cartManagement {
             // System.out.println(idAdd);
             for(int i=0;i<arrayTemp.size();i++){
                 if(arrayTemp.get(i).getItemId().equals(idAdd)){
-                    cart.add(arrayTemp.get(i));
+                    cart.getCart().add(arrayTemp.get(i));
                     arrayTemp.remove(arrayTemp.get(i));
                 }
             }
@@ -99,7 +100,7 @@ public class cartManagement {
 
 
 
-    public static void addProdCart(ArrayList<Product> cart,ArrayList<Product> stock, ArrayList<Product> arrayTemp) {
+    public static void addProdCart(Cart cart,Stock stock, ArrayList<Product> arrayTemp) {
 
         Scanner in = new Scanner(System.in);
         boolean stay = true;
@@ -114,7 +115,7 @@ public class cartManagement {
                     }
                     int answer = in.nextInt();
                     if (1 <= answer && answer <= arrayTemp.size()) {
-                        cart.add(arrayTemp.get(answer - 1));
+                        cart.getCart().add(arrayTemp.get(answer - 1));
                         arrayTemp.remove(answer - 1);
 
                         stay4 = false;
@@ -147,25 +148,25 @@ public class cartManagement {
 
     }
 
-    public static ArrayList<Product> removeId(ArrayList<Product> cart, ArrayList<Product> arrayTemp) {
+    public static Cart removeId(Cart cart, ArrayList<Product> arrayTemp) {
 
         boolean stay = true;
 
         while (stay) {
             Scanner in = new Scanner(System.in);
-            for (Product i : cart) {
+            for (Product i : cart.getCart()) {
                 System.out.println(i);
             }
 
             System.out.println("Which device do you want to remove from your cart? \n Indicate the id : ");
             String idRemove = in.next();
 
-            for (int i = 0; i < cart.size(); i++) {
-                if (cart.get(i).getItemId().equals(idRemove)) {
-                    Product a = cart.get(i); // creo oggetto temp
+            for (int i = 0; i < cart.getCart().size(); i++) {
+                if (cart.getCart().get(i).getItemId().equals(idRemove)) {
+                    Product a = cart.getCart().get(i); // creo oggetto temp
                     arrayTemp.add(a); // aggiungo oggetto temp
 
-                    cart.remove(i); // rimozione oggetto da carrello
+                    cart.getCart().remove(i); // rimozione oggetto da carrello
                 }
             }
             System.out.println("Do you want to delete some other elements? 1/Yes - 2/No");
@@ -177,11 +178,11 @@ public class cartManagement {
         return cart;
     }
 
-    public static ArrayList<Product> buyProducts (ArrayList<Product> cart, ArrayList<Product> stock, ArrayList<Product> arrayTemp) {
+    public static ArrayList<Product> buyProducts (Cart cart, Stock stock, ArrayList<Product> arrayTemp) {
         ArrayList<Product> finalizedPurchases = new ArrayList<>();
 
-        for(int i = 0; i < cart.size(); i++) {
-            finalizedPurchases.add(cart.get(i));
+        for(int i = 0; i < cart.getCart().size(); i++) {
+            finalizedPurchases.add(cart.getCart().get(i));
         }
 
         receipt.put(OffsetDateTime.now(), finalizedPurchases);
@@ -191,16 +192,16 @@ public class cartManagement {
             System.out.println(entry);
         }
 
-        stock.clear();
-        stock.addAll(arrayTemp);
-        cart.clear();
+        stock.getListaProdotti().clear();
+        stock.getListaProdotti().addAll(arrayTemp);
+        cart.getCart().clear();
 
         return finalizedPurchases;
     }
-    public static void cartTotal (ArrayList<Product> cart) {
+    public static void cartTotal (Cart cart) {
         double totalPrice = 0;
-        for(int i = 0; i < cart.size(); i++) {
-            totalPrice += cart.get(i).getSellPrice();
+        for(int i = 0; i < cart.getCart().size(); i++) {
+            totalPrice += cart.getCart().get(i).getSellPrice();
         }
         System.out.println("Total price of the cart " + totalPrice);
     }

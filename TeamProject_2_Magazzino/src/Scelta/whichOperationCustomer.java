@@ -1,15 +1,16 @@
 package Scelta;
 
-import Carrello.cartManagement;
-import Magazzino.Stock;
+import Carrello.*;
+import Magazzino.*;
 import Product.*;
+import Clients.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class whichOperationCustomer {
-    public static void oper(ArrayList<Product> stock, ArrayList<Product> cart, ArrayList<Product> arrayTemp) throws InputMismatchException {
+    public static void oper(Stock stock, Cart cart, ArrayList<Product> arrayTemp) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {
             try {
@@ -31,7 +32,7 @@ public class whichOperationCustomer {
                         cartManagement.inz(stock,cart,arrayTemp);
                         break;
                     case 2: // stampare tutti i dispositivi nel magazzino
-                        Stock.printStock(stock);
+                        System.out.println(stock);
                         break;
                     case 3: // ricerca per tipo di dispositivo
                         System.out.println(Search.byType(stock));

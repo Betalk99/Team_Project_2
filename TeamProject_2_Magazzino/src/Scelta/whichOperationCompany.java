@@ -1,15 +1,16 @@
 package Scelta;
 
-import Carrello.cartManagement;
-import Product.*;
-
 import Carrello.*;
+import Magazzino.*;
+import Product.*;
+import Clients.*;
+
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class whichOperationCompany {
-    public static void oper(ArrayList<Product> stock,ArrayList<Product> cart, ArrayList<Product> arrayTemp) throws InputMismatchException {
+    public static void oper(Stock stock, Cart cart, ArrayList<Product> arrayTemp) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {
             try {
@@ -49,7 +50,7 @@ public class whichOperationCompany {
                         Search.byModel(stock);
                         break;
                     case 8: // ricerca per range di prezzo di acquisto
-                        Search.byCostPriceRange(stock);
+                        Search.inputRange(stock);
                         break;
                     default:
                         System.out.println("Unlisted operation");
@@ -67,7 +68,7 @@ public class whichOperationCompany {
         }
     }
 
-    public static ArrayList<Product> addProduct(ArrayList<Product> stock){
+    public static Stock addProduct(Stock stock){
         boolean stay = false;
         int x;
         int y;
@@ -82,15 +83,18 @@ public class whichOperationCompany {
                 switch (x) {
                     case 1:
                         Tablet tablet = Tablet.inputKeyboard();
-                        stock.add(tablet);
+//                        stock.add(tablet);
+                        stock.getListaProdotti().add(tablet);
                         break;
                     case 2:
                         Smartphone smartphone = Smartphone.inputKeyboard();
-                        stock.add(smartphone);
+//                        stock.add(smartphone);
+                        stock.getListaProdotti().add(smartphone);
                         break;
                     case 3:
                         Notebook notebook = Notebook.inputKeyboard();
-                        stock.add(notebook);
+//                        stock.add(notebook);
+                        stock.getListaProdotti().add(notebook);
                         break;
                     default:
                         System.out.println("Error ");
@@ -113,7 +117,7 @@ public class whichOperationCompany {
     }
 
 
-    public static ArrayList<Product> removeProduct (ArrayList<Product> stock){
+    public static Stock removeProduct (Stock stock){
 
         boolean stay = false;
         int x;
@@ -122,14 +126,14 @@ public class whichOperationCompany {
         int cout=1;
         try {
             while (stay == false) {
-                for (Product i : stock) {
+                for (Product i : stock.getListaProdotti()) {
                     System.out.println(i);
                     System.out.println(cout++);
                 }
                 System.out.println("Which product do you want to delete ? \n Indicate id");
                 x = in.nextInt();
 
-                stock.remove(x - 1);
+                stock.getListaProdotti().remove(x - 1);
 
                 System.out.println("You want to remove another product? 1-Yes / 2-No");
                 y = in.nextInt();
