@@ -92,17 +92,22 @@ public class cartManagement {
 
             String idAdd = in.next();
             // System.out.println(idAdd);
-            for(int i=0;i<arrayTemp.size();i++){
-                if(arrayTemp.get(i).getItemId().equals(idAdd)){
-                    cart.getCart().add(arrayTemp.get(i));
-                    arrayTemp.remove(arrayTemp.get(i));
-                }
-            }
+            getAddId(arrayTemp,cart,idAdd);
             stay=false;
         }
     }
 
-
+    public static ArrayList<Product> getAddId(ArrayList<Product> arraytemp,Cart cart,String valoreScelto){
+        ArrayList<Product> x = new ArrayList<Product>();
+        for(int i=0;i<arraytemp.size();i++){
+            if(arraytemp.get(i).getItemId().equals(valoreScelto)){
+                x.add(arraytemp.get(i));
+                cart.getCart().add(arraytemp.get(i));
+                arraytemp.remove(arraytemp.get(i));
+            }
+        }
+        return x;
+    }
 
     public static void addProdCart(Cart cart,Stock stock, ArrayList<Product> arrayTemp) {
 
