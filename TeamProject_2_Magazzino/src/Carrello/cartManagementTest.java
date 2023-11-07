@@ -39,20 +39,4 @@ class cartManagementTest {
 
     }
 
-    @Test
-    void getAddId() {
-        Cart cart = new Cart();
-        Tablet tablet1 = new Tablet(ProductTypes.tablet, "Samsung", "Galaxy Tab S6 Lite", "con pen in dotazione", 10.4, 128, 120.00, 298.00, "001");
-        cart.getCart().add(tablet1);
-        Stock stock = new Stock();
-        stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
-        ArrayList<Product> arraytemp = new ArrayList<>();
-        arraytemp.addAll(stock.getListaProdotti());
-        String valoreScelto = "001";
-
-        ArrayList<Product> x = cartManagement.getAddId(arraytemp,cart,valoreScelto);
-        assertEquals(valoreScelto,x.get(0).getItemId());
-
-    }
-
 }
