@@ -18,28 +18,16 @@ public class Search {
                 int category = in.nextInt();
                 switch (category) {
                     case 1:
-                        for (Product products : stock.getListaProdotti()) {
-                            if (products.getType() == ProductTypes.notebook) {
-                                devicesByType.add(products);
-                                isTrue = true;
-                            }
-                        }
+                        getNotebookType(stock);
+                        isTrue=true;
                         break;
                     case 2:
-                        for (Product products : stock.getListaProdotti()) {
-                            if (products.getType() == ProductTypes.smartphone) {
-                                devicesByType.add(products);
-                                isTrue = true;
-                            }
-                        }
+                        getSmartphoneType(stock);
+                        isTrue = true;
                         break;
                     case 3:
-                        for (Product products : stock.getListaProdotti()) {
-                            if (products.getType() == ProductTypes.tablet) {
-                                devicesByType.add(products);
-                                isTrue = true;
-                            }
-                        }
+                       getTabletType(stock);
+                       isTrue = true;
                         break;
                     default:
                         System.out.println("The selected category is not available");
@@ -52,6 +40,49 @@ public class Search {
         }
         return devicesByType;
     }
+
+    public static ArrayList<Product> getNotebookType(Stock stock){
+        ArrayList<Product> noteb = new ArrayList<Product>();
+        if (stock != null){
+            for (Product products : stock.getListaProdotti()) {
+                if (products.getType() == ProductTypes.notebook) {
+                    noteb.add(products);
+                }
+            }
+            return noteb;
+        }else{
+            return null;
+        }
+    }
+
+    public static ArrayList<Product> getTabletType(Stock stock){
+        ArrayList<Product> tablet = new ArrayList<Product>();
+        if(stock != null){
+            for (Product products : stock.getListaProdotti()) {
+                if (products.getType() == ProductTypes.tablet) {
+                    tablet.add(products);
+                }
+            }
+            return tablet;
+        }else {
+            return null;
+        }
+    }
+
+    public static ArrayList<Product> getSmartphoneType(Stock stock){
+        ArrayList<Product> smartphone = new ArrayList<Product>();
+        if(stock != null){
+            for (Product products : stock.getListaProdotti()) {
+                if (products.getType() == ProductTypes.smartphone) {
+                    smartphone.add(products);
+                }
+            }
+            return smartphone;
+        }else {
+            return null;
+        }
+    }
+
 
     public static void byModel(Stock stock) {
         System.out.println("Search by device model in our stock (with relative ID):");
