@@ -32,7 +32,8 @@ public class cartManagement {
                      4) Proceed to checkout\s
                      5) Add products to your cart\s
                      6) Get the total price of the items in the cart\s
-                     7) Get empty cart""");
+                     7) Get empty cart
+                     8) Get the average amount spent""");
 
 
             String operCarr = sc.nextLine();
@@ -57,6 +58,9 @@ public class cartManagement {
                     break;
                 case "7":
                     cart.getCart().clear();
+                    break;
+                case "8":
+                    averageSpending(cart);
                     break;
             }
             boolean stay2 = true;
@@ -184,20 +188,17 @@ public class cartManagement {
         for(int i = 0; i < cart.getCart().size(); i++) {
             finalizedPurchases.add(cart.getCart().get(i));
         }
-
         receipt.put(OffsetDateTime.now(), finalizedPurchases);
 //        System.out.println("scontrino" + receipt);
-
         for(Map.Entry<OffsetDateTime, ArrayList<Product>> entry : receipt.entrySet()){
             System.out.println(entry);
         }
-
         stock.getListaProdotti().clear();
         stock.getListaProdotti().addAll(arrayTemp);
         cart.getCart().clear();
-
         return finalizedPurchases;
     }
+
     public static void cartTotal (Cart cart) {
         double totalPrice = 0;
         for(int i = 0; i < cart.getCart().size(); i++) {
@@ -206,5 +207,16 @@ public class cartManagement {
         System.out.println("Total price of the cart " + totalPrice);
     }
 
-
+    public static void averageSpending(Cart cart){
+        double result = 0.0;
+        double totalAmount = 0.0;
+        int numberOfProducts = cart.getCart().size();
+        for (int i =0; i<cart.getCart().size(); i++){
+            totalAmount += cart.getCart().get(i).getSellPrice();
+        }
+        result = totalAmount/numberOfProducts;
+        System.out.println("Total amount: "+totalAmount+" €");
+        System.out.println("Number of items: "+numberOfProducts+" pcs");
+        System.out.println("The average amount per item that you're going to spend is: "+result+" €");
+    }
 }

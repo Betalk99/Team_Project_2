@@ -8,6 +8,7 @@ public class Cart {
     private ArrayList<Product> cart = new ArrayList<>();
 
     public ArrayList<Product> getCart() {
+
         return cart;
     }
 
