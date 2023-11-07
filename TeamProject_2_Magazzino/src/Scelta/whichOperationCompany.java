@@ -47,7 +47,7 @@ public class whichOperationCompany {
                             Search.byBrand(stock);
                         break;
                     case 7: // ricerca per modello
-                        Search.byModel(stock);
+                        Search.inputByModel(stock);
                         break;
                     case 8: // ricerca per range di prezzo di acquisto
                         Search.inputRange(stock);

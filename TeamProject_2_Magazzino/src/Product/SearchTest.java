@@ -74,4 +74,27 @@ class SearchTest {
 
         assertEquals(null,smartphone);
     }
+
+    @Test
+    void byModel() {
+        Stock stock = new Stock();
+        stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
+        String model = "Galaxy Tab S6 Lite";
+        ArrayList<Product> bymodel = Search.byModel(stock,model);
+
+        assertEquals(1, bymodel.size());
+
+    }
+
+    @Test
+    void byModelNull() {
+        Stock stock = new Stock();
+        stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
+        String model = null;
+        ArrayList<Product> bymodel = Search.byModel(stock,model);
+
+        assertEquals(null, bymodel);
+
+    }
+
 }

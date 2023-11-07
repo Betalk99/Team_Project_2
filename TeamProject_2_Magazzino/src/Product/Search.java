@@ -84,12 +84,42 @@ public class Search {
         }
     }
 
+    public static void inputByModel(Stock stock){
+        boolean isTrue = false;
+        while (!isTrue) {
+            try {
+                Scanner in = new Scanner(System.in);
+                System.out.println("Tell me the model you want to search for: ");
+                String model = in.nextLine();
 
-    public static void byModel(Stock stock) {
-        System.out.println("Search by device model in our stock (with relative ID):");
-        for (int i = 0; i < stock.getListaProdotti().size(); i++) {
-            System.out.println("> " + i + " < " + stock.getListaProdotti().get(i).getModel());
+                byModel(stock, model);
+
+                System.out.println("Would you like to have another research by product range? 1)Yes   2)No");
+                int stay = in.nextInt();
+                if (stay == 2) {
+                    isTrue = true;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Please use an integer number (e.g. 250");
+                isTrue = false;
+            }
         }
+    }
+
+
+    public static ArrayList<Product> byModel(Stock stock, String model) {
+        ArrayList<Product> tempByModel = new ArrayList<>();
+        if(model != null){
+            for (int i = 0; i < stock.getListaProdotti().size(); i++) {
+                if(stock.getListaProdotti().get(i).getModel().toLowerCase().equals(model.toLowerCase())){
+                    tempByModel.add(stock.getListaProdotti().get(i));
+                }
+            }
+            return tempByModel;
+        }else{
+            return null;
+        }
+
     }
 
     public static void bySellPriceRange(Stock stock) throws InputMismatchException {
