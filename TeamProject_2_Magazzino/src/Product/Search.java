@@ -1,6 +1,7 @@
 package Product;
 
 import java.util.*;
+
 import Carrello.*;
 import Product.*;
 import Magazzino.*;
@@ -19,15 +20,15 @@ public class Search {
                 switch (category) {
                     case 1:
                         getNotebookType(stock);
-                        isTrue=true;
+                        isTrue = true;
                         break;
                     case 2:
                         getSmartphoneType(stock);
                         isTrue = true;
                         break;
                     case 3:
-                       getTabletType(stock);
-                       isTrue = true;
+                        getTabletType(stock);
+                        isTrue = true;
                         break;
                     default:
                         System.out.println("The selected category is not available");
@@ -41,44 +42,44 @@ public class Search {
         return devicesByType;
     }
 
-    public static ArrayList<Product> getNotebookType(Stock stock){
+    public static ArrayList<Product> getNotebookType(Stock stock) {
         ArrayList<Product> noteb = new ArrayList<Product>();
-        if (stock != null){
+        if (stock != null) {
             for (Product products : stock.getListaProdotti()) {
                 if (products.getType() == ProductTypes.notebook) {
                     noteb.add(products);
                 }
             }
             return noteb;
-        }else{
+        } else {
             return null;
         }
     }
 
-    public static ArrayList<Product> getTabletType(Stock stock){
+    public static ArrayList<Product> getTabletType(Stock stock) {
         ArrayList<Product> tablet = new ArrayList<Product>();
-        if(stock != null){
+        if (stock != null) {
             for (Product products : stock.getListaProdotti()) {
                 if (products.getType() == ProductTypes.tablet) {
                     tablet.add(products);
                 }
             }
             return tablet;
-        }else {
+        } else {
             return null;
         }
     }
 
-    public static ArrayList<Product> getSmartphoneType(Stock stock){
+    public static ArrayList<Product> getSmartphoneType(Stock stock) {
         ArrayList<Product> smartphone = new ArrayList<Product>();
-        if(stock != null){
+        if (stock != null) {
             for (Product products : stock.getListaProdotti()) {
                 if (products.getType() == ProductTypes.smartphone) {
                     smartphone.add(products);
                 }
             }
             return smartphone;
-        }else {
+        } else {
             return null;
         }
     }
@@ -126,7 +127,7 @@ public class Search {
         }
     }
 
-    public static void inputRange(Stock stock){
+    public static void inputRange(Stock stock) {
         boolean isTrue = false;
         while (!isTrue) {
 
@@ -151,21 +152,19 @@ public class Search {
 
     public static ArrayList<Product> byCostPriceRange(Stock stock, double[] rangeValues) throws InputMismatchException {
         ArrayList<Product> temp = new ArrayList<>();
-            try {
-                for (int i = 0; i < stock.getListaProdotti().size(); i++) {
-                    if (stock.getListaProdotti().get(i).getPurchasePrice() >= rangeValues[0] && stock.getListaProdotti().get(i).getPurchasePrice() <= rangeValues[1]) {
+        try {
+            for (int i = 0; i < stock.getListaProdotti().size(); i++) {
+                if (stock.getListaProdotti().get(i).getPurchasePrice() >= rangeValues[0] && stock.getListaProdotti().get(i).getPurchasePrice() <= rangeValues[1]) {
 //                        System.out.println(stock.getListaProdotti().get(i));
-                        temp.add(stock.getListaProdotti().get(i));
-                    }
+                    temp.add(stock.getListaProdotti().get(i));
                 }
-                return temp;
-            } catch (InputMismatchException e) {
-                System.out.println("Please use an integer number (e.g. 250");
             }
-           return temp;
+            return temp;
+        } catch (InputMismatchException e) {
+            System.out.println("Please use an integer number (e.g. 250");
         }
-
-
+        return temp;
+    }
 
 
     public static void productsView(Stock stock) {
@@ -174,42 +173,62 @@ public class Search {
         }
     }
 
-    public static void byBrand(Stock stock) {
+    public static ArrayList<Product> byBrand(Stock stock) {
+        Scanner sc = new Scanner(System.in);
+        ArrayList<Product> selectedProducts = new ArrayList<>();
         boolean stay = false;
         while (!stay) {
-            Scanner sc = new Scanner(System.in);
+
             Set<String> uniqueProducers = new TreeSet<>();
-            System.out.println("These are the product brands available in our stock");
+            System.out.println("These are the product's brands available in our stock");
             for (int i = 0; i < stock.getListaProdotti().size(); i++) {
                 uniqueProducers.add(stock.getListaProdotti().get(i).getBrand());
             }
 
-            System.out.println(uniqueProducers);
-            System.out.println("For which of these brands would you like to see available products?");
-            String selectedBrand = sc.nextLine();
-
-            for (int j = 0; j < stock.getListaProdotti().size(); j++) {
-                if (stock.getListaProdotti().get(j).getBrand().equals(selectedBrand)) {
-                    System.out.println(stock.getListaProdotti().get(j));
-                }
-            }
             boolean stay2 = false;
             while (!stay2) {
                 try {
+                    System.out.println(uniqueProducers);
+                    System.out.println("For which of these brands would you like to see available products?");
+                    String selectedBrand = sc.nextLine();
+
+                    if (uniqueProducers.contains(selectedBrand)) {
+                        System.out.println(selectedBrandProducts(stock, selectedBrand, selectedProducts));
+                        stay2 = true;
+                    } else
+                        throw new InputMismatchException("The selected brand is not available.\nYou can try to copy/paste the desired brand name in order to avoid typing mistakes");
+                } catch (InputMismatchException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+            boolean stay3 = false;
+            while (!stay3) {
+                try {
                     System.out.println("Would you like to search other products based on brand?\n1)Yes   2)No");
-                    int answer = sc.nextInt();
-                    if (answer == 1) {
-                        stay2 = true;
-                    } else if (answer == 2) {
+                    String answer = sc.nextLine();
+                    if (answer.equals("1")) {
+                        stay3 = true;
+                    } else if (answer.equals("2")) {
                         stay = true;
-                        stay2 = true;
+                        stay3 = true;
                     } else {
-                        throw new Exception("Please select a value between 1 or 2\n");
+                        throw new Exception("Please select a value between 1 or 2.\n");
                     }
                 } catch (Exception e) {
-                    System.out.println(e);
+                    System.out.println(e.getMessage());
                 }
             }
         }
+        return selectedProducts;
+    }
+
+    public static ArrayList<Product> selectedBrandProducts(Stock stock, String selectedBrand, ArrayList<Product> selectedProducts) {
+        selectedProducts.clear();
+        for (int j = 0; j < stock.getListaProdotti().size(); j++) {
+            if (stock.getListaProdotti().get(j).getBrand().equals(selectedBrand)) {
+                selectedProducts.add(stock.getListaProdotti().get(j));
+            }
+        }
+        return selectedProducts;
     }
 }
