@@ -21,5 +21,4 @@ public class Main {
 
         AccessOrRegister.inputSelect(list,stock,cart,arrayTemp);
     }
-
 }
