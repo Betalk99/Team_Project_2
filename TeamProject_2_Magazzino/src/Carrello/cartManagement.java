@@ -9,8 +9,6 @@ import java.time.OffsetDateTime;
 import java.util.*;
 
 public class cartManagement {
-
-
     public static Map<OffsetDateTime, ArrayList<Product>> receipt = new LinkedHashMap<>();
 
     public static void inz (Stock stock, Cart cart, ArrayList<Product> arrayTemp){
@@ -45,7 +43,7 @@ public class cartManagement {
                     addId(arrayTemp,cart);
                     break;
                 case "3"://rimozione elementi da carrello tramite id
-                    removeId(cart, arrayTemp);
+                    insertRemoveId(cart, arrayTemp);
                     break;
                 case "4"://Finalizza acquisti
                     buyProducts(cart,stock, arrayTemp);
@@ -157,7 +155,7 @@ public class cartManagement {
 
     }
 
-    public static Cart removeId(Cart cart, ArrayList<Product> arrayTemp) {
+    public static Cart insertRemoveId(Cart cart, ArrayList<Product> arrayTemp) {
 
         boolean stay = true;
 
@@ -166,18 +164,11 @@ public class cartManagement {
             for (Product i : cart.getCart()) {
                 System.out.println(i);
             }
-
             System.out.println("Which device do you want to remove from your cart? \n Indicate the id : ");
             String idRemove = in.next();
 
-            for (int i = 0; i < cart.getCart().size(); i++) {
-                if (cart.getCart().get(i).getItemId().equals(idRemove)) {
-                    Product a = cart.getCart().get(i); // creo oggetto temp
-                    arrayTemp.add(a); // aggiungo oggetto temp
+            removeId(cart, arrayTemp, idRemove);
 
-                    cart.getCart().remove(i); // rimozione oggetto da carrello
-                }
-            }
             System.out.println("Do you want to delete some other elements? 1/Yes - 2/No");
             int i = in.nextInt();
             if (i == 2) {
@@ -186,6 +177,28 @@ public class cartManagement {
         }
         return cart;
     }
+
+    public static Cart removeId(Cart cart, ArrayList<Product> arrayTemp, String idRemove){
+        if(arrayTemp != null && idRemove == null){
+            if(idRemove != null && arrayTemp == null){
+                for (int i = 0; i < cart.getCart().size(); i++) {
+                    if (cart.getCart().get(i).getItemId().equals(idRemove)) {
+                        Product a = cart.getCart().get(i); // creo oggetto temp
+                        arrayTemp.add(a); // aggiungo oggetto temp
+
+                        cart.getCart().remove(i); // rimozione oggetto da carrello
+                    }
+                }
+            }
+            return cart;
+        }else {
+            return null;
+        }
+    }
+
+
+
+
 
     public static ArrayList<Product> buyProducts (Cart cart, Stock stock, ArrayList<Product> arrayTemp) {
         ArrayList<Product> finalizedPurchases = new ArrayList<>();
