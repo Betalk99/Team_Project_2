@@ -64,7 +64,9 @@ public class whichOperationCompany {
             } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
                 isTrue = false;
-            } 
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
         }
     }
 
@@ -75,7 +77,7 @@ public class whichOperationCompany {
         Scanner in = new Scanner(System.in);
 
         try {
-            while (stay == false) {
+            while (!stay) {
 
                 System.out.println("Which product do you want to insert ? \n 1-Tablet \n 2-Smartphone \n 3-Notebook \n");
                 x = in.nextInt();
@@ -111,9 +113,7 @@ public class whichOperationCompany {
         System.out.println("Please use a character between 1, 2 or 3");
         stay = false;
     }
-
         return stock;
-
     }
 
 
@@ -147,11 +147,4 @@ public class whichOperationCompany {
         }
         return stock;
     }
-
-
-
-
-
-
-
 }

@@ -29,7 +29,7 @@ public class whichOperationCustomer {
                 int category = in.nextInt();
                 switch (category) {
                     case 1: //gestisci il tuo carello
-                        cartManagement.inz(stock,cart,arrayTemp);
+                        cartManagement.inz(stock, cart, arrayTemp);
                         break;
                     case 2: // stampare tutti i dispositivi nel magazzino
                         System.out.println(stock);
