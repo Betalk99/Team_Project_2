@@ -1,6 +1,6 @@
-package Carrello;
+package carrello;
 
-import Product.Product;
+import product.Product;
 
 import java.util.ArrayList;
 

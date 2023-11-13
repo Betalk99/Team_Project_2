@@ -1,12 +1,9 @@
-import Carrello.*;
-import Product.*;
-import Magazzino.*;
-import Scelta.*;
-import Clients.*;
+import carrello.*;
+import product.*;
+import magazzino.*;
+import clients.*;
 
 import java.util.ArrayList;
-import java.util.InputMismatchException;
-import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {

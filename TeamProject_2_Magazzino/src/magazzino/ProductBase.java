@@ -1,5 +1,5 @@
-package Magazzino;
-import Product.*;
+package magazzino;
+import product.*;
 
 import java.util.ArrayList;
 

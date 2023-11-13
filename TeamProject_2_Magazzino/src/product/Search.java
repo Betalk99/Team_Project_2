@@ -1,12 +1,8 @@
-package Product;
+package product;
 
 import java.util.*;
 
-import Carrello.*;
-import Product.*;
-import Magazzino.*;
-import Scelta.*;
-import Clients.*;
+import magazzino.*;
 
 public class Search {
     public static ArrayList<Product> byType(Stock stock) throws InputMismatchException {
