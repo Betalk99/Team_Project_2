@@ -1,15 +1,14 @@
-package Product;
+package product;
 
 import java.util.Scanner;
 
-public class Tablet extends Product{
-    public Tablet(ProductTypes type, String brand, String model, String description, double displaySize, double storageCap, double purchasePrice, double sellPrice, String itemId) {
+public class Smartphone extends Product{
+    public Smartphone(ProductTypes type, String brand, String model, String description, double displaySize, double storageCap, double purchasePrice, double sellPrice, String itemId) {
         super(type, brand, model, description, displaySize, storageCap, purchasePrice, sellPrice, itemId);
     }
 
-    public static Tablet inputKeyboard(){
+    public static Smartphone inputKeyboard(){
         Scanner in = new Scanner(System.in);
-
 
         System.out.println("Producer :  ");
         String producer = in.nextLine();
@@ -28,15 +27,12 @@ public class Tablet extends Product{
         System.out.println("Sell Price :  ");
         double sellPrice = in.nextDouble();
 
-
-
-        Tablet tab = new Tablet(ProductTypes.notebook,producer,model,description,dim_display,dim_arch, purchasePrice,sellPrice,id);
+        Smartphone tab = new Smartphone(ProductTypes.smartphone,producer,model,description,dim_display,dim_arch, purchasePrice,sellPrice,id);
 
 
         return tab;
 
     }
-
 
 
 }

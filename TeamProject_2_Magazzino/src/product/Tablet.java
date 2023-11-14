@@ -1,13 +1,13 @@
-package Product;
+package product;
 
 import java.util.Scanner;
 
-public class Notebook extends Product {
-    public Notebook(ProductTypes type, String producer, String model, String description, double displaySize, double storageCap, double purchasePrice, double sellPrice, String itemId) {
-        super(type, producer, model, description, displaySize, storageCap, purchasePrice, sellPrice, itemId);
+public class Tablet extends Product{
+    public Tablet(ProductTypes type, String brand, String model, String description, double displaySize, double storageCap, double purchasePrice, double sellPrice, String itemId) {
+        super(type, brand, model, description, displaySize, storageCap, purchasePrice, sellPrice, itemId);
     }
 
-    public static Notebook inputKeyboard(){
+    public static Tablet inputKeyboard(){
         Scanner in = new Scanner(System.in);
 
 
@@ -30,12 +30,13 @@ public class Notebook extends Product {
 
 
 
-        Notebook tab = new Notebook(ProductTypes.notebook,producer,model,description,dim_display,dim_arch, purchasePrice,sellPrice,id);
+        Tablet tab = new Tablet(ProductTypes.notebook,producer,model,description,dim_display,dim_arch, purchasePrice,sellPrice,id);
 
 
         return tab;
 
     }
+
 
 
 }

@@ -1,9 +1,8 @@
-package Scelta;
+package scelta;
 
-import Carrello.*;
-import Magazzino.*;
-import Product.*;
-import Clients.*;
+import carrello.*;
+import magazzino.*;
+import product.*;
 
 import java.util.ArrayList;
 import java.util.InputMismatchException;

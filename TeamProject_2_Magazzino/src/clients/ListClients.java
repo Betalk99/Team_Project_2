@@ -1,8 +1,7 @@
-package Clients;
+package clients;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class ListClients {
 

@@ -1,10 +1,10 @@
-package Clients;
+package clients;
 
-import Carrello.Cart;
-import Magazzino.Stock;
-import Product.Product;
-import Scelta.whichOperationCompany;
-import Scelta.whichOperationCustomer;
+import carrello.Cart;
+import magazzino.Stock;
+import product.Product;
+import scelta.whichOperationCompany;
+import scelta.whichOperationCustomer;
 
 import java.math.BigInteger;
 import java.util.ArrayList;

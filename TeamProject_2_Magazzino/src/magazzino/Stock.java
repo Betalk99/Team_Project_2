@@ -1,7 +1,6 @@
-package Magazzino;
-import Product.*;
+package magazzino;
+import product.*;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public class Stock {
     private ArrayList<Product> listaProdotti = new ArrayList<>();
