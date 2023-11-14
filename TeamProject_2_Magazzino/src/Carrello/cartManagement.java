@@ -230,16 +230,24 @@ public class cartManagement {
         System.out.println("Total price of the cart " + totalPrice);
     }
 
-    public static void averageSpending(Cart cart){
+    public static double averageSpending(Cart cart) {
         double result;
         double totalAmount = 0.0;
         int numberOfProducts = cart.getCart().size();
-        for (int i =0; i<cart.getCart().size(); i++){
-            totalAmount += cart.getCart().get(i).getSellPrice();
+        if (numberOfProducts >= 2) {
+            for (int i = 0; i < cart.getCart().size(); i++) {
+                totalAmount += cart.getCart().get(i).getSellPrice();
+            }
+            result = totalAmount / numberOfProducts;
+            System.out.println("Total amount: " + totalAmount + " €");
+            System.out.println("Number of items: " + numberOfProducts + " pcs");
+            System.out.println("The average amount per item that you're going to spend is: " + result + " €");
+            return result;
+        } else if (numberOfProducts != 0) {
+            System.out.println("You only have 1 product in your cart, you're going to spend: "+cart.getCart().get(0).getSellPrice()+" €");
+            return cart.getCart().get(0).getSellPrice();
         }
-        result = totalAmount/numberOfProducts;
-        System.out.println("Total amount: "+totalAmount+" €");
-        System.out.println("Number of items: "+numberOfProducts+" pcs");
-        System.out.println("The average amount per item that you're going to spend is: "+result+" €");
+        System.out.println("Your cart is empty, please add some products");
+        return 0.0;
     }
 }
