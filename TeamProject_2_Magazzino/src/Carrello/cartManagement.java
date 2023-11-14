@@ -231,7 +231,7 @@ public class cartManagement {
     }
 
     public static void averageSpending(Cart cart){
-        double result = 0.0;
+        double result;
         double totalAmount = 0.0;
         int numberOfProducts = cart.getCart().size();
         for (int i =0; i<cart.getCart().size(); i++){
