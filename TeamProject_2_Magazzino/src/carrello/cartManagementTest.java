@@ -173,6 +173,31 @@ class cartManagementTest {
 
     }
 
+    @Test
+    void averageSpending() {
+        Cart cart = new Cart();
+        cart.getCart().add(new Tablet(ProductTypes.tablet, "Samsung", "Galaxy Tab S6 Lite", "con pen in dotazione", 10.4, 128, 120.00, 298.00, "001"));
+        cart.getCart().add(new Tablet(ProductTypes.smartphone, "Samsung", "Galaxy Tab S6 Lite", "con pen in dotazione", 10.4, 128, 250.00, 415.00, "002"));
+        cart.getCart().add(new Tablet(ProductTypes.notebook, "Lenovo", "Galaxy Tab S6 Lite", "con pen in dotazione", 10.4, 128, 502.00, 745.00, "005"));
 
+        double expected = 486.00;
+        assertEquals(expected, cartManagement.averageSpending(cart));
+    }
 
+    @Test
+    void averageSpendingSingleProductInCart() {
+        Cart cart = new Cart();
+        cart.getCart().add(new Tablet(ProductTypes.tablet, "Samsung", "Galaxy Tab S6 Lite", "con pen in dotazione", 10.4, 128, 120.00, 298.00, "001"));
+
+        double expected = cart.getCart().get(0).getSellPrice();
+        assertEquals(expected, cartManagement.averageSpending(cart));
+    }
+
+    @Test
+    void averageSpendingEmptyCart() {
+        Cart cart = new Cart();
+
+        double expected = 0.0;
+        assertEquals(expected, cartManagement.averageSpending(cart));
+    }
 }
