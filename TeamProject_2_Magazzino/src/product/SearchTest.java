@@ -27,7 +27,7 @@ class SearchTest {
         stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
         ArrayList<Product> note = Search.getNotebookType(stock);
 
-        assertEquals(3,note.size());
+        assertEquals(3, note.size());
     }
 
     @Test
@@ -36,7 +36,7 @@ class SearchTest {
         stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
         ArrayList<Product> note = Search.getNotebookType(null);
 
-        assertEquals(null,note);
+        assertEquals(null, note);
     }
 
     @Test
@@ -45,7 +45,7 @@ class SearchTest {
         stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
         ArrayList<Product> tab = Search.getTabletType(stock);
 
-        assertEquals(3,tab.size());
+        assertEquals(3, tab.size());
     }
 
     @Test
@@ -54,7 +54,7 @@ class SearchTest {
         stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
         ArrayList<Product> tab = Search.getTabletType(null);
 
-        assertEquals(null,tab);
+        assertEquals(null, tab);
     }
 
     @Test
@@ -63,7 +63,7 @@ class SearchTest {
         stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
         ArrayList<Product> smartphone = Search.getSmartphoneType(stock);
 
-        assertEquals(3,smartphone.size());
+        assertEquals(3, smartphone.size());
     }
 
     @Test
@@ -72,7 +72,7 @@ class SearchTest {
         stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
         ArrayList<Product> smartphone = Search.getSmartphoneType(null);
 
-        assertEquals(null,smartphone);
+        assertEquals(null, smartphone);
     }
 
     @Test
@@ -80,7 +80,7 @@ class SearchTest {
         Stock stock = new Stock();
         stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
         String model = "Galaxy Tab S6 Lite";
-        ArrayList<Product> bymodel = Search.byModel(stock,model);
+        ArrayList<Product> bymodel = Search.byModel(stock, model);
 
         assertEquals(1, bymodel.size());
 
@@ -91,10 +91,23 @@ class SearchTest {
         Stock stock = new Stock();
         stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
         String model = null;
-        ArrayList<Product> bymodel = Search.byModel(stock,model);
+        ArrayList<Product> bymodel = Search.byModel(stock, model);
 
         assertEquals(null, bymodel);
 
     }
 
+    @Test
+    void byBrand() {
+        Stock stock = new Stock();
+        stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
+        ArrayList<Product> selectedProducts = new ArrayList<>();
+        String selectedBrand = "MSI";
+        for (int j = 0; j < stock.getListaProdotti().size(); j++) {
+            if (stock.getListaProdotti().get(j).getBrand().equals(selectedBrand)) {
+                selectedProducts.add(stock.getListaProdotti().get(j));
+            }
+        }
+        assertEquals(selectedProducts, Search.selectedBrandProducts(stock, selectedBrand, selectedProducts));
+    }
 }
