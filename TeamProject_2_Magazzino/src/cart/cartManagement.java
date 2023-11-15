@@ -1,9 +1,8 @@
-package carrello;
+package cart;
 
-import magazzino.Stock;
+import stock.Stock;
 import product.*;
 
-import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.*;
 

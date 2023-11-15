@@ -1,7 +1,7 @@
-package scelta;
+package choice;
 
-import carrello.*;
-import magazzino.*;
+import cart.*;
+import stock.*;
 import product.*;
 
 import java.util.ArrayList;

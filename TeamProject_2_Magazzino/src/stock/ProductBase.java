@@ -1,4 +1,4 @@
-package magazzino;
+package stock;
 import product.*;
 
 import java.util.ArrayList;
