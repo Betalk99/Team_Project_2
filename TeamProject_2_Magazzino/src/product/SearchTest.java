@@ -1,7 +1,7 @@
 package product;
 
-import magazzino.ProductBase;
-import magazzino.Stock;
+import stock.ProductBase;
+import stock.Stock;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

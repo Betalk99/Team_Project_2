@@ -1,13 +1,11 @@
-package carrello;
+package cart;
 
-import magazzino.*;
+import stock.*;
 import product.*;
 import org.junit.jupiter.api.Test;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import static carrello.cartManagement.addProdCart;
 import static org.junit.jupiter.api.Assertions.*;
 
 class cartManagementTest {

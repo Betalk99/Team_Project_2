@@ -2,7 +2,7 @@ package product;
 
 import java.util.*;
 
-import magazzino.*;
+import stock.*;
 
 public class Search {
     public static ArrayList<Product> byType(Stock stock) throws InputMismatchException {

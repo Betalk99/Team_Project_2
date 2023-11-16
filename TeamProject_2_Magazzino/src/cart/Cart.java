@@ -1,4 +1,4 @@
-package carrello;
+package cart;
 
 import product.Product;
 
