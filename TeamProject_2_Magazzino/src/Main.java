@@ -1,6 +1,6 @@
-import carrello.*;
+import cart.*;
 import product.*;
-import magazzino.*;
+import stock.*;
 import clients.*;
 
 import java.util.ArrayList;
