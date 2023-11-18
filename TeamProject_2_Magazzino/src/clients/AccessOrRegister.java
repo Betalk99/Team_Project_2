@@ -68,58 +68,29 @@ public class AccessOrRegister {
     public static void accessPage(ListClients list, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
         Scanner in = new Scanner(System.in);
         boolean isTrue = false;
+        boolean isOk = false;
         while (!isTrue) {
             boolean find = false;
             System.out.println("Insert Email: ");
             String a = in.next();
-            System.out.println("Insert Password: ");
-            String b = in.next();
-
-
-            String result = checkCredentials(list, a,b);
-
-            switch (result) {
-                case "valid":
-                    Clients validClient = getClientByUsername(list, a);
-                    whatType(validClient, stock, cart, arrayTemp);
-                    break;
-                case "email":
-                    System.out.println("\nEmail error");
-                    System.out.println("Please re-enter your credentials \n");
-                    break;
-                case "password":
-                    System.out.println("\nPassword error");
-                    System.out.println("Please re-enter your credentials \n");
-                    break;
-                case "notfound":
-                    System.out.println("\nUsername e/o Password Wrong");
-                    System.out.println("Please re-enter your credentials \n");
-                    break;
-
-
+            if (checkMail(list, a)) {
+                Clients c = getClientByUsername(list, a);
+                while(!isOk) {
+                System.out.println("Insert Password: ");
+                String b = in.next();
+                    if (checkPassword(b, c)) {
+                        whatType(c, stock, cart, arrayTemp);
+                        isOk = true;
+                    } else {
+                        System.out.println("\nPassword error");
+                        System.out.println("Please re-enter your password \n");
+                    }
+                }
+            } else {
+                System.out.println("\nEmail error");
+                System.out.println("Please re-enter your email \n");
             }
         }
-    }
-    public static String checkCredentials(ListClients list, String inputEmail, String inputPassword) {
-        for (Clients client : list.getList()) {
-            if (checkMailAccesPage(client, inputEmail) && checkPswAccesPage(client, inputPassword)) {
-                return "valid"; // Le credenziali sono valide
-            } else if (!checkMailAccesPage(client, inputEmail)) {
-                return "email"; // L'email è errata
-            } else if (!checkPswAccesPage(client, inputPassword)) {
-                return "password"; // La password è errata
-            }
-        }
-        return "notfound"; // Nessun utente corrisponde all'input
-    }
-
-
-    public static boolean checkMailAccesPage(Clients i, String email){
-        return i.getEmail().equals(email);
-    }
-
-    public static boolean checkPswAccesPage(Clients i, String psw){
-        return i.getPassword().equals(psw);
     }
 
     public static Clients getClientByUsername(ListClients list, String a){
@@ -222,6 +193,16 @@ public class AccessOrRegister {
         }
         return false;
     }
+
+    public static boolean checkPassword(String psw, Clients c) {
+            if (c.getPassword().equals(psw)) {
+                System.out.println("Correct Password");
+                return true;
+            }
+
+        return false;
+    }
+
     public static ListClients resetPsw(ListClients list, String mail) {
         Scanner in = new Scanner(System.in);
         for (Clients i : list.getList()) {
