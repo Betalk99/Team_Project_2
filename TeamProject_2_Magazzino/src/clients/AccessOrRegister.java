@@ -75,21 +75,66 @@ public class AccessOrRegister {
             System.out.println("Insert Password: ");
             String b = in.next();
 
-            for (Clients i : list.getList()) {
-                if (i.getEmail().equals(a) && i.getPassword().equals(b)) {
-                    find = true;
-                    Clients c1 = i;
-                    whatType(c1, stock, cart, arrayTemp);
-                }
-            }
-            if (!find) {
-                System.out.println("Username e/o Password Wrong");
+
+            String result = checkCredentials(list, a,b);
+
+            switch (result) {
+                case "valid":
+                    Clients validClient = getClientByUsername(list, a);
+                    whatType(validClient, stock, cart, arrayTemp);
+                    break;
+                case "email":
+                    System.out.println("\nEmail error");
+                    System.out.println("Please re-enter your credentials \n");
+                    break;
+                case "password":
+                    System.out.println("\nPassword error");
+                    System.out.println("Please re-enter your credentials \n");
+                    break;
+                case "notfound":
+                    System.out.println("\nUsername e/o Password Wrong");
+                    System.out.println("Please re-enter your credentials \n");
+                    break;
+
+
             }
         }
+    }
+    public static String checkCredentials(ListClients list, String inputEmail, String inputPassword) {
+        for (Clients client : list.getList()) {
+            if (checkMailAccesPage(client, inputEmail) && checkPswAccesPage(client, inputPassword)) {
+                return "valid"; // Le credenziali sono valide
+            } else if (!checkMailAccesPage(client, inputEmail)) {
+                return "email"; // L'email è errata
+            } else if (!checkPswAccesPage(client, inputPassword)) {
+                return "password"; // La password è errata
+            }
+        }
+        return "notfound"; // Nessun utente corrisponde all'input
+    }
 
+
+    public static boolean checkMailAccesPage(Clients i, String email){
+        return i.getEmail().equals(email);
+    }
+
+    public static boolean checkPswAccesPage(Clients i, String psw){
+        return i.getPassword().equals(psw);
+    }
+
+    public static Clients getClientByUsername(ListClients list, String a){
+        Clients c1 = null;
+        for(Clients i : list.getList()){
+            if(i.getEmail().equals(a)){
+                c1 = i;
+                return c1;
+            }
+        }
+        return c1;
     }
 
     public static ListClients registerPage(ListClients list) {
+        try{
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome to registration, you are Company or Customer? 1/Company - 2/Customer");
         int b = in.nextInt();
@@ -97,6 +142,11 @@ public class AccessOrRegister {
             list.getList().add(registerCompany());
         } else if (b == 2) {
             list.getList().add(registerCustomer());
+        }
+
+        return list;
+        }catch (InputMismatchException e){
+            System.out.println("Please use a character between 1 or 2");
         }
 
         return list;
@@ -143,7 +193,6 @@ public class AccessOrRegister {
         return c1;
     }
 
-
     public static void whatType(Clients c1, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
         if (c1.getType().equals(ClientType.Customer)) {
             whichOperationCustomer.oper(stock, cart, arrayTemp);
@@ -173,7 +222,6 @@ public class AccessOrRegister {
         }
         return false;
     }
-
     public static ListClients resetPsw(ListClients list, String mail) {
         Scanner in = new Scanner(System.in);
         for (Clients i : list.getList()) {
@@ -187,3 +235,4 @@ public class AccessOrRegister {
     }
 
 }
+

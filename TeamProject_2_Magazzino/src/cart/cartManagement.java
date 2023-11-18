@@ -193,7 +193,6 @@ public class cartManagement {
                     if (cart.getCart().get(i).getItemId().equals(idRemove)) {
                         Product a = cart.getCart().get(i); // creo oggetto temp
                         arrayTemp.add(a); // aggiungo oggetto temp
-
                         cart.getCart().remove(i); // rimozione oggetto da carrello
                     }
                 }
