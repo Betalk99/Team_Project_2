@@ -35,7 +35,11 @@ public class cartManagement {
             String operCarr = sc.nextLine();
             switch (operCarr) {
                 case "1"://controllo stato carrello
-                    System.out.println(cart);
+                    if(stampCart(cart)){
+                        System.out.println("The cart is empty");
+                    }else{
+                        System.out.println(cart);
+                    }
                     break;
                 case "2"://aggiunta elementi da carrello tramite id
                     addId(arrayTemp, cart);
@@ -76,7 +80,10 @@ public class cartManagement {
                 }
             }
         }
+    }
 
+    public static boolean stampCart(Cart cart){
+        return cart.getCart().isEmpty();
     }
 
     public static void addId(ArrayList<Product> arrayTemp, Cart cart) {
