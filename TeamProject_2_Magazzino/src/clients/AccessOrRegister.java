@@ -32,36 +32,39 @@ public class AccessOrRegister {
     }
 
     public static void registerAcces(ListClients list, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
-        Scanner in = new Scanner(System.in);
-        boolean stay = false;
-        while (!stay) {
-            System.out.println("""
+       try {
+           Scanner in = new Scanner(System.in);
+           boolean stay = false;
+           while (!stay) {
+               System.out.println("""
                     Hello dear user, please select one of the following options:\s
                      1) Log In\s
                      2) Register \s
                      3) Reset Password\s
                      """);
-            String selection = in.nextLine();
-            if (!selection.equals("1") && !selection.equals("2") && !selection.equals("3")) {
-                System.out.println("The selected option is not available.\n");
-            }
-            switch (selection) {
-                case "1":
-                    accessPage(list, stock, cart, arrayTemp);
-                    stay = true;
-                    break;
-                case "2":
-                    registerPage(list);
-                    stay = true;
-                    break;
-                case "3":
-                    checkresetPsw(list);
-                    stay = true;
-                    break;
-                default:
-                    break;
-            }
-        }
+               int selection = in.nextInt();
+               switch (selection) {
+                   case 1 :
+                       accessPage(list, stock, cart, arrayTemp);
+                       stay = true;
+                       break;
+                   case 2 :
+                       registerPage(list);
+                       stay = true;
+                       break;
+                   case 3 :
+                       checkresetPsw(list);
+                       stay = true;
+                       break;
+                   default:
+                       System.out.println("The selected option is not available.\n");
+                       break;
+               }
+           }
+       }catch (InputMismatchException e){
+           System.out.println("Please use a character between 1 or 3");
+       }
+
     }
 
 
