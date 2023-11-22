@@ -15,13 +15,11 @@ public class cartManagement {
     }
 
     public static void operCar(Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
-
-        Scanner sc = new Scanner(System.in);
+        try {
+            Scanner sc = new Scanner(System.in);
 //        System.out.println(stock);
-        boolean stay = true;
-        boolean stay3 = true;
-        while (stay) {
-            while (stay3) {
+            boolean stay = true;
+            while (stay) {
                 System.out.println("""
                         Hello dear customer, please select one of the following options:
                          1) Cart status\s
@@ -34,48 +32,38 @@ public class cartManagement {
                          8) Get the average amount spent""");
 
 
-                String operCarr = sc.nextLine();
+                int operCarr = sc.nextInt();
                 switch (operCarr) {
-                    case "1"://controllo stato carrello
+                    case 1://controllo stato carrello
                         if (stampCart(cart)) {
                             System.out.println("The cart is empty");
                         } else {
                             System.out.println(cart);
                         }
-                        stay3 = false;
                         break;
-                    case "2"://aggiunta elementi da carrello tramite id
+                    case 2://aggiunta elementi da carrello tramite id
                         addId(arrayTemp, cart);
-                        stay3 = false;
                         break;
-                    case "3"://rimozione elementi da carrello tramite id
+                    case 3://rimozione elementi da carrello tramite id
                         insertRemoveId(cart, arrayTemp);
-                        stay3 = false;
                         break;
-                    case "4"://Finalizza acquisti
+                    case 4://Finalizza acquisti
                         buyProducts(cart, stock, arrayTemp);
-                        stay3 = false;
                         break;
-                    case "5"://Aggiunta prodotti al carrello
+                    case 5://Aggiunta prodotti al carrello
                         insertAddProdCart(cart, arrayTemp);
-                        stay3 = false;
                         break;
-                    case "6"://Prezzo totale dei prodotti nel carrello.
+                    case 6://Prezzo totale dei prodotti nel carrello.
                         cartTotal(cart);
-                        stay3 = false;
                         break;
-                    case "7":
+                    case 7:
                         cart.getCart().clear();
-                        stay3 = false;
                         break;
-                    case "8":
+                    case 8:
                         averageSpending(cart);
-                        stay3 = false;
                         break;
-                    default:
-                        System.out.println("Invalid input.");
-                        stay3 = true;
                 }
+
             }
             boolean stay2 = true;
             while (stay2) {
@@ -93,10 +81,13 @@ public class cartManagement {
                     stay2 = true;
                 }
             }
+        } catch (InputMismatchException e) {
+            System.out.println("Error: invalid input.");
         }
     }
 
-    public static boolean stampCart(Cart cart){
+
+    public static boolean stampCart(Cart cart) {
         return cart.getCart().isEmpty();
     }
 
@@ -278,7 +269,7 @@ public class cartManagement {
             System.out.println("The average amount per item that you're going to spend is: " + result + " €");
             return result;
         } else if (numberOfProducts != 0) {
-            System.out.println("You only have 1 product in your cart, you're going to spend: "+cart.getCart().get(0).getSellPrice()+" €");
+            System.out.println("You only have 1 product in your cart, you're going to spend: " + cart.getCart().get(0).getSellPrice() + " €");
             return cart.getCart().get(0).getSellPrice();
         }
         System.out.println("Your cart is empty, please add some products");
