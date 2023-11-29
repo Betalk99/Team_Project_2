@@ -54,11 +54,11 @@ public class AccessOrRegister {
                        stay = true;
                        break;
                    case 2 :
-                       registerPage(list);
+                       registerPage();
                        stay = true;
                        break;
                    case 3 :
-                       checkresetPsw(list);
+                       resetPswDb();
                        stay = true;
                        break;
                    default:
@@ -103,17 +103,6 @@ public class AccessOrRegister {
         }
     }
 
-    public static Clients getClientByUsername(ListClients list, String a){
-        Clients c1 = null;
-        for(Clients i : list.getList()){
-            if(i.getEmail().equals(a)){
-                c1 = i;
-                return c1;
-            }
-        }
-        return c1;
-    }
-
 
     public static Clients getClientByUsernameDb(String mail){
 
@@ -144,23 +133,23 @@ public class AccessOrRegister {
 
 
 
-    public static ListClients registerPage(ListClients list) {
+    public static void registerPage() {
         try{
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome to registration, you are Company or Customer? 1/Company - 2/Customer");
         int b = in.nextInt();
         if (b == 1) {
-            list.getList().add(registerCompany());
+            registerCompanyDb();
         } else if (b == 2) {
-            list.getList().add(registerCustomer());
+            registerCustomerDb();
         }
 
-        return list;
         }catch (InputMismatchException e){
             System.out.println("Please use a character between 1 or 2");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
-        return list;
     }
 
     public static Company registerCompany() {
@@ -203,6 +192,74 @@ public class AccessOrRegister {
 
         return c1;
     }
+
+    public static void registerCustomerDb() throws SQLException{
+        try{
+
+            Statement stmt = DbManagement.makeConnection();
+
+            Scanner in = new Scanner(System.in);
+            System.out.println("Insert name Customer: ");
+            String name = in.nextLine();
+            System.out.println("Insert surname Customer: ");
+            String surname = in.nextLine();
+            System.out.println("Insert email Customer: ");
+            String email = in.nextLine();
+            System.out.println("Insert username Customer: ");
+            String username = in.nextLine();
+            System.out.println("Insert password Customer: ");
+            String password = in.nextLine();
+            System.out.println("Insert number phone Customer: ");
+            String numTel = in.nextLine();
+
+            String userCust =
+                    "INSERT INTO client " +
+                            "(`type`, `name`, `surname`, `email`, `username`,`password`,`phoneNumber`)\n" +
+                            "VALUES " +
+                            "('Customer', '" + name + "', '" + surname + "', '" + email + "', '" + username + "', '"+ password + "', '" + numTel +"');";
+
+            stmt.execute(userCust);
+
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void registerCompanyDb() throws SQLException{
+        try{
+
+            Statement stmt = DbManagement.makeConnection();
+
+            Scanner in = new Scanner(System.in);
+            System.out.println("Insert name Company: ");
+            String name = in.nextLine();
+            System.out.println("Insert email Company: ");
+            String email = in.nextLine();
+            System.out.println("Insert username Company: ");
+            String username = in.nextLine();
+            System.out.println("Insert password Company: ");
+            String password = in.nextLine();
+            System.out.println("Insert numTel Company: ");
+            String numTel = in.nextLine();
+            System.out.println("Insert vat Company: ");
+            String vat = in.nextLine();
+
+            String userCust =
+                    "INSERT INTO client " +
+                            "(`type`, `name`, `email`, `username`,`password`,`phoneNumber`, `vat`)\n" +
+                            "VALUES " +
+                            "('Company', '" + name + "', '" + email + "', '" + username + "', '" + password + "', '"+ numTel + "', '" + vat +"');";
+
+            stmt.execute(userCust);
+
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+
 
     public static void whatType(Clients c1, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
         if (c1.getType().equals(ClientType.Customer)) {
@@ -277,6 +334,28 @@ public class AccessOrRegister {
             }
         }
         return list;
+    }
+
+
+    public static void resetPswDb() throws SQLException{
+        Scanner in = new Scanner(System.in);
+        try{
+            Statement stmt = DbManagement.makeConnection();
+            System.out.println("Insert Email: ");
+            String mail = in.nextLine();
+            if(checkMailDb(mail)){
+                System.out.println("Insert new password: ");
+                String psw = in.nextLine();
+                String resetPsw = "UPDATE client SET password = '" + psw + "' WHERE email = '" + mail + "';";
+                stmt.execute(resetPsw);
+            }else{
+                System.out.println("email not present");
+            }
+
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 
 }

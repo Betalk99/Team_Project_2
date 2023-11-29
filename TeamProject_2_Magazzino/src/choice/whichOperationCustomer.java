@@ -1,14 +1,24 @@
 package choice;
 
 import cart.*;
+import database.DbManagement;
 import stock.*;
 import product.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class whichOperationCustomer {
+
+
+    public static void stampResult(ArrayList<Product> a){
+        for (Product i : a){
+            System.out.println(i);
+        }
+    }
+
     public static void oper(Stock stock, Cart cart, ArrayList<Product> arrayTemp) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {
@@ -31,7 +41,7 @@ public class whichOperationCustomer {
                         cartManagement.inz(stock,cart,arrayTemp);
                         break;
                     case 2: // stampare tutti i dispositivi nel magazzino
-                        System.out.println(stock);
+                        stampResult(DbManagement.stampStockDb());
                         break;
                     case 3: // ricerca per tipo di dispositivo
                         System.out.println(Search.byType(stock));
@@ -40,10 +50,10 @@ public class whichOperationCustomer {
                             Search.byBrand(stock);
                         break;
                     case 5: // ricerca per modello
-                        Search.inputByModel(stock);
+                        stampResult(DbManagement.byModelDb());
                         break;
                     case 6: // ricerca per range di prezzo (sell price/prezzo di vendita)
-                        Search.bySellPriceRange(stock);
+                        stampResult(DbManagement.bySellPriceRangeDb());
                         break;
                     default:
                         System.out.println("Unlisted operation");
@@ -57,6 +67,8 @@ public class whichOperationCustomer {
             } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
                 isTrue = false;
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
