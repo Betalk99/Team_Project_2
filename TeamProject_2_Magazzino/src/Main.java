@@ -13,7 +13,7 @@ public class Main {
         ArrayList<Product> arrayTemp = new ArrayList<>();
 
         Stock stock = new Stock();
-        stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
+//        stock.setListaProdotti(ProductBase.baseProd(stock.getListaProdotti()));
         Cart cart = new Cart();
 
         AccessOrRegister.inputSelect(list,stock,cart,arrayTemp);

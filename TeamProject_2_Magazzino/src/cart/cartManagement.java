@@ -42,7 +42,7 @@ public class cartManagement {
                         }
                         break;
                     case 2://aggiunta elementi da carrello tramite id
-                        addId(arrayTemp, cart);
+//                        addId(arrayTemp, cart);
                         break;
                     case 3://rimozione elementi da carrello tramite id
                         insertRemoveId(cart, arrayTemp);
@@ -91,34 +91,34 @@ public class cartManagement {
         return cart.getCart().isEmpty();
     }
 
-    public static void addId(ArrayList<Product> arrayTemp, Cart cart) {
-        boolean stay = true;
-        while (stay) {
-            Scanner in = new Scanner(System.in);
-            System.out.println(arrayTemp);
-            System.out.println("Which device do you want to add from your cart? \n Indicate the id : ");
+//    public static void addId(ArrayList<Product> arrayTemp, Cart cart) {
+//        boolean stay = true;
+//        while (stay) {
+//            Scanner in = new Scanner(System.in);
+//            System.out.println(arrayTemp);
+//            System.out.println("Which device do you want to add from your cart? \n Indicate the id : ");
+//
+//            String idAdd = in.next();
+//            // System.out.println(idAdd);
+//            getAddId(arrayTemp, cart, idAdd);
+//            stay = false;
+//        }
+//    }
 
-            String idAdd = in.next();
-            // System.out.println(idAdd);
-            getAddId(arrayTemp, cart, idAdd);
-            stay = false;
-        }
-    }
-
-    public static ArrayList<Product> getAddId(ArrayList<Product> arraytemp, Cart cart, String valoreScelto) {
-        ArrayList<Product> x = new ArrayList<Product>();
-        for (int i = 0; i < arraytemp.size(); i++) {
-            if (arraytemp.get(i).getItemId() != null) {
-                if (arraytemp.get(i).getItemId().equals(valoreScelto)) {
-                    x.add(arraytemp.get(i));
-                    cart.getCart().add(arraytemp.get(i));
-                    arraytemp.remove(arraytemp.get(i));
-                }
-            }
-            return x;
-        }
-        return null;
-    }
+//    public static ArrayList<Product> getAddId(ArrayList<Product> arraytemp, Cart cart, String valoreScelto) {
+//        ArrayList<Product> x = new ArrayList<Product>();
+//        for (int i = 0; i < arraytemp.size(); i++) {
+//            if (arraytemp.get(i).getItemId() != null) {
+//                if (arraytemp.get(i).getItemId().equals(valoreScelto)) {
+//                    x.add(arraytemp.get(i));
+//                    cart.getCart().add(arraytemp.get(i));
+//                    arraytemp.remove(arraytemp.get(i));
+//                }
+//            }
+//            return x;
+//        }
+//        return null;
+//    }
 
     public static void insertAddProdCart(Cart cart, ArrayList<Product> arrayTemp) {
 
@@ -187,7 +187,7 @@ public class cartManagement {
             System.out.println("Which device do you want to remove from your cart? \n Indicate the id : ");
             String idRemove = in.next();
 
-            removeId(cart, arrayTemp, idRemove);
+//            removeId(cart, arrayTemp, idRemove);
 
             System.out.println("Do you want to delete some other elements? 1/Yes - 2/No");
             int i = in.nextInt();
@@ -198,22 +198,22 @@ public class cartManagement {
         return cart;
     }
 
-    public static Cart removeId(Cart cart, ArrayList<Product> arrayTemp, String idRemove) {
-        if (arrayTemp != null && idRemove == null) {
-            if (idRemove != null && arrayTemp == null) {
-                for (int i = 0; i < cart.getCart().size(); i++) {
-                    if (cart.getCart().get(i).getItemId().equals(idRemove)) {
-                        Product a = cart.getCart().get(i); // creo oggetto temp
-                        arrayTemp.add(a); // aggiungo oggetto temp
-                        cart.getCart().remove(i); // rimozione oggetto da carrello
-                    }
-                }
-            }
-            return cart;
-        } else {
-            return null;
-        }
-    }
+//    public static Cart removeId(Cart cart, ArrayList<Product> arrayTemp, String idRemove) {
+//        if (arrayTemp != null && idRemove == null) {
+//            if (idRemove != null && arrayTemp == null) {
+//                for (int i = 0; i < cart.getCart().size(); i++) {
+//                    if (cart.getCart().get(i).getItemId().equals(idRemove)) {
+//                        Product a = cart.getCart().get(i); // creo oggetto temp
+//                        arrayTemp.add(a); // aggiungo oggetto temp
+//                        cart.getCart().remove(i); // rimozione oggetto da carrello
+//                    }
+//                }
+//            }
+//            return cart;
+//        } else {
+//            return null;
+//        }
+//    }
 
 
     public static ArrayList<Product> buyProducts(Cart cart, Stock stock, ArrayList<Product> arrayTemp) {

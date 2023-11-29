@@ -28,7 +28,7 @@ public class whichOperationCompany {
                 int category = in.nextInt();
                 switch (category) {
                     case 1: //aggiunta prodotto a magazzino
-                        addProduct(stock);
+//                        addProduct(stock);
                         break;
                     case 2: //scarico merce da magazzino
                         removeProduct(stock);
@@ -67,53 +67,53 @@ public class whichOperationCompany {
         }
     }
 
-    public static Stock addProduct(Stock stock){
-        boolean stay = false;
-        int x;
-        int y;
-        Scanner in = new Scanner(System.in);
-
-        try {
-            while (stay == false) {
-
-                System.out.println("Which product do you want to insert ? \n 1-Tablet \n 2-Smartphone \n 3-Notebook \n");
-                x = in.nextInt();
-
-                switch (x) {
-                    case 1:
-                        Tablet tablet = Tablet.inputKeyboard();
-//                        stock.add(tablet);
-                        stock.getListaProdotti().add(tablet);
-                        break;
-                    case 2:
-                        Smartphone smartphone = Smartphone.inputKeyboard();
-//                        stock.add(smartphone);
-                        stock.getListaProdotti().add(smartphone);
-                        break;
-                    case 3:
-                        Notebook notebook = Notebook.inputKeyboard();
-//                        stock.add(notebook);
-                        stock.getListaProdotti().add(notebook);
-                        break;
-                    default:
-                        System.out.println("Error ");
-                        break;
-
-                }
-                System.out.println("You want to add another product? 1-Yes / 2-No");
-                y = in.nextInt();
-                if (y == 2) {
-                    stay = true;
-                }
-            }
-        }catch (InputMismatchException e){
-        System.out.println("Please use a character between 1, 2 or 3");
-        stay = false;
-    }
-
-        return stock;
-
-    }
+//    public static Stock addProduct(Stock stock){
+//        boolean stay = false;
+//        int x;
+//        int y;
+//        Scanner in = new Scanner(System.in);
+//
+//        try {
+//            while (stay == false) {
+//
+//                System.out.println("Which product do you want to insert ? \n 1-Tablet \n 2-Smartphone \n 3-Notebook \n");
+//                x = in.nextInt();
+//
+//                switch (x) {
+//                    case 1:
+//                        Tablet tablet = Tablet.inputKeyboard();
+////                        stock.add(tablet);
+//                        stock.getListaProdotti().add(tablet);
+//                        break;
+//                    case 2:
+//                        Smartphone smartphone = Smartphone.inputKeyboard();
+////                        stock.add(smartphone);
+//                        stock.getListaProdotti().add(smartphone);
+//                        break;
+//                    case 3:
+//                        Notebook notebook = Notebook.inputKeyboard();
+////                        stock.add(notebook);
+//                        stock.getListaProdotti().add(notebook);
+//                        break;
+//                    default:
+//                        System.out.println("Error ");
+//                        break;
+//
+//                }
+//                System.out.println("You want to add another product? 1-Yes / 2-No");
+//                y = in.nextInt();
+//                if (y == 2) {
+//                    stay = true;
+//                }
+//            }
+//        }catch (InputMismatchException e){
+//        System.out.println("Please use a character between 1, 2 or 3");
+//        stay = false;
+//    }
+//
+//        return stock;
+//
+//    }
 
 
     public static Stock removeProduct (Stock stock){
