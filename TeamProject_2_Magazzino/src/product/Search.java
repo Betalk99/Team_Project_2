@@ -117,7 +117,6 @@ public class Search {
         }
 
     }
-
     public static void bySellPriceRange(Stock stock) throws InputMismatchException {
 
         boolean isTrue = false;

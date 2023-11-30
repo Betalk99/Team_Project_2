@@ -9,9 +9,9 @@ public class Product {
     private double storageCap;
     private double purchasePrice;
     private double sellPrice;
-    private String itemId;
+    private int itemId;
 
-    public Product(ProductTypes type, String brand, String model, String description, double displaySize, double storageCap, double purchasePrice, double sellPrice, String itemId) {
+    public Product(ProductTypes type, String brand, String model, String description, double displaySize, double storageCap, double purchasePrice, double sellPrice, int itemId) {
         this.type = type;
         this.brand = brand;
         this.model = model;
@@ -79,11 +79,11 @@ public class Product {
         this.sellPrice = sellPrice;
     }
 
-    public String getItemId() {
+    public int getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(int itemId) {
         this.itemId = itemId;
     }
 
@@ -109,4 +109,7 @@ public class Product {
                 ", itemId='" + itemId + '\'' +
                 '}';
     }
+
+
+
 }
