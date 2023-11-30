@@ -160,7 +160,7 @@
     <orderEntry type="module-library">
       <library>
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/mysql-connector-j-8.2.0.jar!/" />
+          <root url="jar://$MODULE_DIR$/TeamProject_2_Magazzino/lib/mysql-connector-j-8.2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
