@@ -43,7 +43,7 @@ public class whichOperationCompany {
                         System.out.println(Search.byType(stock));
                         break;
                     case 6: // ricerca per brand
-                            Search.byBrand(stock);
+                            Search.byBrand(); //updated 02.12.23, correctly working based on DB.
                         break;
                     case 7: // ricerca per modello
                         Search.inputByModel(stock);

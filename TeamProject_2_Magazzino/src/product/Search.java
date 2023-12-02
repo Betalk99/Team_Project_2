@@ -2,6 +2,7 @@ package product;
 
 import java.util.*;
 
+import database.DbManagement;
 import stock.*;
 
 public class Search {
@@ -198,27 +199,28 @@ public class Search {
         }
     }
 
-    public static ArrayList<Product> byBrand(Stock stock) {
+    public static ArrayList<Product> byBrand() {
         Scanner sc = new Scanner(System.in);
         ArrayList<Product> selectedProducts = new ArrayList<>();
         boolean stay = false;
         while (!stay) {
 
-            Set<String> uniqueProducers = new TreeSet<>();
+            TreeSet<String> uniqueBrands = new TreeSet<>();
             System.out.println("These are the product's brands available in our stock");
-            for (int i = 0; i < stock.getListaProdotti().size(); i++) {
-                uniqueProducers.add(stock.getListaProdotti().get(i).getBrand());
-            }
+            DbManagement.uniqueBrandsFromDb(uniqueBrands);
+//            for (int i = 0; i < stock.getListaProdotti().size(); i++) {
+//                uniqueBrands.add(stock.getListaProdotti().get(i).getBrand());
+//            }
 
             boolean stay2 = false;
             while (!stay2) {
                 try {
-                    System.out.println(uniqueProducers);
+                    System.out.println(uniqueBrands);
                     System.out.println("For which of these brands would you like to see available products?");
                     String selectedBrand = sc.nextLine();
 
-                    if (uniqueProducers.contains(selectedBrand)) {
-                        System.out.println(selectedBrandProducts(stock, selectedBrand, selectedProducts));
+                    if (uniqueBrands.contains(selectedBrand)) {
+                        System.out.println(DbManagement.selectedProductsByBrandFromDb(selectedBrand, selectedProducts));
                         stay2 = true;
                     } else
                         throw new InputMismatchException("The selected brand is not available.\nYou can try to copy/paste the desired brand name in order to avoid typing mistakes");
@@ -247,13 +249,13 @@ public class Search {
         return selectedProducts;
     }
 
-    public static ArrayList<Product> selectedBrandProducts(Stock stock, String selectedBrand, ArrayList<Product> selectedProducts) {
-        selectedProducts.clear();
-        for (int j = 0; j < stock.getListaProdotti().size(); j++) {
-            if (stock.getListaProdotti().get(j).getBrand().equals(selectedBrand)) {
-                selectedProducts.add(stock.getListaProdotti().get(j));
-            }
-        }
-        return selectedProducts;
-    }
+//    public static ArrayList<Product> selectedBrandProducts(Stock stock, String selectedBrand, ArrayList<Product> selectedProducts) {
+//        selectedProducts.clear();
+//        for (int j = 0; j < stock.getListaProdotti().size(); j++) {
+//            if (stock.getListaProdotti().get(j).getBrand().equals(selectedBrand)) {
+//                selectedProducts.add(stock.getListaProdotti().get(j));
+//            }
+//        }
+//        return selectedProducts;
+//    }
 }

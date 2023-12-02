@@ -157,13 +157,15 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/TeamProject_2_Magazzino/lib/mysql-connector-j-8.2.0.jar!/" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/.ideaLibSources/mysql-connector-j-8.2.0-sources.jar!/" />
+        </SOURCES>
       </library>
     </orderEntry>
   </component>

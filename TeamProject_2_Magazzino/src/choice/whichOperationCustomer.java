@@ -47,7 +47,7 @@ public class whichOperationCustomer {
                         System.out.println(Search.byType(stock));
                         break;
                     case 4: // ricerca per brand
-                            Search.byBrand(stock);
+                            Search.byBrand(); //updated 02.12.23, correctly working based on DB.
                         break;
                     case 5: // ricerca per modello
                         stampResult(DbManagement.byModelDb());
