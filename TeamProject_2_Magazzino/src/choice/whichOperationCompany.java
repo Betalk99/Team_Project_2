@@ -40,10 +40,10 @@ public class whichOperationCompany {
                         Search.productsView(stock);
                         break;
                     case 5: // ricerca per tipo di dispositivo fatta da Antonio Troiano
-                        System.out.println(Search.byType(stock));
+                        Search.byType(); //updated on 03.12.23, correctly working based on DB.
                         break;
                     case 6: // ricerca per brand
-                            Search.byBrand(); //updated 02.12.23, correctly working based on DB.
+                            Search.byBrand(); //updated on 02.12.23, correctly working based on DB.
                         break;
                     case 7: // ricerca per modello
                         Search.inputByModel(stock);
