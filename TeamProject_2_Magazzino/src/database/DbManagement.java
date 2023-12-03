@@ -130,5 +130,50 @@ public class DbManagement {
         return selectedProducts;
     }
 
+    public static ArrayList<Product> byTypeProductsFromDb(String type, ArrayList<Product> devicesByType) {
+
+        try {
+            Statement stmt = DbManagement.makeConnection();
+            String query = "SELECT * FROM product WHERE type = '" + type + "';";
+
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                devicesByType.add(costructProd(rs));
+            }
+            for (Product p : devicesByType) {
+                System.out.println(p);
+            }
+            System.out.println(" ");
+
+        } catch (SQLException e) {
+            e.getStackTrace();
+        }
+        return devicesByType;
+    }
+
+    public static TreeSet<String> catchTypesFromDb(TreeSet<String> typesFromDb) {
+
+        try {
+            Statement stmt = DbManagement.makeConnection();
+            String query = "SELECT type FROM product";
+            ResultSet rs = stmt.executeQuery(query);
+
+            while (rs.next()) {
+                typesFromDb.add(rs.getString("type"));
+            }
+            int index = 1;
+            for (String s : typesFromDb) {
+                System.out.println(index+") "+s);
+                index++;
+            }
+            System.out.println(" ");
+
+        } catch (SQLException e) {
+            e.getStackTrace();
+    }
+        return typesFromDb;
+}
+
 
 }

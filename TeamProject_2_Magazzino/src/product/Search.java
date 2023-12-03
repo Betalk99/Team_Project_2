@@ -6,82 +6,73 @@ import database.DbManagement;
 import stock.*;
 
 public class Search {
-    public static ArrayList<Product> byType(Stock stock) throws InputMismatchException {
+    public static ArrayList<Product> byType() throws InputMismatchException {
         ArrayList<Product> devicesByType = new ArrayList<>();
+        TreeSet<String> typesFromDb = new TreeSet<>();
         boolean isTrue = false;
         while (!isTrue) {
             try {
                 Scanner in = new Scanner(System.in);
-                System.out.println("Please select one of the following categories: \n 1) Notebook \n 2) Smartphone \n 3) Tablet");
-                int category = in.nextInt();
-                switch (category) {
-                    case 1:
-                        getNotebookType(stock);
-                        isTrue = true;
-                        break;
-                    case 2:
-                        getSmartphoneType(stock);
-                        isTrue = true;
-                        break;
-                    case 3:
-                        getTabletType(stock);
-                        isTrue = true;
-                        break;
-                    default:
-                        System.out.println("The selected category is not available");
-                        isTrue = false;
+                System.out.println("Please select one of the following types:");
+                DbManagement.catchTypesFromDb(typesFromDb);
+                String type = in.nextLine();
+                if (typesFromDb.contains(type)) {
+                    DbManagement.byTypeProductsFromDb(type, devicesByType);
+                    isTrue = true;
+                } else {
+                    System.out.println("This type does not exists.");
                 }
             } catch (InputMismatchException e) {
-                System.out.println("Please use a character between 1, 2 or 3");
-                isTrue = false;
+                System.out.println("Please select an existing type (e.g. Tablet)");
+//                isTrue = false;
             }
         }
         return devicesByType;
     }
 
-    public static ArrayList<Product> getNotebookType(Stock stock) {
-        ArrayList<Product> noteb = new ArrayList<Product>();
-        if (stock != null) {
-            for (Product products : stock.getListaProdotti()) {
-                if (products.getType() == ProductTypes.notebook) {
-                    noteb.add(products);
-                }
-            }
-            return noteb;
-        } else {
-            return null;
-        }
-    }
+//    public static ArrayList<Product> getNotebookType(Stock stock) {
+//        ArrayList<Product> noteb = new ArrayList<>();
+//        if (stock != null) {
+//            for (Product products : stock.getListaProdotti()) {
+//                if (products.getType() == ProductTypes.notebook) {
+//                    noteb.add(products);
+//                }
+//            }
+//            return noteb;
+//        } else {
+//            return null;
+//        }
+//    }
+//
+//    public static ArrayList<Product> getTabletType(Stock stock) {
+//        ArrayList<Product> tablet = new ArrayList<>();
+//        if (stock != null) {
+//            for (Product products : stock.getListaProdotti()) {
+//                if (products.getType() == ProductTypes.tablet) {
+//                    tablet.add(products);
+//                }
+//            }
+//            return tablet;
+//        } else {
+//            return null;
+//        }
+//    }
+//
+//    public static ArrayList<Product> getSmartphoneType(Stock stock) {
+//        ArrayList<Product> smartphone = new ArrayList<>();
+//        if (stock != null) {
+//            for (Product products : stock.getListaProdotti()) {
+//                if (products.getType() == ProductTypes.smartphone) {
+//                    smartphone.add(products);
+//                }
+//            }
+//            return smartphone;
+//        } else {
+//            return null;
+//        }
+//    }
 
-    public static ArrayList<Product> getTabletType(Stock stock) {
-        ArrayList<Product> tablet = new ArrayList<Product>();
-        if (stock != null) {
-            for (Product products : stock.getListaProdotti()) {
-                if (products.getType() == ProductTypes.tablet) {
-                    tablet.add(products);
-                }
-            }
-            return tablet;
-        } else {
-            return null;
-        }
-    }
-
-    public static ArrayList<Product> getSmartphoneType(Stock stock) {
-        ArrayList<Product> smartphone = new ArrayList<Product>();
-        if (stock != null) {
-            for (Product products : stock.getListaProdotti()) {
-                if (products.getType() == ProductTypes.smartphone) {
-                    smartphone.add(products);
-                }
-            }
-            return smartphone;
-        } else {
-            return null;
-        }
-    }
-
-    public static void inputByModel(Stock stock){
+    public static void inputByModel(Stock stock) {
         boolean isTrue = false;
         while (!isTrue) {
             try {
@@ -106,18 +97,19 @@ public class Search {
 
     public static ArrayList<Product> byModel(Stock stock, String model) {
         ArrayList<Product> tempByModel = new ArrayList<>();
-        if(model != null){
+        if (model != null) {
             for (int i = 0; i < stock.getListaProdotti().size(); i++) {
-                if(stock.getListaProdotti().get(i).getModel().toLowerCase().equals(model.toLowerCase())){
+                if (stock.getListaProdotti().get(i).getModel().toLowerCase().equals(model.toLowerCase())) {
                     tempByModel.add(stock.getListaProdotti().get(i));
                 }
             }
             return tempByModel;
-        }else{
+        } else {
             return null;
         }
 
     }
+
     public static void bySellPriceRange(Stock stock) throws InputMismatchException {
 
         boolean isTrue = false;
