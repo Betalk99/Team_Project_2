@@ -18,7 +18,8 @@ public class DbManagement {
 
     public static Product costructProd(ResultSet rs) throws SQLException {
 
-        return new Product(ProductTypes.valueOf(rs.getString("type")), rs.getString("brand"), rs.getString("model"), rs.getString("description"), rs.getDouble("displaySize"), rs.getDouble("storageCap"), rs.getDouble("purchaseprice"), rs.getDouble("sellprice"), rs.getInt("id"));
+        Product p = new Product(ProductTypes.valueOf(rs.getString("type")), rs.getString("brand"), rs.getString("model"), rs.getString("description"), rs.getDouble("displaySize"), rs.getDouble("storageCap"), rs.getDouble("purchaseprice"), rs.getDouble("sellprice"), rs.getInt("id"));
+        return p;
     }
 
     public static ArrayList<Product> byModelDb() throws SQLException {
@@ -162,18 +163,17 @@ public class DbManagement {
             while (rs.next()) {
                 typesFromDb.add(rs.getString("type"));
             }
-            int index = 1;
+
             for (String s : typesFromDb) {
-                System.out.println(index+") "+s);
-                index++;
+                System.out.println("- " + s);
             }
             System.out.println(" ");
 
         } catch (SQLException e) {
             e.getStackTrace();
-    }
+        }
         return typesFromDb;
-}
+    }
 
 
 }
