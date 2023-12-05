@@ -21,6 +21,9 @@ public class whichOperationCustomer {
     }
 
     public static void oper(Stock stock, Cart cart, ArrayList<Product> arrayTemp, Clients c) throws InputMismatchException {
+
+
+
         boolean isTrue = false;
         while (!isTrue) {
             try {
@@ -50,7 +53,7 @@ public class whichOperationCustomer {
                         Search.byType();//updated on 03.12.23, correctly working based on DB.
                         break;
                     case 4: // ricerca per brand
-                            Search.byBrand(); //updated on 02.12.23, correctly working based on DB.
+//                            Search.byBrand(); //updated on 02.12.23, correctly working based on DB.
                         break;
                     case 5: // ricerca per modello
                         stampResult(DbManagement.byModelDb());
