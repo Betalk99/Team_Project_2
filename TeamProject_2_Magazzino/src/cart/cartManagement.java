@@ -62,6 +62,7 @@ public class cartManagement {
                         addIdProdDB(idCart,idClient);
                         break;
                     case 3://rimozione elementi da carrello tramite id
+                        removeProdFromId(idClient);
                         break;
                     case 4://Finalizza acquisti
                         break;
@@ -140,5 +141,18 @@ public class cartManagement {
         }
     }
 
-
+    public static void removeProdFromId(int idClient){
+        try{
+            Statement stmt = DbManagement.makeConnection();
+            System.out.println("Which product do you want delete from your cart?\n" +
+                    "Select the ID of product.");
+            stampYourCart(cartStatus(idClient));
+            Scanner sc = new Scanner(System.in);
+            int idProd = sc.nextInt();
+            String query = "DELETE FROM `projectteam`.`cart` WHERE `id` = " + idProd + ";";
+            stmt.execute(query);
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
