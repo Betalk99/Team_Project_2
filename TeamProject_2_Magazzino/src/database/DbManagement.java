@@ -92,47 +92,6 @@ public class DbManagement {
     }
 
 
-    public static TreeSet<String> uniqueBrandsFromDb(TreeSet<String> uniqueBrands) {
-
-//        TreeSet<String> uniqueBrands = new TreeSet<>();
-
-        try {
-            Statement stmt = makeConnection();
-            String query = "SELECT * FROM product;";
-            ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-                uniqueBrands.add(rs.getString("brand"));
-            }
-
-//            for (String s : uniqueBrands) {
-//                System.out.println(s);
-//            }
-            return uniqueBrands;
-
-        } catch (SQLException e) {
-            e.getStackTrace();
-        }
-        return null;
-    }
-
-    public static ArrayList<Product> selectedProductsByBrandFromDb(String selectedBrand, ArrayList<Product> selectedProducts) {
-//        ArrayList<Product> selectedProducts = new ArrayList<>();
-        try {
-            Statement stmt = makeConnection();
-            String query = "SELECT * FROM product WHERE brand = '" + selectedBrand + "';";
-            ResultSet rs = stmt.executeQuery(query);
-
-            while (rs.next()) {
-                selectedProducts.add(costructProd(rs));
-            }
-            return selectedProducts;
-        } catch (SQLException e) {
-            e.getStackTrace();
-        }
-        return selectedProducts;
-    }
-
     public static ArrayList<Product> byTypeProductsFromDb(String type, ArrayList<Product> devicesByType) {
 
         try {
