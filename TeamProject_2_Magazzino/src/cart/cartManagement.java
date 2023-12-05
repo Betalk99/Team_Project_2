@@ -92,15 +92,14 @@ public class cartManagement {
     public static void cartStatus() throws SQLException {
         ArrayList<Product> cart = new ArrayList<>();
         Statement stmt = DbManagement.makeConnection();
-        ResultSet rs = stmt.executeQuery("SELECT product.id, product.type, product.brand, product.model, product.description, product.displaysize, product.storagecap, product.purchaseprice, product.sellprice" +
+        ResultSet rs = stmt.executeQuery("SELECT *" +
                                              " FROM cart" +
                                              " INNER JOIN product ON cart.idProduct = product.id;");
         if(!rs.next()) {
             System.out.println("The cart is empty.");
         } else {
             while (rs.next()) {
-                ProductTypes enumValue = (ProductTypes) rs.getObject("type");
-                cart.add(new Product(enumValue, rs.getString("model"), rs.getString("brand"), rs.getString("description"), rs.getDouble("displaysize"), rs.getInt("storagecap"), rs.getBigDecimal("purchaseprice"), rs.getBigDecimal("sellprice"), rs.getInt("id")));
+                cart.add(DbManagement.costructProd(rs));
             }
             System.out.println(cart.toString());
         }
@@ -275,7 +274,7 @@ public class cartManagement {
         int numberOfProducts = cart.getCart().size();
         if (numberOfProducts >= 2) {
             for (int i = 0; i < cart.getCart().size(); i++) {
-                totalAmount += cart.getCart().get(i).getSellPrice();
+//                totalAmount += cart.getCart().get(i).getSellPrice();
             }
             result = totalAmount / numberOfProducts;
             System.out.println("Total amount: " + totalAmount + " €");
@@ -284,7 +283,7 @@ public class cartManagement {
             return result;
         } else if (numberOfProducts != 0) {
             System.out.println("You only have 1 product in your cart, you're going to spend: " + cart.getCart().get(0).getSellPrice() + " €");
-            return cart.getCart().get(0).getSellPrice();
+//            return cart.getCart().get(0).getSellPrice();
         }
         System.out.println("Your cart is empty, please add some products");
         return 0.0;
