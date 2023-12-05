@@ -1,5 +1,7 @@
 package database;
 
+import clients.Clients;
+import clients.Customer;
 import com.sun.source.tree.Tree;
 import product.*;
 
@@ -175,5 +177,42 @@ public class DbManagement {
         return typesFromDb;
     }
 
+    public static int idClient(Clients c){
+        int idClient = 0;
+        try{
+            Statement stmt =DbManagement.makeConnection();
+            String query = "SELECT id FROM client WHERE client.email="+c.getEmail()+";";
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()){
+                idClient = rs.getInt("id");
+            }
+        }catch (SQLException e){
+            e.getStackTrace();
+        }
+        return idClient;
+}
 
+    public static int idCart(int idClient){
+        int idCart = -1;
+        try{
+            Statement stmt = DbManagement.makeConnection();
+            String query = "SELECT * FROM cart " +
+                    "WHERE cart.idClient = "+idClient+" " +
+                    "AND cart.status = 1 ;";
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()){
+                idCart = rs.getInt("idCart");
+            }
+            if(idCart == -1){
+                String query2 = "SELECT MAX(idCart) AS lastID FROM cart";
+                ResultSet rs2 = stmt.executeQuery(query2);
+                while (rs2.next()){
+                    idCart = rs2.getInt("lastID") + 1;
+                }
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return idCart;
+    }
 }

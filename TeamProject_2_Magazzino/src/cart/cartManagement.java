@@ -4,22 +4,23 @@ import database.DbManagement;
 import stock.Stock;
 import product.*;
 
+
 import java.math.BigDecimal;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.OffsetDateTime;
 import java.util.*;
+import choice.*;
+
+import static choice.whichOperationCustomer.stampResult;
 
 public class cartManagement {
     public static Map<OffsetDateTime, ArrayList<Product>> receipt = new LinkedHashMap<>();
 
-    public static void inz(Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
-        arrayTemp.addAll(stock.getListaProdotti());
-        operCar(stock, cart, arrayTemp);
-    }
 
-    public static void operCar(Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
+    public static void operCar(Stock stock, Cart cart, ArrayList<Product> arrayTemp, int idCart , int idClient) {
         try {
             Scanner sc = new Scanner(System.in);
 //        System.out.println(stock);
@@ -43,7 +44,7 @@ public class cartManagement {
                         cartStatus();
                         break;
                     case 2://aggiunta elementi da carrello tramite id
-//                        addId(arrayTemp, cart);
+                        addIdProdDB(idCart,idClient);
                         break;
                     case 3://rimozione elementi da carrello tramite id
                         insertRemoveId(cart, arrayTemp);
@@ -117,6 +118,27 @@ public class cartManagement {
 //            stay = false;
 //        }
 //    }
+
+    public static void addIdProdDB(int idCart, int idClient){
+        try{
+            Statement stmt = DbManagement.makeConnection();
+            whichOperationCustomer.stampResult(DbManagement.stampStockDb());
+            Scanner sc = new Scanner(System.in);
+            System.out.println("Which device do you want to add in your cart from id?");
+            int idProd = sc.nextInt();
+            String query = "INSERT INTO `projectteam`.`cart`\n" +
+                    "(`idCart`,\n" +
+                    "`idProduct`,\n" +
+                    "`idClient`)\n" +
+                    "VALUES\n" +
+                    "(" + idCart + ",\n" +
+                    " " + idProd + ",\n" +
+                    " " + idClient + ");\n";
+            stmt.execute(query);
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
 
 //    public static ArrayList<Product> getAddId(ArrayList<Product> arraytemp, Cart cart, String valoreScelto) {
 //        ArrayList<Product> x = new ArrayList<Product>();
