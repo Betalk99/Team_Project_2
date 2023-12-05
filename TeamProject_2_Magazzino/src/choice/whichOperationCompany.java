@@ -1,15 +1,12 @@
 package choice;
 
-import cart.*;
-import stock.*;
-import product.*;
-
-import java.util.ArrayList;
+import clients.Clients;
+import database.DbManagement;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class whichOperationCompany {
-    public static void oper(Stock stock, Cart cart, ArrayList<Product> arrayTemp) throws InputMismatchException {
+    public static void oper(Clients c) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {
             try {
@@ -31,7 +28,7 @@ public class whichOperationCompany {
 //                        addProduct(stock);
                         break;
                     case 2: //scarico merce da magazzino
-                        removeProduct(stock);
+//                        removeProduct(stock);
                         break;
                     case 3: //creazione carrello
 //                        cartManagement.inz(stock,cart,arrayTemp);
@@ -40,10 +37,10 @@ public class whichOperationCompany {
 //                        Search.productsView(stock);
                         break;
                     case 5: // ricerca per tipo di dispositivo fatta da Antonio Troiano
-                        Search.byType(); //updated on 03.12.23, correctly working based on DB.
+                        DbManagement.byType(); //updated on 03.12.23, correctly working based on DB.
                         break;
                     case 6: // ricerca per brand
-                        Search.byBrand(); //updated on 02.12.23, correctly working based on DB.
+                        DbManagement.byBrand(); //updated on 02.12.23, correctly working based on DB.
                         break;
                     case 7: // ricerca per modello
 //                        Search.inputByModel(stock);
@@ -66,38 +63,5 @@ public class whichOperationCompany {
             }
         }
     }
-
-
-    public static Stock removeProduct(Stock stock) {
-
-        boolean stay = false;
-        int x;
-        int y;
-        Scanner in = new Scanner(System.in);
-        int cout = 1;
-        try {
-            while (stay == false) {
-                for (Product i : stock.getListaProdotti()) {
-                    System.out.println(i);
-                    System.out.println(cout++);
-                }
-                System.out.println("Which product do you want to delete ? \n Indicate id");
-                x = in.nextInt();
-
-                stock.getListaProdotti().remove(x - 1);
-
-                System.out.println("You want to remove another product? 1-Yes / 2-No");
-                y = in.nextInt();
-                if (y == 2) {
-                    stay = true;
-                }
-            }
-        } catch (InputMismatchException e) {
-            System.out.println("Please use a character between 1, 2 or 3");
-            stay = false;
-        }
-        return stock;
-    }
-
 
 }

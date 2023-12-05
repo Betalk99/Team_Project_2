@@ -3,7 +3,7 @@ package choice;
 import cart.*;
 import clients.Clients;
 import database.DbManagement;
-import stock.*;
+
 import product.*;
 
 import java.sql.SQLException;
@@ -20,7 +20,7 @@ public class whichOperationCustomer {
         }
     }
 
-    public static void oper(Stock stock, Cart cart, ArrayList<Product> arrayTemp, Clients c) throws InputMismatchException {
+    public static void oper(Clients c) throws InputMismatchException {
 
 
 
@@ -44,16 +44,16 @@ public class whichOperationCustomer {
                     case 1: //gestisci il tuo carello
                         int idCliente = DbManagement.idClient(c);
                         int idCart = DbManagement.idCart(idCliente);
-                        cartManagement.operCar(stock,cart,arrayTemp,idCart,idCliente);
+                        cartManagement.operCar(idCart,idCliente);
                         break;
                     case 2: // stampare tutti i dispositivi nel magazzino
                         stampResult(DbManagement.stampStockDb());
                         break;
                     case 3: // ricerca per tipo di dispositivo
-                        Search.byType();//updated on 03.12.23, correctly working based on DB.
+                        DbManagement.byType();//updated on 03.12.23, correctly working based on DB.
                         break;
                     case 4: // ricerca per brand
-                            stampResult(Search.byBrand()); //updated on 02.12.23, correctly working based on DB.
+                            stampResult(DbManagement.byBrand()); //updated on 02.12.23, correctly working based on DB.
                         break;
                     case 5: // ricerca per modello
                         stampResult(DbManagement.byModelDb());

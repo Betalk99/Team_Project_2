@@ -1,7 +1,6 @@
 package cart;
 
 import database.DbManagement;
-import stock.Stock;
 import product.*;
 
 
@@ -13,8 +12,6 @@ import java.sql.Statement;
 import java.time.OffsetDateTime;
 import java.util.*;
 import choice.*;
-
-import static choice.whichOperationCustomer.stampResult;
 
 public class cartManagement {
 
@@ -30,7 +27,7 @@ public class cartManagement {
     public static Map<OffsetDateTime, ArrayList<Product>> receipt = new LinkedHashMap<>();
 
 
-    public static void operCar(Stock stock, Cart cart, ArrayList<Product> arrayTemp, int idCart , int idClient) {
+    public static void operCar(int idCart , int idClient) {
 
         System.out.println("CART ID " + idCart);
 
