@@ -1,6 +1,7 @@
 package choice;
 
 import cart.*;
+import clients.Clients;
 import database.DbManagement;
 import stock.*;
 import product.*;
@@ -19,7 +20,7 @@ public class whichOperationCustomer {
         }
     }
 
-    public static void oper(Stock stock, Cart cart, ArrayList<Product> arrayTemp) throws InputMismatchException {
+    public static void oper(Stock stock, Cart cart, ArrayList<Product> arrayTemp, Clients c) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {
             try {
@@ -38,7 +39,9 @@ public class whichOperationCustomer {
                 int category = in.nextInt();
                 switch (category) {
                     case 1: //gestisci il tuo carello
-                        cartManagement.inz(stock,cart,arrayTemp);
+                        int idCliente = DbManagement.idClient(c);
+                        int idCart = DbManagement.idCart(idCliente);
+                        cartManagement.operCar(stock,cart,arrayTemp,idCart,idCliente);
                         break;
                     case 2: // stampare tutti i dispositivi nel magazzino
                         stampResult(DbManagement.stampStockDb());

@@ -263,7 +263,7 @@ public class AccessOrRegister {
 
     public static void whatType(Clients c1, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
         if (c1.getType().equals(ClientType.Customer)) {
-            whichOperationCustomer.oper(stock, cart, arrayTemp);
+            whichOperationCustomer.oper(stock, cart, arrayTemp,c1);
         } else if (c1.getType().equals(ClientType.Company)) {
             whichOperationCompany.oper(stock, cart, arrayTemp);
         }
