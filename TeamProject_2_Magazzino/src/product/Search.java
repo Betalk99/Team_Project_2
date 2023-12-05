@@ -72,124 +72,124 @@ public class Search {
 //        }
 //    }
 
-    public static void inputByModel(Stock stock) {
-        boolean isTrue = false;
-        while (!isTrue) {
-            try {
-                Scanner in = new Scanner(System.in);
-                System.out.println("Tell me the model you want to search for: ");
-                String model = in.nextLine();
+//    public static void inputByModel(Stock stock) {
+//        boolean isTrue = false;
+//        while (!isTrue) {
+//            try {
+//                Scanner in = new Scanner(System.in);
+//                System.out.println("Tell me the model you want to search for: ");
+//                String model = in.nextLine();
+//
+//                byModel(stock, model);
+//
+//                System.out.println("Would you like to have another research by product range? 1)Yes   2)No");
+//                int stay = in.nextInt();
+//                if (stay == 2) {
+//                    isTrue = true;
+//                }
+//            } catch (InputMismatchException e) {
+//                System.out.println("Please use an integer number (e.g. 250");
+//                isTrue = false;
+//            }
+//        }
+//    }
 
-                byModel(stock, model);
 
-                System.out.println("Would you like to have another research by product range? 1)Yes   2)No");
-                int stay = in.nextInt();
-                if (stay == 2) {
-                    isTrue = true;
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Please use an integer number (e.g. 250");
-                isTrue = false;
-            }
-        }
-    }
+//    public static ArrayList<Product> byModel(Stock stock, String model) {
+//        ArrayList<Product> tempByModel = new ArrayList<>();
+//        if (model != null) {
+//            for (int i = 0; i < stock.getListaProdotti().size(); i++) {
+//                if (stock.getListaProdotti().get(i).getModel().toLowerCase().equals(model.toLowerCase())) {
+//                    tempByModel.add(stock.getListaProdotti().get(i));
+//                }
+//            }
+//            return tempByModel;
+//        } else {
+//            return null;
+//        }
+//
+//    }
 
-
-    public static ArrayList<Product> byModel(Stock stock, String model) {
-        ArrayList<Product> tempByModel = new ArrayList<>();
-        if (model != null) {
-            for (int i = 0; i < stock.getListaProdotti().size(); i++) {
-                if (stock.getListaProdotti().get(i).getModel().toLowerCase().equals(model.toLowerCase())) {
-                    tempByModel.add(stock.getListaProdotti().get(i));
-                }
-            }
-            return tempByModel;
-        } else {
-            return null;
-        }
-
-    }
-
-    public static void bySellPriceRange(Stock stock) throws InputMismatchException {
-
-        boolean isTrue = false;
-        while (!isTrue) {
-            try {
-                double[] rangeValues = new double[2];
-                Scanner in = new Scanner(System.in);
-                System.out.println("Search products by price range");
-                System.out.println("From");
-                rangeValues[0] = in.nextDouble();
-                System.out.println("to");
-                rangeValues[1] = in.nextDouble();
-                Arrays.sort(rangeValues);
-                boolean inRange = false;
-                for (int i = 0; i < stock.getListaProdotti().size(); i++) {
-                    if (stock.getListaProdotti().get(i).getSellPrice() >= rangeValues[0] && stock.getListaProdotti().get(i).getSellPrice() <= rangeValues[1]) {
-                        System.out.println(stock.getListaProdotti().get(i));
-                        inRange = true;
-                    }
-                }
-                if (!inRange) {
-                    System.out.println("We don't have products for this price range in our stock");
-                }
-                System.out.println("Would you like to have another research by product range? 1)Yes   2)No");
-                int stay = in.nextInt();
-                if (stay == 2) {
-                    isTrue = true;
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Please use an integer number (e.g. 250");
-                isTrue = false;
-            }
-        }
-    }
-
-    public static void inputRange(Stock stock) {
-        boolean isTrue = false;
-        while (!isTrue) {
-
-            double[] rangeValues = new double[2];
-            Scanner in = new Scanner(System.in);
-            System.out.println("Search products by cost range");
-            System.out.println("From");
-            rangeValues[0] = in.nextDouble();
-            System.out.println("to");
-            rangeValues[1] = in.nextDouble();
-            Arrays.sort(rangeValues);
-
-          //  byCostPriceRange(stock, rangeValues);
-
-            System.out.println("Would you like to research other products based on cost range? 1)Yes   2)No");
-            int stay = in.nextInt();
-            if (stay == 2) {
-                isTrue = true;
-            }
-        }
-    }
-
-    public static ArrayList<Product> byCostPriceRange(Stock stock, double[] rangeValues) throws InputMismatchException {
-        ArrayList<Product> temp = new ArrayList<>();
-        try {
-            for (int i = 0; i < stock.getListaProdotti().size(); i++) {
-                if (stock.getListaProdotti().get(i).getPurchasePrice() >= rangeValues[0] && stock.getListaProdotti().get(i).getPurchasePrice() <= rangeValues[1]) {
+//    public static void bySellPriceRange(Stock stock) throws InputMismatchException {
+//
+//        boolean isTrue = false;
+//        while (!isTrue) {
+//            try {
+//                double[] rangeValues = new double[2];
+//                Scanner in = new Scanner(System.in);
+//                System.out.println("Search products by price range");
+//                System.out.println("From");
+//                rangeValues[0] = in.nextDouble();
+//                System.out.println("to");
+//                rangeValues[1] = in.nextDouble();
+//                Arrays.sort(rangeValues);
+//                boolean inRange = false;
+//                for (int i = 0; i < stock.getListaProdotti().size(); i++) {
+//                    if (stock.getListaProdotti().get(i).getSellPrice() >= rangeValues[0] && stock.getListaProdotti().get(i).getSellPrice() <= rangeValues[1]) {
 //                        System.out.println(stock.getListaProdotti().get(i));
-                    temp.add(stock.getListaProdotti().get(i));
-                }
-            }
-            return temp;
-        } catch (InputMismatchException e) {
-            System.out.println("Please use an integer number (e.g. 250");
-        }
-        return temp;
-    }
+//                        inRange = true;
+//                    }
+//                }
+//                if (!inRange) {
+//                    System.out.println("We don't have products for this price range in our stock");
+//                }
+//                System.out.println("Would you like to have another research by product range? 1)Yes   2)No");
+//                int stay = in.nextInt();
+//                if (stay == 2) {
+//                    isTrue = true;
+//                }
+//            } catch (InputMismatchException e) {
+//                System.out.println("Please use an integer number (e.g. 250");
+//                isTrue = false;
+//            }
+//        }
+//    }
+//
+//    public static void inputRange(Stock stock) {
+//        boolean isTrue = false;
+//        while (!isTrue) {
+//
+//            double[] rangeValues = new double[2];
+//            Scanner in = new Scanner(System.in);
+//            System.out.println("Search products by cost range");
+//            System.out.println("From");
+//            rangeValues[0] = in.nextDouble();
+//            System.out.println("to");
+//            rangeValues[1] = in.nextDouble();
+//            Arrays.sort(rangeValues);
+//
+//            //  byCostPriceRange(stock, rangeValues);
+//
+//            System.out.println("Would you like to research other products based on cost range? 1)Yes   2)No");
+//            int stay = in.nextInt();
+//            if (stay == 2) {
+//                isTrue = true;
+//            }
+//        }
+//    }
 
-
-    public static void productsView(Stock stock) {
-        for (int i = 0; i < stock.getListaProdotti().size(); i++) {
-            System.out.println(stock.getListaProdotti().get(i));
-        }
-    }
+//    public static ArrayList<Product> byCostPriceRange(Stock stock, double[] rangeValues) throws InputMismatchException {
+//        ArrayList<Product> temp = new ArrayList<>();
+//        try {
+//            for (int i = 0; i < stock.getListaProdotti().size(); i++) {
+//                if (stock.getListaProdotti().get(i).getPurchasePrice() >= rangeValues[0] && stock.getListaProdotti().get(i).getPurchasePrice() <= rangeValues[1]) {
+////                        System.out.println(stock.getListaProdotti().get(i));
+//                    temp.add(stock.getListaProdotti().get(i));
+//                }
+//            }
+//            return temp;
+//        } catch (InputMismatchException e) {
+//            System.out.println("Please use an integer number (e.g. 250");
+//        }
+//        return temp;
+//    }
+//
+//
+//    public static void productsView(Stock stock) {
+//        for (int i = 0; i < stock.getListaProdotti().size(); i++) {
+//            System.out.println(stock.getListaProdotti().get(i));
+//        }
+//    }
 
     public static ArrayList<Product> byBrand() {
         Scanner sc = new Scanner(System.in);

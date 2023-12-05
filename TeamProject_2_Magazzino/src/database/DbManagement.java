@@ -181,7 +181,7 @@ public class DbManagement {
         int idClient = 0;
         try{
             Statement stmt =DbManagement.makeConnection();
-            String query = "SELECT id FROM client WHERE client.email="+c.getEmail()+";";
+            String query = "SELECT * FROM client WHERE email = '" + c.getEmail() + "';";
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){
                 idClient = rs.getInt("id");
