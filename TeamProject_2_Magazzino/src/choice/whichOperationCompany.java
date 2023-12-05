@@ -43,7 +43,7 @@ public class whichOperationCompany {
                         Search.byType(); //updated on 03.12.23, correctly working based on DB.
                         break;
                     case 6: // ricerca per brand
-                            Search.byBrand(); //updated on 02.12.23, correctly working based on DB.
+                        Search.byBrand(); //updated on 02.12.23, correctly working based on DB.
                         break;
                     case 7: // ricerca per modello
 //                        Search.inputByModel(stock);
@@ -63,66 +63,18 @@ public class whichOperationCompany {
             } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
                 isTrue = false;
-            } 
+            }
         }
     }
 
-//    public static Stock addProduct(Stock stock){
-//        boolean stay = false;
-//        int x;
-//        int y;
-//        Scanner in = new Scanner(System.in);
-//
-//        try {
-//            while (stay == false) {
-//
-//                System.out.println("Which product do you want to insert ? \n 1-Tablet \n 2-Smartphone \n 3-Notebook \n");
-//                x = in.nextInt();
-//
-//                switch (x) {
-//                    case 1:
-//                        Tablet tablet = Tablet.inputKeyboard();
-////                        stock.add(tablet);
-//                        stock.getListaProdotti().add(tablet);
-//                        break;
-//                    case 2:
-//                        Smartphone smartphone = Smartphone.inputKeyboard();
-////                        stock.add(smartphone);
-//                        stock.getListaProdotti().add(smartphone);
-//                        break;
-//                    case 3:
-//                        Notebook notebook = Notebook.inputKeyboard();
-////                        stock.add(notebook);
-//                        stock.getListaProdotti().add(notebook);
-//                        break;
-//                    default:
-//                        System.out.println("Error ");
-//                        break;
-//
-//                }
-//                System.out.println("You want to add another product? 1-Yes / 2-No");
-//                y = in.nextInt();
-//                if (y == 2) {
-//                    stay = true;
-//                }
-//            }
-//        }catch (InputMismatchException e){
-//        System.out.println("Please use a character between 1, 2 or 3");
-//        stay = false;
-//    }
-//
-//        return stock;
-//
-//    }
 
-
-    public static Stock removeProduct (Stock stock){
+    public static Stock removeProduct(Stock stock) {
 
         boolean stay = false;
         int x;
         int y;
         Scanner in = new Scanner(System.in);
-        int cout=1;
+        int cout = 1;
         try {
             while (stay == false) {
                 for (Product i : stock.getListaProdotti()) {
@@ -140,17 +92,12 @@ public class whichOperationCompany {
                     stay = true;
                 }
             }
-        }catch (InputMismatchException e){
+        } catch (InputMismatchException e) {
             System.out.println("Please use a character between 1, 2 or 3");
             stay = false;
         }
         return stock;
     }
-
-
-
-
-
 
 
 }
