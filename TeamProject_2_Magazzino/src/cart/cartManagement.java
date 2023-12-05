@@ -70,10 +70,12 @@ public class cartManagement {
                         break;
                     case 6://Prezzo totale dei prodotti nel carrello.
                         break;
-                    case 7:
+                    case 7://Svuota carrello.
+                        getEmptyCart(idClient);
                         break;
                     case 8:
                         //averageSpending(cart);
+                        System.out.println(avarageAmountSpent(idClient,idCart));
                         break;
                 }
 
@@ -154,5 +156,44 @@ public class cartManagement {
         }catch(SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static void getEmptyCart(int idClient){
+        try{
+            Statement stmt = DbManagement.makeConnection();
+            System.out.println("Do you want get empty cart?\nIf you are sure press : 1(Yes) or 2(No)");
+            stampYourCart(cartStatus(idClient));
+            Scanner sc = new Scanner(System.in);
+            int choice = sc.nextInt();
+            String query = "DELETE FROM `projectteam`.`cart` " +
+                    "WHERE `cart`.`idClient` = " + idClient + " " +
+                    "AND `cart`.`status` = 1 ;";
+            if(choice == 1){
+                stmt.execute(query);
+            }else{
+                System.out.println("You have chosen not to empty your cart!");
+            }
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static BigDecimal avarageAmountSpent(int idClient, int idCart){
+        BigDecimal sum = null;
+        try{
+            Statement stmt = DbManagement.makeConnection();
+            System.out.println("Your avarage amount is : ");
+            String query = "SELECT SUM(p.sellprice) AS sum FROM cart AS c " +
+                    "JOIN product AS p ON c.idProduct = p.id " +
+                    "WHERE c.idClient = " + idClient + " AND c.idCart = " + idCart + ";";
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()){
+                sum = BigDecimal.valueOf(rs.getInt("sum"));
+            }
+
+        }catch(SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return sum;
     }
 }
