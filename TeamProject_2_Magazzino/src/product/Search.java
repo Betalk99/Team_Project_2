@@ -158,7 +158,7 @@ public class Search {
             rangeValues[1] = in.nextDouble();
             Arrays.sort(rangeValues);
 
-            byCostPriceRange(stock, rangeValues);
+          //  byCostPriceRange(stock, rangeValues);
 
             System.out.println("Would you like to research other products based on cost range? 1)Yes   2)No");
             int stay = in.nextInt();

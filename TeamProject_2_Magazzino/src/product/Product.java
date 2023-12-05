@@ -1,5 +1,7 @@
 package product;
 
+import java.math.BigDecimal;
+
 public class Product {
     public ProductTypes type;
     private String model;
@@ -7,11 +9,11 @@ public class Product {
     private String description;
     private double displaySize;
     private double storageCap;
-    private double purchasePrice;
-    private double sellPrice;
+    private BigDecimal purchasePrice;
+    private BigDecimal sellPrice;
     private int itemId;
 
-    public Product(ProductTypes type, String brand, String model, String description, double displaySize, double storageCap, double purchasePrice, double sellPrice, int itemId) {
+    public Product(ProductTypes type, String brand, String model, String description, double displaySize, double storageCap, BigDecimal purchasePrice, BigDecimal sellPrice, int itemId) {
         this.type = type;
         this.brand = brand;
         this.model = model;
@@ -63,19 +65,19 @@ public class Product {
         this.storageCap = storageCap;
     }
 
-    public double getPurchasePrice() {
+    public BigDecimal getPurchasePrice() {
         return purchasePrice;
     }
 
-    public void setPurchasePrice(double purchasePrice) {
+    public void setPurchasePrice(BigDecimal purchasePrice) {
         this.purchasePrice = purchasePrice;
     }
 
-    public double getSellPrice() {
+    public BigDecimal getSellPrice() {
         return sellPrice;
     }
 
-    public void setSellPrice(double sellPrice) {
+    public void setSellPrice(BigDecimal sellPrice) {
         this.sellPrice = sellPrice;
     }
 
