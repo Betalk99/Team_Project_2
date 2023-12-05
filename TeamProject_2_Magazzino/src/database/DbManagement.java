@@ -18,7 +18,7 @@ public class DbManagement {
 
     public static Product costructProd(ResultSet rs) throws SQLException {
 
-        Product p = new Product(ProductTypes.valueOf(rs.getString("type")), rs.getString("brand"), rs.getString("model"), rs.getString("description"), rs.getDouble("displaySize"), rs.getDouble("storageCap"), rs.getDouble("purchaseprice"), rs.getDouble("sellprice"), rs.getInt("id"));
+        Product p = new Product(ProductTypes.valueOf(rs.getString("type")), rs.getString("brand"), rs.getString("model"), rs.getString("description"), rs.getDouble("displaySize"), rs.getDouble("storageCap"), rs.getBigDecimal("purchaseprice"), rs.getBigDecimal("sellprice"), rs.getInt("id"));
         return p;
     }
 

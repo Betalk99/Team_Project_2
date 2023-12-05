@@ -1,8 +1,13 @@
 package cart;
 
+import database.DbManagement;
 import stock.Stock;
 import product.*;
 
+import java.math.BigDecimal;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -35,11 +40,7 @@ public class cartManagement {
                 int operCarr = sc.nextInt();
                 switch (operCarr) {
                     case 1://controllo stato carrello
-                        if (stampCart(cart)) {
-                            System.out.println("The cart is empty");
-                        } else {
-                            System.out.println(cart);
-                        }
+                        cartStatus();
                         break;
                     case 2://aggiunta elementi da carrello tramite id
 //                        addId(arrayTemp, cart);
@@ -60,7 +61,7 @@ public class cartManagement {
                         cart.getCart().clear();
                         break;
                     case 8:
-                        averageSpending(cart);
+                        //averageSpending(cart);
                         break;
                 }
 
@@ -83,14 +84,27 @@ public class cartManagement {
             }
         } catch (InputMismatchException e) {
             System.out.println("Error: invalid input.");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
-
-    public static boolean stampCart(Cart cart) {
-        return cart.getCart().isEmpty();
+    public static void cartStatus() throws SQLException {
+        ArrayList<Product> cart = new ArrayList<>();
+        Statement stmt = DbManagement.makeConnection();
+        ResultSet rs = stmt.executeQuery("SELECT product.id, product.type, product.brand, product.model, product.description, product.displaysize, product.storagecap, product.purchaseprice, product.sellprice" +
+                                             " FROM cart" +
+                                             " INNER JOIN product ON cart.idProduct = product.id;");
+        if(!rs.next()) {
+            System.out.println("The cart is empty.");
+        } else {
+            while (rs.next()) {
+                ProductTypes enumValue = (ProductTypes) rs.getObject("type");
+                cart.add(new Product(enumValue, rs.getString("model"), rs.getString("brand"), rs.getString("description"), rs.getDouble("displaysize"), rs.getInt("storagecap"), rs.getBigDecimal("purchaseprice"), rs.getBigDecimal("sellprice"), rs.getInt("id")));
+            }
+            System.out.println(cart.toString());
+        }
     }
-
 //    public static void addId(ArrayList<Product> arrayTemp, Cart cart) {
 //        boolean stay = true;
 //        while (stay) {
@@ -241,17 +255,17 @@ public class cartManagement {
         }
     }
 
-    public static double cartTotal(Cart cart) {
+    public static BigDecimal cartTotal(Cart cart) {
         try {
-            double totalPrice = 0;
+            BigDecimal totalPrice = BigDecimal.valueOf(0);
             for (int i = 0; i < cart.getCart().size(); i++) {
-                totalPrice += cart.getCart().get(i).getSellPrice();
+                totalPrice = totalPrice.add(cart.getCart().get(i).getSellPrice());
             }
             System.out.println("Total price of the cart " + totalPrice);
             return totalPrice;
         } catch (NullPointerException e) {
             System.out.println("Error: " + e.getMessage());
-            return -1;
+            return BigDecimal.valueOf(-1);
         }
     }
 
