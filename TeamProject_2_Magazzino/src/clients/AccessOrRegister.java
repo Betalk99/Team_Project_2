@@ -2,28 +2,24 @@ package clients;
 
 import cart.Cart;
 import database.DbManagement;
-import stock.Stock;
-import product.Product;
 import choice.whichOperationCompany;
 import choice.whichOperationCustomer;
 
 import java.math.BigInteger;
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AccessOrRegister {
 
-    public static void inputSelect(ListClients list, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
+    public static void inputSelect() {
         boolean isTrue = false;
         while (!isTrue) {
             try {
                 Scanner in = new Scanner(System.in);
-                registerAcces(list, stock, cart, arrayTemp);
+                registerAcces();
                 System.out.println("Would you like to make other researches? 1)Yes   2)No");
                 int stay = in.nextInt();
                 if (stay == 2) {
@@ -36,7 +32,7 @@ public class AccessOrRegister {
         }
     }
 
-    public static void registerAcces(ListClients list, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
+    public static void registerAcces() {
        try {
            Scanner in = new Scanner(System.in);
            boolean stay = false;
@@ -50,7 +46,7 @@ public class AccessOrRegister {
                int selection = in.nextInt();
                switch (selection) {
                    case 1 :
-                       accessPage(list, stock, cart, arrayTemp);
+                       accessPage();
                        stay = true;
                        break;
                    case 2 :
@@ -75,7 +71,7 @@ public class AccessOrRegister {
     }
 
 
-    public static void accessPage(ListClients list, Stock stock, Cart cart, ArrayList<Product> arrayTemp) throws SQLException {
+    public static void accessPage() throws SQLException {
         Scanner in = new Scanner(System.in);
         boolean isTrue = false;
         boolean isOk = false;
@@ -89,7 +85,7 @@ public class AccessOrRegister {
                 System.out.println("Insert Password: ");
                 String b = in.next();
                     if (checkPassword(b, c)) {
-                        whatType(c, stock, cart, arrayTemp);
+                        whatType(c);
                         isOk = true;
                     } else {
                         System.out.println("\nPassword error");
@@ -152,46 +148,6 @@ public class AccessOrRegister {
 
     }
 
-    public static Company registerCompany() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Insert name Company: ");
-        String name = in.next();
-        System.out.println("Insert email Company: ");
-        String email = in.next();
-        System.out.println("Insert pIVA Company: ");
-        String pIVA = in.next();
-        System.out.println("Insert username Company: ");
-        String username = in.next();
-        System.out.println("Insert password Company: ");
-        String password = in.next();
-        System.out.println("Insert number phone Company: ");
-        BigInteger numTel = in.nextBigInteger();
-
-
-        Company c1 = new Company(ClientType.Company, name, email, pIVA, username, password, numTel);
-
-        return c1;
-    }
-
-    public static Customer registerCustomer() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Insert name Customer: ");
-        String name = in.next();
-        System.out.println("Insert surname Customer: ");
-        String surname = in.next();
-        System.out.println("Insert email Customer: ");
-        String email = in.next();
-        System.out.println("Insert username Customer: ");
-        String username = in.next();
-        System.out.println("Insert password Customer: ");
-        String password = in.next();
-        System.out.println("Insert number phone Customer: ");
-        BigInteger numTel = in.nextBigInteger();
-
-        Customer c1 = new Customer(ClientType.Customer, name, surname, email, username, password, numTel);
-
-        return c1;
-    }
 
     public static void registerCustomerDb() throws SQLException{
         try{
@@ -261,36 +217,13 @@ public class AccessOrRegister {
 
 
 
-    public static void whatType(Clients c1, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
+    public static void whatType(Clients c1) {
         if (c1.getType().equals(ClientType.Customer)) {
-            whichOperationCustomer.oper(stock, cart, arrayTemp,c1);
+            whichOperationCustomer.oper(c1);
         } else if (c1.getType().equals(ClientType.Company)) {
-            whichOperationCompany.oper(stock, cart, arrayTemp);
+            whichOperationCompany.oper(c1);
         }
     }
-
-    public static ListClients checkresetPsw(ListClients list) {
-        Scanner in = new Scanner(System.in);
-        System.out.println("To reset your password, give me the email address associated with your account: ");
-        String mail = in.next();
-        if (checkMail(list, mail)) {
-            resetPsw(list, mail);
-        } else {
-            System.out.println("Invalid Mail");
-        }
-        return list;
-    }
-
-    public static boolean checkMail(ListClients list, String mail) {
-        for (Clients i : list.getList()) {
-            if (i.getEmail().equals(mail)) {
-                System.out.println("Correct Mail");
-                return true;
-            }
-        }
-        return false;
-    }
-
 
     public static boolean checkMailDb(String mail)throws SQLException {
         try{
@@ -311,8 +244,6 @@ public class AccessOrRegister {
     }
 
 
-
-
     public static boolean checkPassword(String psw, Clients c) {
             if (c.getPassword().equals(psw)) {
                 System.out.println("Correct Password");
@@ -320,20 +251,6 @@ public class AccessOrRegister {
             }
 
         return false;
-    }
-
-
-
-    public static ListClients resetPsw(ListClients list, String mail) {
-        Scanner in = new Scanner(System.in);
-        for (Clients i : list.getList()) {
-            if (i.getEmail().equals(mail)) {
-                System.out.println("Insert new password: ");
-                String psw = in.next();
-                i.setPassword(psw);
-            }
-        }
-        return list;
     }
 
 
