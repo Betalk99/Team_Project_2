@@ -1,6 +1,7 @@
 package cart;
 
 import database.DbManagement;
+import order.Orders;
 import product.*;
 
 
@@ -171,53 +172,6 @@ public class cartManagement {
         }
     }
 
-    /*public static void proceedToCheckout(int idCart, int idClient) throws SQLException {
-        ArrayList<Integer> productsToVerifyOne = new ArrayList<>();
-        ArrayList<Integer> productsToVerifyTwo = new ArrayList<>();
-        boolean productAvailability = true;
-        Statement stmt = DbManagement.makeConnection();
-        Statement stmt2 = DbManagement.makeConnection();
-        ResultSet rs1 = stmt.executeQuery("SELECT id FROM product");
-        ResultSet rs2 = stmt2.executeQuery("SELECT idProduct FROM cart WHERE" +
-                " idCart = " + idCart + " AND " + " idClient =" + idClient + ";");
-        while(rs1.next()) {
-            productsToVerifyOne.add(Integer.valueOf(rs1.getInt("id")));
-        }
-        while(rs2.next()) {
-            productsToVerifyTwo.add(Integer.valueOf(rs1.getInt("idProduct")));
-        }
-        for(int i = 0; i < productsToVerifyTwo.size(); i++) {
-            if(!productsToVerifyOne.contains(productsToVerifyTwo.get(i))) {
-                productAvailability = false;
-                break;
-            }
-        }
-        //Logica necessaria a verificare la permanenza dei prodotti in magazzino
-        // nel tempo necessario a finalizzare l'acquisto.
-        if(productAvailability) {
-            System.out.println("Your purchase has been finalized and your items are ready for shipping.");
-            stmt.executeUpdate("INSERT INTO order (idCart, date)" +
-                    " VALUES (" + idCart + ", '" + OffsetDateTime.now() + "')");
-            //Aggiunta ordine alla tabella ordini.
-            stmt.executeUpdate("UPDATE cart" +
-                                   " SET orderStatus = 1" +
-                                   " WHERE idClient = " + idClient + " AND idCart = " + idCart + ";");
-            //Aggiornamento dello stato dei beni nel carrello tramite update di una nuova colonna "orderStatus".
-            for(int i = 0; i < productsToVerifyTwo.size(); i++) {
-                stmt.executeUpdate("DELETE product" +
-                        " WHERE id = " + productsToVerifyTwo.get(i).intValue() + ";");
-            //Eliminazione dei prodotti di cui è stato finalizzato l'acquisto dal magazzino.
-            }
-        } else {
-            System.out.println("We are sorry. It seems that one of the selected items became unavailable while you were finalizing your purchase.");
-            stmt.executeUpdate("DELETE FROM cart" +
-                                   " WHERE idCart = " + idCart + " AND idClient = " + idClient + " AND orderStatus = 0;");
-        }
-    }*/
-
-
-
-
     public static void checkout(int idCart, int idClient){  //checkout fatto da Bruno Orlandi
         try{
             Scanner in = new Scanner(System.in);
@@ -250,22 +204,24 @@ public class cartManagement {
 
     public static ArrayList<Product> myOrder(int idClient){
         ArrayList<Product> choiceOrder = new ArrayList<>();
+        ArrayList<Orders> listOrder = new ArrayList<>();
         try{
             Scanner in = new Scanner(System.in);
 
-            HashSet<Integer> listIdCart = new HashSet<>();
-            HashSet<String> listDate = new HashSet<>();
             Statement stmt = DbManagement.makeConnection();
             String orderClient = "SELECT * FROM orders AS o\n" +
                     "JOIN cart AS c ON o.idCart = c.idCart\n" +
                     "WHERE c.idClient = "+ idClient +"; ";
             ResultSet rs = stmt.executeQuery(orderClient);
+
             while (rs.next()){
-                listIdCart.add(rs.getInt("idCart"));
-                listDate.add(rs.getString("date"));
+                if(!(listOrder.contains(DbManagement.costructOrder(rs)))){
+                    listOrder.add(DbManagement.costructOrder(rs));
+                }
             }
 
-            stampMyOrder(listIdCart, listDate);
+            stampMyOrder(listOrder);
+
             System.out.println("Which order do you want to display ? Indicate ID ");
             int idOrder = in.nextInt();
 
@@ -287,13 +243,10 @@ public class cartManagement {
         return choiceOrder;
     }
 
-    public static void stampMyOrder(HashSet<Integer> listIdCart, HashSet<String> listDate ){
-        String[] arrayListDate = listDate.toArray(new String[listDate.size()]);
-        Integer[] arrayListIdCart = listIdCart.toArray(new Integer[listIdCart.size()]);
-
-        for(int i = 0; i < arrayListDate.length; i++){
-            System.out.println("ID Order : " + arrayListIdCart[i] + " Order Date: " + arrayListDate[i]);
-        }
+    public static void stampMyOrder(ArrayList<Orders>  listOrder){
+            for(Orders i: listOrder){
+                System.out.println(i);
+            }
     }
 
 
