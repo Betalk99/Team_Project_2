@@ -3,6 +3,7 @@ package database;
 import clients.Clients;
 import clients.Customer;
 import com.sun.source.tree.Tree;
+import order.Orders;
 import product.*;
 
 import java.sql.*;
@@ -16,6 +17,11 @@ public class DbManagement {
         String password = "TeamDev";
         Connection conn = DriverManager.getConnection(url, user, password);
         return conn.createStatement();
+    }
+
+    public static Orders costructOrder(ResultSet rs) throws SQLException {
+        Orders ord = new Orders(rs.getInt("idCart"), rs.getString("date"));
+        return ord;
     }
 
     public static Product costructProd(ResultSet rs) throws SQLException {
