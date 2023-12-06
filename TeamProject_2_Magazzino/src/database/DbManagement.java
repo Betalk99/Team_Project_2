@@ -217,7 +217,7 @@ public class DbManagement {
     public static int idClient(Clients c){
         int idClient = 0;
         try{
-            Statement stmt =DbManagement.makeConnection();
+            Statement stmt = DbManagement.makeConnection();
             String query = "SELECT * FROM client WHERE email = '" + c.getEmail() + "';";
             ResultSet rs = stmt.executeQuery(query);
             while (rs.next()){

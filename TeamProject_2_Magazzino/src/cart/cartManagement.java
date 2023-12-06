@@ -64,8 +64,10 @@ public class cartManagement {
                     case 4://Finalizza acquisti
                         break;
                     case 5://Aggiunta prodotti al carrello
+                        addProductToCart(idCart,idClient);
                         break;
                     case 6://Prezzo totale dei prodotti nel carrello.
+                        getTotalPrice(idCart, idClient);
                         break;
                     case 7://Svuota carrello.
                         getEmptyCart(idClient);
@@ -109,8 +111,12 @@ public class cartManagement {
                     "WHERE c.idClient = "+ idClient +" AND c.status = 1;";
             ResultSet rs = stmt.executeQuery(joinCartProd);
 
-            while (rs.next()){
+            if(!rs.next()) {
+                System.out.println("The cart is empty.");
+            } else {
+            while (rs.next()) {
                 cart.add(DbManagement.costructProd(rs));
+            }
             }
         }catch (SQLException e){
             System.out.println(e.getMessage());
@@ -155,10 +161,110 @@ public class cartManagement {
         }
     }
 
+    /*public static void proceedToCheckout(int idCart, int idClient) throws SQLException {
+        ArrayList<Integer> productsToVerifyOne = new ArrayList<>();
+        ArrayList<Integer> productsToVerifyTwo = new ArrayList<>();
+        boolean productAvailability = true;
+        Statement stmt = DbManagement.makeConnection();
+        Statement stmt2 = DbManagement.makeConnection();
+        ResultSet rs1 = stmt.executeQuery("SELECT id FROM product");
+        ResultSet rs2 = stmt2.executeQuery("SELECT idProduct FROM cart WHERE" +
+                " idCart = " + idCart + " AND " + " idClient =" + idClient + ";");
+        while(rs1.next()) {
+            productsToVerifyOne.add(Integer.valueOf(rs1.getInt("id")));
+        }
+        while(rs2.next()) {
+            productsToVerifyTwo.add(Integer.valueOf(rs1.getInt("idProduct")));
+        }
+        for(int i = 0; i < productsToVerifyTwo.size(); i++) {
+            if(!productsToVerifyOne.contains(productsToVerifyTwo.get(i))) {
+                productAvailability = false;
+                break;
+            }
+        }
+        //Logica necessaria a verificare la permanenza dei prodotti in magazzino
+        // nel tempo necessario a finalizzare l'acquisto.
+        if(productAvailability) {
+            System.out.println("Your purchase has been finalized and your items are ready for shipping.");
+            stmt.executeUpdate("INSERT INTO order (idCart, date)" +
+                    " VALUES (" + idCart + ", '" + OffsetDateTime.now() + "')");
+            //Aggiunta ordine alla tabella ordini.
+            stmt.executeUpdate("UPDATE cart" +
+                                   " SET orderStatus = 1" +
+                                   " WHERE idClient = " + idClient + " AND idCart = " + idCart + ";");
+            //Aggiornamento dello stato dei beni nel carrello tramite update di una nuova colonna "orderStatus".
+            for(int i = 0; i < productsToVerifyTwo.size(); i++) {
+                stmt.executeUpdate("DELETE product" +
+                        " WHERE id = " + productsToVerifyTwo.get(i).intValue() + ";");
+            //Eliminazione dei prodotti di cui è stato finalizzato l'acquisto dal magazzino.
+            }
+        } else {
+            System.out.println("We are sorry. It seems that one of the selected items became unavailable while you were finalizing your purchase.");
+            stmt.executeUpdate("DELETE FROM cart" +
+                                   " WHERE idCart = " + idCart + " AND idClient = " + idClient + " AND orderStatus = 0;");
+        }
+    }*/
+
+    public static void addProductToCart(int idCart, int idClient) throws SQLException {
+        Scanner sc = new Scanner(System.in);
+        boolean stay = true;
+        while(stay) {
+            System.out.println("Please write the brand of the product you would like to add to your cart.");
+            String brandName = sc.nextLine();
+            System.out.println("Please write the model of the product you would like to add to your cart.");
+            String modelName = sc.nextLine();
+            Statement stmt = DbManagement.makeConnection();
+            String query = "SELECT * FROM product" +
+                    " WHERE brand COLLATE utf8mb4_general_ci = '" + brandName +
+                    "' AND model COLLATE utf8mb4_general_ci = '" + modelName + "'";
+            ResultSet rs = stmt.executeQuery(query);
+            if (!rs.next()) {
+                System.out.println("We are sorry. We couldn't find any product matching your request.");
+            } else {
+                stmt.executeUpdate("INSERT INTO cart (idCart, idProduct, idClient)" +
+                        " VALUES ('" + idCart + "', '" + rs.getString("id") + "', '" + idClient + "')");
+
+            }
+            boolean stay2 = true;
+            while(stay2) {
+                System.out.println("Would you like to try to add one more item to your cart? YES / NO");
+                String reply = sc.nextLine().toLowerCase();
+                switch (reply) {
+                    case "yes":
+                        stay = true;
+                        stay2 = false;
+                        break;
+                    case "no":
+                        stay = false;
+                        stay2 = false;
+                        break;
+                    default:
+                        System.out.println("Please insert a valid answer.");
+                        stay = true;
+                        stay2 = true;
+                }
+            }
+        }
+    }
+
+    public static void getTotalPrice (int idCart, int idClient) throws SQLException {
+        BigDecimal totalPrice = null;
+        Statement stmt = DbManagement.makeConnection();
+        String query = "SELECT SUM(product.sellprice) AS totalprice" +
+                       " FROM cart" +
+                       " JOIN product ON cart.idProduct = product.id" +
+                       " WHERE cart.idClient = " + idClient + " AND cart.idCart = " + idCart + ";";
+        ResultSet rs = stmt.executeQuery(query);
+        while(rs.next()) {
+            totalPrice = rs.getBigDecimal("totalprice");
+        }
+        System.out.println("The total price of the items in your cart is " + totalPrice);
+    }
+
     public static void getEmptyCart(int idClient){
         try{
             Statement stmt = DbManagement.makeConnection();
-            System.out.println("Do you want get empty cart?\nIf you are sure press : 1(Yes) or 2(No)");
+            System.out.println("Do you want to get an empty cart?\nIf you are sure press : 1(Yes) or 2(No)");
             stampYourCart(cartStatus(idClient));
             Scanner sc = new Scanner(System.in);
             int choice = sc.nextInt();
