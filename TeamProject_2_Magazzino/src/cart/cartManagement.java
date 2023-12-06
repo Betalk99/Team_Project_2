@@ -238,7 +238,7 @@ public class cartManagement {
                 stmt.execute(checkout);
                 stmt.executeUpdate("UPDATE cart AS c " +
                         "SET c.status = 0 " +
-                        "WHERE c.idClient = "+ idClient +";");
+                        "WHERE c.idClient = "+ idClient +" AND c.idCart = "+ idCart + ";");
                 System.out.println("You have completed your order in date: " + dateFormat.format(date));
             }else{
                 System.out.println("You have chosen not to checkout your cart " );
