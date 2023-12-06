@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.*;
 import choice.*;
@@ -23,8 +25,14 @@ public class cartManagement {
         System.out.println("\n");
     }
 
-
-    public static Map<OffsetDateTime, ArrayList<Product>> receipt = new LinkedHashMap<>();
+    public static void checkCartEmpty(int idClient) throws SQLException {   // verifica se cart è vuoto
+        ArrayList<Product> cart = cartStatus(idClient);
+        if(cart.isEmpty()){
+            System.out.println("Cart is Empty");
+        }else{
+            stampYourCart(cartStatus(idClient));
+        }
+    }
 
 
     public static void operCar(int idCart , int idClient) {
@@ -47,13 +55,14 @@ public class cartManagement {
                          5) Add products to your cart\s
                          6) Get the total price of the items in the cart\s
                          7) Get empty cart
-                         8) Get the average amount spent""");
+                         8) Get the average amount spent
+                         9) My order""");
 
 
                 int operCarr = sc.nextInt();
                 switch (operCarr) {
                     case 1://controllo stato carrello
-                        stampYourCart(cartStatus(idClient));
+                        checkCartEmpty(idClient);
                         break;
                     case 2://aggiunta elementi da carrello tramite id
                         addIdProdDB(idCart,idClient);
@@ -62,6 +71,7 @@ public class cartManagement {
                         removeProdFromId(idClient);
                         break;
                     case 4://Finalizza acquisti
+                        checkout(idCart,idClient);
                         break;
                     case 5://Aggiunta prodotti al carrello
                         addProductToCart(idCart,idClient);
@@ -72,12 +82,16 @@ public class cartManagement {
                     case 7://Svuota carrello.
                         getEmptyCart(idClient);
                         break;
-                    case 8:
-                        //averageSpending(cart);
+                    case 8: //averageSpending(cart);
                         System.out.println(avarageAmountSpent(idClient,idCart));
                         break;
+                    case 9:// visualizzare ordini precedenti
+                        stampYourCart(myOrder(idClient));
+                        break;
+                    default:
+                        System.out.println("Error in your choice! ");
+                        break;
                 }
-
             }
             boolean stay2 = true;
             while (stay2) {
@@ -111,12 +125,8 @@ public class cartManagement {
                     "WHERE c.idClient = "+ idClient +" AND c.status = 1;";
             ResultSet rs = stmt.executeQuery(joinCartProd);
 
-            if(!rs.next()) {
-                System.out.println("The cart is empty.");
-            } else {
             while (rs.next()) {
                 cart.add(DbManagement.costructProd(rs));
-            }
             }
         }catch (SQLException e){
             System.out.println(e.getMessage());
@@ -204,6 +214,88 @@ public class cartManagement {
                                    " WHERE idCart = " + idCart + " AND idClient = " + idClient + " AND orderStatus = 0;");
         }
     }*/
+
+
+
+
+    public static void checkout(int idCart, int idClient){  //checkout fatto da Bruno Orlandi
+        try{
+            Scanner in = new Scanner(System.in);
+            Statement stmt = DbManagement.makeConnection();
+            cartManagement.stampYourCart(cartStatus(idClient));
+
+            System.out.println("Are you sure you're checkout your cart?   1) YES  2) NO");
+            System.out.println("Total cost is: " + avarageAmountSpent(idClient, idCart));
+            int ans = in.nextInt();
+
+            DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            Date date = new Date();
+
+
+            if(ans == 1){
+                String checkout = "INSERT INTO orders (idCart, date)" +
+                        "VALUES ("+idCart+", '"+ dateFormat.format(date) +"' )";
+                stmt.execute(checkout);
+                stmt.executeUpdate("UPDATE cart AS c " +
+                        "SET c.status = 0 " +
+                        "WHERE c.idClient = "+ idClient +";");
+                System.out.println("You have completed your order in date: " + dateFormat.format(date));
+            }else{
+                System.out.println("You have chosen not to checkout your cart " );
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static ArrayList<Product> myOrder(int idClient){
+        ArrayList<Product> choiceOrder = new ArrayList<>();
+        try{
+            Scanner in = new Scanner(System.in);
+
+            HashSet<Integer> listIdCart = new HashSet<>();
+            HashSet<String> listDate = new HashSet<>();
+            Statement stmt = DbManagement.makeConnection();
+            String orderClient = "SELECT * FROM orders AS o\n" +
+                    "JOIN cart AS c ON o.idCart = c.idCart\n" +
+                    "WHERE c.idClient = "+ idClient +"; ";
+            ResultSet rs = stmt.executeQuery(orderClient);
+            while (rs.next()){
+                listIdCart.add(rs.getInt("idCart"));
+                listDate.add(rs.getString("date"));
+            }
+
+            stampMyOrder(listIdCart, listDate);
+            System.out.println("Which order do you want to display ? Indicate ID ");
+            int idOrder = in.nextInt();
+
+            String visualOrderQuery = "SELECT p.id, p.`type`, p.brand, p.model, p.description, p.displaysize, p.storagecap, p.purchaseprice, p.sellprice FROM orders AS o\n" +
+                    "JOIN cart AS c ON o.idCart = c.idCart\n" +
+                    "JOIN product AS p ON c.idProduct = p.id\n" +
+                    "WHERE c.idClient = " + idClient + " AND c.idCart = " + idOrder + ";";
+
+            ResultSet rs1 = stmt.executeQuery(visualOrderQuery);
+
+            while (rs1.next()){
+                choiceOrder.add(DbManagement.costructProd(rs1));
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }catch (InputMismatchException e){
+            System.out.println(e.getMessage());
+        }
+        return choiceOrder;
+    }
+
+    public static void stampMyOrder(HashSet<Integer> listIdCart, HashSet<String> listDate ){
+        String[] arrayListDate = listDate.toArray(new String[listDate.size()]);
+        Integer[] arrayListIdCart = listIdCart.toArray(new Integer[listIdCart.size()]);
+
+        for(int i = 0; i < arrayListDate.length; i++){
+            System.out.println("ID Order : " + arrayListIdCart[i] + " Order Date: " + arrayListDate[i]);
+        }
+    }
+
 
     public static void addProductToCart(int idCart, int idClient) throws SQLException {
         Scanner sc = new Scanner(System.in);
