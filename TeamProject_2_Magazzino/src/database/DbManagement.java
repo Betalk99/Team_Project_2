@@ -36,9 +36,12 @@ public class DbManagement {
         try {
 
             Statement stmt = makeConnection();
-            System.out.println("Which brand do you want to look for?");
+            System.out.println("What model are you interested in?");
             String model = in.nextLine();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM product WHERE model = '" + model + "';");
+
+            ResultSet rs = stmt.executeQuery("SELECT * FROM product" +
+                                                 " INNER JOIN stock ON product.id = stock.idStock" +
+                                                 " WHERE stock.qty > 0 AND model = '" + model + "';");
 
             while (rs.next()) {
                 prodByModel.add(costructProd(rs));
@@ -63,7 +66,9 @@ public class DbManagement {
             range[1] = in.nextDouble();
             Arrays.sort(range);
 
-            String searchRange = "SELECT * FROM product WHERE product.sellprice > '" + range[0] + "' AND product.sellprice <= '" + range[1] + "';";
+            String searchRange = "SELECT * FROM product " +
+                                 " INNER JOIN stock ON product.id = stock.idStock" +
+                                 " WHERE stock.qty > 0 AND product.sellprice > '" + range[0] + "' AND product.sellprice <= '" + range[1] + "';";
             ResultSet rs = stmt.executeQuery(searchRange);
 
             while (rs.next()) {
@@ -85,7 +90,9 @@ public class DbManagement {
         try {
 
             Statement stmt = makeConnection();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM product ;");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM product" +
+                    " INNER JOIN stock ON product.id = stock.idStock" +
+                    " WHERE stock.qty > 0;");
 
             while (rs.next()) {
                 stock.add(costructProd(rs));
@@ -102,7 +109,9 @@ public class DbManagement {
 
         try {
             Statement stmt = DbManagement.makeConnection();
-            String query = "SELECT * FROM product WHERE type = '" + type + "';";
+            String query = "SELECT * FROM product" +
+                           " INNER JOIN stock ON product.id = stock.idStock" +
+                           " WHERE stock.qty > 0 AND type = '" + type + "';";
 
             ResultSet rs = stmt.executeQuery(query);
 
@@ -180,7 +189,9 @@ public class DbManagement {
 
                     try {
                         Statement stmt = DbManagement.makeConnection();
-                        String query = "SELECT * FROM product WHERE brand = '" + selectedBrand + "';";
+                        String query = "SELECT * FROM product" +
+                                       " INNER JOIN stock ON product.id = stock.idStock" +
+                                       " WHERE stock.qty > 0 AND brand = '" + selectedBrand + "';";
                         ResultSet rs = stmt.executeQuery(query);
 
                         while (rs.next()) {
