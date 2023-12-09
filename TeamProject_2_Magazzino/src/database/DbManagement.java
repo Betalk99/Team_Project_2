@@ -36,12 +36,12 @@ public class DbManagement {
         try {
 
             Statement stmt = makeConnection();
-            System.out.println("Which brand do you want to look for?");
+            System.out.println("What model are you interested in?");
             String model = in.nextLine();
 
             ResultSet rs = stmt.executeQuery("SELECT * FROM product" +
                                                  " INNER JOIN stock ON product.id = stock.idStock" +
-                                                 "WHERE stock.qty > 0 AND model = '" + model + "';");
+                                                 " WHERE stock.qty > 0 AND model = '" + model + "';");
 
             while (rs.next()) {
                 prodByModel.add(costructProd(rs));
