@@ -69,7 +69,7 @@ public class cartManagement {
                         addIdProdDB(idCart,idClient);
                         break;
                     case 3://rimozione elementi da carrello tramite id
-                        removeProdFromId(idClient);
+                        removeProdById(idClient);
                         break;
                     case 4://Finalizza acquisti
                         checkout(idCart,idClient);
@@ -90,7 +90,7 @@ public class cartManagement {
                         stampYourCart(myOrder(idClient));
                         break;
                     default:
-                        System.out.println("Error in your choice! ");
+                        System.out.println("Invalid input.");
                         break;
                 }
             }
@@ -121,9 +121,9 @@ public class cartManagement {
         ArrayList<Product> cart = new ArrayList<>();
         try{
             Statement stmt = DbManagement.makeConnection();
-            String joinCartProd = "SELECT * FROM cart AS c\n" +
-                    "JOIN product AS p ON c.idProduct = p.id\n" +
-                    "WHERE c.idClient = "+ idClient +" AND c.status = 1;";
+            String joinCartProd = "SELECT * FROM product\n" +
+                    "JOIN cart ON cart.idProduct = product.id\n" +
+                    "WHERE cart.idClient = "+ idClient +" AND cart.status = 1;";
             ResultSet rs = stmt.executeQuery(joinCartProd);
 
             while (rs.next()) {
@@ -139,9 +139,10 @@ public class cartManagement {
     public static void addIdProdDB(int idCart, int idClient){
         try{
             Statement stmt = DbManagement.makeConnection();
+            System.out.println("That's the list of the products currently available in our store.");
             whichOperationCustomer.stampResult(DbManagement.stampStockDb());
             Scanner sc = new Scanner(System.in);
-            System.out.println("Which device do you want to add in your cart from id?");
+            System.out.println("Select the ID of the product you would like to add to your cart.");
             int idProd = sc.nextInt();
             String query = "INSERT INTO `projectteam`.`cart`\n" +
                     "(idCart,\n" +
@@ -157,11 +158,10 @@ public class cartManagement {
         }
     }
 
-    public static void removeProdFromId(int idClient){
+    public static void removeProdById(int idClient){
         try{
             Statement stmt = DbManagement.makeConnection();
-            System.out.println("Which product do you want delete from your cart?\n" +
-                    "Select the ID of product.");
+            System.out.println("Select the ID of the product you would like to remove from your cart.");
             stampYourCart(cartStatus(idClient));
             Scanner sc = new Scanner(System.in);
             int idProd = sc.nextInt();
@@ -178,13 +178,20 @@ public class cartManagement {
             Statement stmt = DbManagement.makeConnection();
             cartManagement.stampYourCart(cartStatus(idClient));
 
-            System.out.println("Are you sure you're checkout your cart?   1) YES  2) NO");
-            System.out.println("Total cost is: " + avarageAmountSpent(idClient, idCart));
+            System.out.println("Are you sure you want to proceed to checkout?  1) YES  2) NO");
+            getTotalPrice(idCart, idClient);
             int ans = in.nextInt();
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
 
+            ArrayList<Product> stockUpdate = new ArrayList<>();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM product" +
+                                                 " INNER JOIN cart ON product.id = cart.idProduct" +
+                                                 " WHERE cart.idCart = " + idCart + " AND cart.idClient = " + idClient + ";");
+            while(rs.next()) {
+                stockUpdate.add(DbManagement.costructProd(rs));
+            }
 
             if(ans == 1){
                 String checkout = "INSERT INTO orders (idCart, date)" +
@@ -193,9 +200,16 @@ public class cartManagement {
                 stmt.executeUpdate("UPDATE cart AS c " +
                         "SET c.status = 0 " +
                         "WHERE c.idClient = "+ idClient +" AND c.idCart = "+ idCart + ";");
-                System.out.println("You have completed your order in date: " + dateFormat.format(date));
+
+                for(int i = 0; i < stockUpdate.size(); i++) {
+                    stmt.executeUpdate("UPDATE stock" +
+                                           " SET stock.qty = stock.qty - 1" +
+                                           " WHERE " + stockUpdate.get(i).getItemId() + " = stock.idStock;");
+                }
+
+                System.out.println("You have completed your order on: " + dateFormat.format(date));
             }else{
-                System.out.println("You have chosen not to checkout your cart " );
+                System.out.println("You have chosen not to proceed to checkout." );
             }
         }catch (SQLException e){
             System.out.println(e.getMessage());
@@ -254,6 +268,8 @@ public class cartManagement {
         Scanner sc = new Scanner(System.in);
         boolean stay = true;
         while(stay) {
+            System.out.println("That's the list of the products currently available in our store.");
+            whichOperationCustomer.stampResult(DbManagement.stampStockDb());
             System.out.println("Please write the brand of the product you would like to add to your cart.");
             String brandName = sc.nextLine();
             System.out.println("Please write the model of the product you would like to add to your cart.");
@@ -292,7 +308,7 @@ public class cartManagement {
         }
     }
 
-    public static void getTotalPrice (int idCart, int idClient) throws SQLException {
+    public static BigDecimal getTotalPrice (int idCart, int idClient) throws SQLException {
         BigDecimal totalPrice = null;
         Statement stmt = DbManagement.makeConnection();
         String query = "SELECT SUM(product.sellprice) AS totalprice" +
@@ -304,6 +320,7 @@ public class cartManagement {
             totalPrice = rs.getBigDecimal("totalprice");
         }
         System.out.println("The total price of the items in your cart is " + totalPrice);
+        return totalPrice;
     }
 
     public static void getEmptyCart(int idClient){
