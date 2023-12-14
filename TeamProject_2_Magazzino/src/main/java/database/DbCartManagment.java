@@ -2,9 +2,6 @@ package database;
 
 import cart.cartManagement;
 import choice.whichOperationCustomer;
-import clients.Clients;
-import clients.Customer;
-import com.sun.source.tree.Tree;
 import order.Orders;
 import product.*;
 
