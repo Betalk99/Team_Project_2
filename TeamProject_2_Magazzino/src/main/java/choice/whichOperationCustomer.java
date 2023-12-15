@@ -1,6 +1,6 @@
 package choice;
 
-import cart.*;
+import cart.cartManagement;
 import clients.Clients;
 import database.DbManagement;
 

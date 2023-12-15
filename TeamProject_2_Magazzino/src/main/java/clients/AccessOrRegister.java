@@ -1,6 +1,5 @@
 package clients;
 
-import cart.Cart;
 import database.DbManagement;
 import choice.whichOperationCompany;
 import choice.whichOperationCustomer;
