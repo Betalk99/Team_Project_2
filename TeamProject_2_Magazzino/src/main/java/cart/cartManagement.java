@@ -30,7 +30,7 @@ public class cartManagement {
     public static void checkCartEmpty(int idClient) throws SQLException {   // verifica se cart è vuoto
         ArrayList<Product> cart = DbCartManagment.cartStatus(idClient);
         if(cart.isEmpty()){
-            System.out.println("Cart is Empty");
+            System.out.println("The cart is Empty");
         }else{
             stampYourCart(DbCartManagment.cartStatus(idClient));
         }
@@ -73,7 +73,7 @@ public class cartManagement {
                         DbCartManagment.removeProdById(idClient);
                         break;
                     case 4://Finalizza acquisti
-                        DbCartManagment.checkout(idCart,idClient);
+                        DbCartManagment.checkOut(idCart,idClient);
                         break;
                     case 5://Aggiunta prodotti al carrello
                         DbCartManagment.addProductToCart(idCart,idClient);
