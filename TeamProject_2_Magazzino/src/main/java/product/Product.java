@@ -1,6 +1,7 @@
 package product;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Product {
     public ProductTypes type;
@@ -95,6 +96,19 @@ public class Product {
 
     public void setBrand(String brand) {
         this.brand = brand;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Double.compare(displaySize, product.displaySize) == 0 && Double.compare(storageCap, product.storageCap) == 0 && itemId == product.itemId && type == product.type && Objects.equals(model, product.model) && Objects.equals(brand, product.brand) && Objects.equals(description, product.description) && Objects.equals(purchasePrice, product.purchasePrice) && Objects.equals(sellPrice, product.sellPrice);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, model, brand, description, displaySize, storageCap, purchasePrice, sellPrice, itemId);
     }
 
     @Override
