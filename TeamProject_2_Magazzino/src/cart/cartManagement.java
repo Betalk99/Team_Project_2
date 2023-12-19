@@ -44,6 +44,14 @@ public class cartManagement {
         System.out.println("CLIENT ID " + idClient);
 
         try {
+
+            if(!DbCartManagment.availabilityCheck(idCart,idClient)){
+                DbCartManagment.cartUpdate(idCart,idClient);
+                System.out.println("Dear customer, it appears that some of the items you added to the cart have become unavailable. Here's your cart based on the currently available products.");
+                checkCartEmpty(idClient);
+                DbCartManagment.getTotalPrice(idCart,idClient);
+            }
+
             Scanner sc = new Scanner(System.in);
 //        System.out.println(stock);
             boolean stay = true;
