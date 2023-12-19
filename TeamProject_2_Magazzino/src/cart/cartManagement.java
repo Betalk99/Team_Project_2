@@ -45,17 +45,19 @@ public class cartManagement {
 
         try {
 
-            if(!DbCartManagment.availabilityCheck(idCart,idClient)){
-                DbCartManagment.cartUpdate(idCart,idClient);
-                System.out.println("Dear customer, it appears that some of the items you added to the cart have become unavailable. Here's your cart based on the currently available products.");
-                checkCartEmpty(idClient);
-                DbCartManagment.getTotalPrice(idCart,idClient);
-            }
 
             Scanner sc = new Scanner(System.in);
 //        System.out.println(stock);
             boolean stay = true;
             while (stay) {
+
+                if(!DbCartManagment.availabilityCheck(idCart,idClient)){
+                    DbCartManagment.cartUpdate(idCart,idClient);
+                    System.out.println("Dear customer, it appears that some of the items you added to the cart have become unavailable. Here's your cart based on the currently available products.");
+                    checkCartEmpty(idClient);
+                    DbCartManagment.getTotalPrice(idCart,idClient);
+                }
+
                 System.out.println("""
                         Hello dear customer, please select one of the following options:
                          1) Cart status\s
@@ -78,7 +80,7 @@ public class cartManagement {
                         DbCartManagment.addIdProdDB(idCart,idClient);
                         break;
                     case 3://rimozione elementi da carrello tramite id
-                        DbCartManagment.removeProdById(idClient);
+                        DbCartManagment.removeProdById(idCart, idClient);
                         break;
                     case 4://Finalizza acquisti
                         DbCartManagment.checkOut(idCart,idClient);

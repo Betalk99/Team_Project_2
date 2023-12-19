@@ -56,14 +56,20 @@ public class DbCartManagment {
         }
     }
 
-    public static void removeProdById(int idClient) {
+    public static void removeProdById(int idCart, int idClient) {
         try {
             Statement stmt = DbManagement.makeConnection();
             System.out.println("Select the ID of the product you would like to remove from your cart.");
             stampYourCart(DbCartManagment.cartStatus(idClient));
             Scanner sc = new Scanner(System.in);
             int idProd = sc.nextInt();
-            String query = "DELETE FROM `projectteam`.`cart` WHERE `id` = " + idProd + ";";
+            String query = "UPDATE cart" +
+                    " SET cart.status = 0" +
+                    " WHERE cart.idClient = " + idClient  +
+                    " AND cart.idCart = " + idCart +
+                    " AND cart.idProduct = " + idProd +
+                    " AND cart.status = 1" +
+                    " LIMIT 1;";
             stmt.execute(query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
