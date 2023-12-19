@@ -50,24 +50,84 @@ public class DbCartManagment {
                     "(" + idCart + ",\n" +
                     " " + idProd + ",\n" +
                     " " + idClient + ");\n";
-            stmt.execute(query);
+            if (preventAdditionByIdIfCartBigger(createBooleanProductMap(countItemsByProduct(createCartProductList(idCart, idClient)), createMapStockQty(idCart, idClient)), idProd)) {
+                stmt.execute(query);
+            } else {
+                System.out.println("It seems like the product quantity you are trying to add to the cart exceeds that currently available in our stock.");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
     }
 
-    public static void removeProdById(int idClient) {
+    public static void removeProdById(int idCart, int idClient) {
         try {
             Statement stmt = DbManagement.makeConnection();
             System.out.println("Select the ID of the product you would like to remove from your cart.");
             stampYourCart(DbCartManagment.cartStatus(idClient));
             Scanner sc = new Scanner(System.in);
             int idProd = sc.nextInt();
-            String query = "DELETE FROM `projectteam`.`cart` WHERE `id` = " + idProd + ";";
+            String query = "UPDATE cart" +
+                    " SET cart.status = 0" +
+                    " WHERE cart.idClient = " + idClient +
+                    " AND cart.idCart = " + idCart +
+                    " AND cart.idProduct = " + idProd +
+                    " AND cart.status = 1" +
+                    " LIMIT 1;";
             stmt.execute(query);
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static Boolean preventAdditionByIdIfCartBigger(Map<Product, Boolean> productBooleanMap, int productId) {
+        Boolean checker = true;
+        for (Map.Entry<Product, Boolean> entry : productBooleanMap.entrySet()) {
+            Product product = entry.getKey();
+            Boolean stillPossibleToAdd = entry.getValue();
+            if (product.getItemId() == productId) {
+                checker = stillPossibleToAdd;
+                break;
+            }
+        }
+        return checker;
+    }
+
+    public static Boolean preventAdditionByNameIfCartBigger(Map<Product, Boolean> productBooleanMap, String brandName, String modelName) {
+        Boolean checker = true;
+        for (Map.Entry<Product, Boolean> entry : productBooleanMap.entrySet()) {
+            Product product = entry.getKey();
+            Boolean stillPossibleToAdd = entry.getValue();
+            if (Objects.equals(product.getBrand(), brandName) && Objects.equals(product.getModel(), modelName)) {
+                checker = stillPossibleToAdd;
+                break;
+            }
+        }
+        return checker;
+    }
+
+    public static Map<Product, Boolean> createBooleanProductMap(Map<Product, Integer> cartMap, Map<Integer, Integer> stockMap) {
+        Map<Product, Boolean> productBooleanMap = new HashMap<>();
+
+        for (Map.Entry<Product, Integer> entry : cartMap.entrySet()) {
+            Product cartProduct = entry.getKey();
+            Integer cartQty = entry.getValue();
+
+            for (Map.Entry<Integer, Integer> innerEntry : stockMap.entrySet()) {
+                Integer stockId = innerEntry.getKey();
+                Integer stockQty = innerEntry.getValue();
+
+                if (stockId == cartProduct.getItemId() && cartQty >= stockQty) {
+                    productBooleanMap.put(cartProduct, false);
+                    break;
+                } else if (stockId == cartProduct.getItemId() && cartQty < stockQty) {
+                    productBooleanMap.put(cartProduct, true);
+                    break;
+                }
+
+            }
+        }
+        return productBooleanMap;
     }
 
     ////////CHECKOUT BLOCK
@@ -334,8 +394,16 @@ public class DbCartManagment {
             if (!rs.next()) {
                 System.out.println("We are sorry. We couldn't find any product matching your request.");
             } else {
-                stmt.executeUpdate("INSERT INTO cart (idCart, idProduct, idClient)" +
-                        " VALUES ('" + idCart + "', '" + rs.getString("id") + "', '" + idClient + "')");
+                /*    stmt.executeUpdate("INSERT INTO cart (idCart, idProduct, idClient)" +
+                            " VALUES ('" + idCart + "', '" + rs.getString("id") + "', '" + idClient + "')");
+*/
+                if (preventAdditionByNameIfCartBigger(createBooleanProductMap(countItemsByProduct(createCartProductList(idCart, idClient)), createMapStockQty(idCart, idClient)), brandName, modelName)) {
+                    stmt.executeUpdate("INSERT INTO cart (idCart, idProduct, idClient)" +
+                            " VALUES ('" + idCart + "', '" + rs.getString("id") + "', '" + idClient + "')");
+                    System.out.println("The product was added to your cart.");
+                } else {
+                    System.out.println("It seems like the product quantity you are trying to add to the cart exceeds that currently available in our stock.");
+                }
 
             }
             boolean stay2 = true;
@@ -399,5 +467,14 @@ public class DbCartManagment {
         return sum;
     }
 
-
+    public static void refreshCart(int idCart, int idClient) throws SQLException {
+        if (!DbCartManagment.availabilityCheck(idCart, idClient)) {
+            DbCartManagment.cartUpdate(idCart, idClient);
+            System.out.println("Dear customer, it appears that some of the items you added to the cart have become unavailable. Here's your cart based on the currently available products.");
+            cartManagement.checkCartEmpty(idClient);
+            DbCartManagment.getTotalPrice(idCart, idClient);
+        } else {
+            System.out.println("No changes have been detected in product availability.");
+        }
+    }
 }

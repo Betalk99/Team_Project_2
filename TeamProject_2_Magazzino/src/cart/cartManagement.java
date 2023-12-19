@@ -15,13 +15,14 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.OffsetDateTime;
 import java.util.*;
+
 import choice.*;
 
 public class cartManagement {
 
-    public static void stampYourCart(ArrayList<Product> cart){
+    public static void stampYourCart(ArrayList<Product> cart) {
         System.out.println("Your Cart :  \n");
-        for(Product i : cart){
+        for (Product i : cart) {
             System.out.println(i);
         }
         System.out.println("\n");
@@ -29,15 +30,15 @@ public class cartManagement {
 
     public static void checkCartEmpty(int idClient) throws SQLException {   // verifica se cart è vuoto
         ArrayList<Product> cart = DbCartManagment.cartStatus(idClient);
-        if(cart.isEmpty()){
+        if (cart.isEmpty()) {
             System.out.println("The cart is Empty");
-        }else{
+        } else {
             stampYourCart(DbCartManagment.cartStatus(idClient));
         }
     }
 
 
-    public static void operCar(int idCart , int idClient) {
+    public static void operCar(int idCart, int idClient) {
 
         System.out.println("CART ID " + idCart);
 
@@ -45,17 +46,11 @@ public class cartManagement {
 
         try {
 
-            if(!DbCartManagment.availabilityCheck(idCart,idClient)){
-                DbCartManagment.cartUpdate(idCart,idClient);
-                System.out.println("Dear customer, it appears that some of the items you added to the cart have become unavailable. Here's your cart based on the currently available products.");
-                checkCartEmpty(idClient);
-                DbCartManagment.getTotalPrice(idCart,idClient);
-            }
 
             Scanner sc = new Scanner(System.in);
-//        System.out.println(stock);
             boolean stay = true;
             while (stay) {
+
                 System.out.println("""
                         Hello dear customer, please select one of the following options:
                          1) Cart status\s
@@ -66,7 +61,8 @@ public class cartManagement {
                          6) Get the total price of the items in the cart\s
                          7) Get empty cart
                          8) Get the average amount spent
-                         9) My order""");
+                         9) My order
+                         10) Refresh cart to reflect current product availability""");
 
 
                 int operCarr = sc.nextInt();
@@ -75,16 +71,16 @@ public class cartManagement {
                         checkCartEmpty(idClient);
                         break;
                     case 2://aggiunta elementi da carrello tramite id
-                        DbCartManagment.addIdProdDB(idCart,idClient);
+                        DbCartManagment.addIdProdDB(idCart, idClient);
                         break;
                     case 3://rimozione elementi da carrello tramite id
-                        DbCartManagment.removeProdById(idClient);
+                        DbCartManagment.removeProdById(idCart, idClient);
                         break;
                     case 4://Finalizza acquisti
-                        DbCartManagment.checkOut(idCart,idClient);
+                        DbCartManagment.checkOut(idCart, idClient);
                         break;
                     case 5://Aggiunta prodotti al carrello
-                        DbCartManagment.addProductToCart(idCart,idClient);
+                        DbCartManagment.addProductToCart(idCart, idClient);
                         break;
                     case 6://Prezzo totale dei prodotti nel carrello.
                         DbCartManagment.getTotalPrice(idCart, idClient);
@@ -93,10 +89,13 @@ public class cartManagement {
                         DbCartManagment.getEmptyCart(idClient);
                         break;
                     case 8: //averageSpending(cart);
-                        System.out.println(DbCartManagment.avarageAmountSpent(idClient,idCart));
+                        System.out.println(DbCartManagment.avarageAmountSpent(idClient, idCart));
                         break;
                     case 9:// visualizzare ordini precedenti
                         stampYourCart(DbCartManagment.myOrder(idClient));
+                        break;
+                    case 10:// aggiorna il carrello in base alla disponibilità attuale dei prodotti in magazzino.
+                        DbCartManagment.refreshCart(idCart, idClient);
                         break;
                     default:
                         System.out.println("Invalid input.");
