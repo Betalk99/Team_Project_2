@@ -293,7 +293,7 @@ public class DbCartManagment {
     public static BigDecimal getTotalPriceArr(ArrayList<Product> listProdCart) throws SQLException {
         BigDecimal totalPrice = null;
         for(Product i : listProdCart){
-            totalPrice.add(i.getSellPrice());
+            totalPrice = totalPrice.add(i.getSellPrice());
         }
         if (totalPrice == null) {
             totalPrice = BigDecimal.valueOf(0);

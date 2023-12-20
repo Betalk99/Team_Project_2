@@ -61,7 +61,7 @@ public class whichOperationCompany {
                         stampResult(DbManagement.byModelDb());
                         break;
                     case 8: // ricerca per range di prezzo di acquisto
-                        stampResult(DbManagement.bySellPriceRangeDbCompany());
+                        stampResult(DbManagement.bySellPriceRangeDbCompany() );
                         break;
                     default:
                         System.out.println("Unlisted operation");

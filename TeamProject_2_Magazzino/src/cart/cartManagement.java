@@ -40,9 +40,9 @@ public class cartManagement {
 
     public static void operCar(int idCart, int idClient) {
 
-        System.out.println("CART ID " + idCart);
-
-        System.out.println("CLIENT ID " + idClient);
+//        System.out.println("CART ID " + idCart);
+//
+//        System.out.println("CLIENT ID " + idClient);
 
         try {
 
@@ -83,7 +83,7 @@ public class cartManagement {
                         DbCartManagment.addProductToCart(idCart, idClient);
                         break;
                     case 6://Prezzo totale dei prodotti nel carrello.
-                        DbCartManagment.getTotalPriceArr(DbCartManagment.cartStatus(idClient));
+                        DbCartManagment.getTotalPrice(idCart, idClient);
                         break;
                     case 7://Svuota carrello.
                         DbCartManagment.getEmptyCart(idClient);
