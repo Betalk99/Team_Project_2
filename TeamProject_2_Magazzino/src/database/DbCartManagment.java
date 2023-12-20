@@ -432,4 +432,47 @@ public class DbCartManagment {
             System.out.println("No changes have been detected in product availability.");
         }
     }
+
+    public static void inputAddCompany() throws SQLException {
+        String type = choiceType();
+        Scanner in = new Scanner(System.in);
+        System.out.println("");
+        String brand = in.nextLine();
+        System.out.println("");
+        String model = in.nextLine();
+        System.out.println("");
+        String descr = in.nextLine();
+        System.out.println("");
+        double displaySize = in.nextDouble();
+        System.out.println("");
+        int storageCap = in.nextInt();
+        System.out.println("");
+        BigDecimal purchasePrice = in.nextBigDecimal();
+        System.out.println("");
+        BigDecimal sellPrice = in.nextBigDecimal();
+
+        insertAddCompany();
+
+
+
+    }
+
+    public static String choiceType(){
+        System.out.println("");
+
+    }
+
+    public static void insertAddCompany() throws  SQLException{
+        try{
+            Statement stmt = DbManagement.makeConnection();
+
+
+
+
+
+        }catch (SQLException e ){
+            System.out.println(e.getMessage());
+        }
+    }
+
 }

@@ -3,6 +3,7 @@ package database;
 import clients.Clients;
 import product.Product;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -180,7 +181,18 @@ public class DbQuery {
         return "UPDATE client SET password = '" + psw + "' WHERE email = '" + mail + "';";
     }
 
-
+    public static String getInsertAddCompanyTablet(String brand, String model, String descr, double displaySize, int storageCap, BigDecimal purchasePrice, BigDecimal sellPrice){
+        return "INSERT INTO `projectteam`.`product` (`type`, `brand`, `model`, `description`, `displaysize`, `storagecap`, `purchaseprice`, `sellprice`) " +
+                "VALUES ('tablet', '" + brand + "', '" + model + "', '" + descr + "', " + displaySize  + ", " + storageCap  + ", " + purchasePrice   + ", " + sellPrice + ");";
+    }
+    public static String getInsertAddCompanyNotebook(String brand, String model, String descr, double displaySize, int storageCap, BigDecimal purchasePrice, BigDecimal sellPrice){
+        return "INSERT INTO `projectteam`.`product` (`type`, `brand`, `model`, `description`, `displaysize`, `storagecap`, `purchaseprice`, `sellprice`) " +
+                "VALUES ('notebook', '" + brand + "', '" + model + "', '" + descr + "', " + displaySize  + ", " + storageCap  + ", " + purchasePrice   + ", " + sellPrice + ");";
+    }
+    public static String getInsertAddCompanySmartphonne(String brand, String model, String descr, double displaySize, int storageCap, BigDecimal purchasePrice, BigDecimal sellPrice){
+        return "INSERT INTO `projectteam`.`product` (`type`, `brand`, `model`, `description`, `displaysize`, `storagecap`, `purchaseprice`, `sellprice`) " +
+                "VALUES ('smartphone', '" + brand + "', '" + model + "', '" + descr + "', " + displaySize  + ", " + storageCap  + ", " + purchasePrice   + ", " + sellPrice + ");";
+    }
 
 
 
