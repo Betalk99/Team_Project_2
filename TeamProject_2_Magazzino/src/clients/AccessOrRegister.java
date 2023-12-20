@@ -3,6 +3,7 @@ package clients;
 import database.DbManagement;
 import choice.whichOperationCompany;
 import choice.whichOperationCustomer;
+import database.DbQuery;
 
 import java.math.BigInteger;
 import java.sql.ResultSet;
@@ -167,14 +168,7 @@ public class AccessOrRegister {
             System.out.println("Insert number phone Customer: ");
             String numTel = in.nextLine();
 
-            String userCust =
-                    "INSERT INTO client " +
-                            "(`type`, `name`, `surname`, `email`, `username`,`password`,`phoneNumber`)\n" +
-                            "VALUES " +
-                            "('Customer', '" + name + "', '" + surname + "', '" + email + "', '" + username + "', '"+ password + "', '" + numTel +"');";
-
-            stmt.execute(userCust);
-
+            stmt.execute(DbQuery.getAddUserCustom(name, surname, email, username, password, numTel));
 
         }catch (SQLException e){
             System.out.println(e.getMessage());
@@ -200,14 +194,7 @@ public class AccessOrRegister {
             System.out.println("Insert vat Company: ");
             String vat = in.nextLine();
 
-            String userCust =
-                    "INSERT INTO client " +
-                            "(`type`, `name`, `email`, `username`,`password`,`phoneNumber`, `vat`)\n" +
-                            "VALUES " +
-                            "('Company', '" + name + "', '" + email + "', '" + username + "', '" + password + "', '"+ numTel + "', '" + vat +"');";
-
-            stmt.execute(userCust);
-
+            stmt.execute(DbQuery.getAddUserCompany(name, vat, email, username, password, numTel));
 
         }catch (SQLException e){
             System.out.println(e.getMessage());
@@ -227,7 +214,7 @@ public class AccessOrRegister {
     public static boolean checkMailDb(String mail)throws SQLException {
         try{
             Statement stmt = DbManagement.makeConnection();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM client WHERE email = '" + mail + "';");
+            ResultSet rs = stmt.executeQuery(DbQuery.getCheckMail(mail));
 
             while (rs.next()){
                 String checkMail = rs.getString("email");
@@ -262,8 +249,7 @@ public class AccessOrRegister {
             if(checkMailDb(mail)){
                 System.out.println("Insert new password: ");
                 String psw = in.nextLine();
-                String resetPsw = "UPDATE client SET password = '" + psw + "' WHERE email = '" + mail + "';";
-                stmt.execute(resetPsw);
+                stmt.execute(DbQuery.getResetPsw(mail, psw));
             }else{
                 System.out.println("email not present");
             }

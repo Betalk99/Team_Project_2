@@ -20,10 +20,7 @@ public class DbCartManagment {
         ArrayList<Product> cart = new ArrayList<>();
         try {
             Statement stmt = DbManagement.makeConnection();
-            String joinCartProd = "SELECT * FROM product\n" +
-                    "JOIN cart ON cart.idProduct = product.id\n" +
-                    "WHERE cart.idClient = " + idClient + " AND cart.status = 1;";
-            ResultSet rs = stmt.executeQuery(joinCartProd);
+            ResultSet rs = stmt.executeQuery(DbQuery.getCartStatus(idClient));
 
             while (rs.next()) {
                 cart.add(DbManagement.costructProd(rs));
@@ -42,16 +39,8 @@ public class DbCartManagment {
             Scanner sc = new Scanner(System.in);
             System.out.println("Select the ID of the product you would like to add to your cart.");
             int idProd = sc.nextInt();
-            String query = "INSERT INTO `projectteam`.`cart`\n" +
-                    "(idCart,\n" +
-                    "idProduct,\n" +
-                    "idClient)\n" +
-                    "VALUES\n" +
-                    "(" + idCart + ",\n" +
-                    " " + idProd + ",\n" +
-                    " " + idClient + ");\n";
             if (preventAdditionByIdIfCartBigger(createBooleanProductMap(countItemsByProduct(createCartProductList(idCart, idClient)), createMapStockQty(idCart, idClient)), idProd)) {
-                stmt.execute(query);
+                stmt.execute(DbQuery.getAddIdProd(idCart,idClient,idProd));
             } else {
                 System.out.println("It seems like the product quantity you are trying to add to the cart exceeds that currently available in our stock.");
             }
@@ -67,14 +56,7 @@ public class DbCartManagment {
             stampYourCart(DbCartManagment.cartStatus(idClient));
             Scanner sc = new Scanner(System.in);
             int idProd = sc.nextInt();
-            String query = "UPDATE cart" +
-                    " SET cart.status = 0" +
-                    " WHERE cart.idClient = " + idClient +
-                    " AND cart.idCart = " + idCart +
-                    " AND cart.idProduct = " + idProd +
-                    " AND cart.status = 1" +
-                    " LIMIT 1;";
-            stmt.execute(query);
+            stmt.execute(DbQuery.getRemoveProdId(idCart,idClient,idProd));
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
@@ -191,17 +173,11 @@ public class DbCartManagment {
         if (cartList.isEmpty()) {
             System.out.println("Your cart was empty. As a consequence, no operation has been performed.");
         } else {
-            String checkout = "INSERT INTO orders (idCart, date)" +
-                    "VALUES (" + idCart + ", '" + dateFormat.format(date) + "' )";
-            stmt.execute(checkout);
-            stmt.executeUpdate("UPDATE cart AS c " +
-                    "SET c.status = 0 " +
-                    "WHERE c.idClient = " + idClient + " AND c.idCart = " + idCart + ";");
+            stmt.execute(DbQuery.getCheckout(idCart, dateFormat, date));
+            stmt.executeUpdate(DbQuery.getUpdateStatusCart(idCart, idClient));
 
             for (int i = 0; i < cartList.size(); i++) {
-                stmt.executeUpdate("UPDATE stock" +
-                        " SET stock.qty = stock.qty - 1" +
-                        " WHERE " + cartList.get(i).getItemId() + " = stock.idStock;");
+                stmt.executeUpdate(DbQuery.getUpdateQtyStock(cartList, i));
             }
 
             System.out.println("You have completed your order on: " + dateFormat.format(date));
@@ -235,13 +211,7 @@ public class DbCartManagment {
             Product product = entry.getKey();
             int valueForUpdate = entry.getValue();
 
-            stmt.executeUpdate("UPDATE cart" +
-                    " SET cart.status = 0" +
-                    " WHERE cart.idProduct = " + product.getItemId() +
-                    " AND cart.idCart = " + idCart +
-                    " AND cart.idClient = " + idClient +
-                    " AND cart.status = 1" +
-                    " LIMIT " + valueForUpdate + ";");
+            stmt.executeUpdate(DbQuery.getUpdateCart(idCart, idClient, valueForUpdate, product));
         }
         //Riduzione dei prodotti del carrello in proporzione alle minori quantità disponibili in magazzino.
     }
@@ -273,9 +243,7 @@ public class DbCartManagment {
     public static ArrayList<Product> createCartProductList(int idCart, int idClient) throws SQLException {
         Statement stmt = DbManagement.makeConnection();
         ArrayList<Product> cartProductList = new ArrayList<>();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM product" +
-                " INNER JOIN cart ON product.id = cart.idProduct" +
-                " WHERE cart.idCart = " + idCart + " AND cart.idClient = " + idClient + " AND cart.status = 1;");
+        ResultSet rs = stmt.executeQuery(DbQuery.getCreateCartProductList(idCart, idClient));
         while (rs.next()) {
             cartProductList.add(DbManagement.costructProd(rs));
         }
@@ -292,14 +260,7 @@ public class DbCartManagment {
 
     public static Map<Integer, Integer> createMapStockQty(int idCart, int idClient) throws SQLException {
         Statement stmt = DbManagement.makeConnection();
-        ResultSet rsStock = stmt.executeQuery("SELECT stock.idStock, stock.qty" +
-                " FROM stock" +
-                " INNER JOIN product ON stock.idStock = product.id" +
-                " INNER JOIN cart ON product.id = cart.idProduct" +
-                " WHERE cart.idCart = " + idCart +
-                " AND idClient = " + idClient +
-                " AND cart.status = 1" +
-                " GROUP BY stock.idStock");
+        ResultSet rsStock = stmt.executeQuery(DbQuery.getCreateMapStockQty(idCart, idClient));
 
         Map<Integer, Integer> stockMap = new HashMap<>();
         while (rsStock.next()) {
@@ -329,6 +290,19 @@ public class DbCartManagment {
         return totalPrice;
     }
 
+    public static BigDecimal getTotalPriceArr(ArrayList<Product> listProdCart) throws SQLException {
+        BigDecimal totalPrice = null;
+        for(Product i : listProdCart){
+            totalPrice.add(i.getSellPrice());
+        }
+        if (totalPrice == null) {
+            totalPrice = BigDecimal.valueOf(0);
+        }
+        System.out.println("The total price of the items in your cart is " + totalPrice);
+        return totalPrice;
+    }
+
+
     public static ArrayList<Product> myOrder(int idClient) {
         ArrayList<Product> choiceOrder = new ArrayList<>();
         ArrayList<Orders> listOrder = new ArrayList<>();
@@ -336,10 +310,7 @@ public class DbCartManagment {
             Scanner in = new Scanner(System.in);
 
             Statement stmt = DbManagement.makeConnection();
-            String orderClient = "SELECT * FROM orders AS o\n" +
-                    "JOIN cart AS c ON o.idCart = c.idCart\n" +
-                    "WHERE c.idClient = " + idClient + "; ";
-            ResultSet rs = stmt.executeQuery(orderClient);
+            ResultSet rs = stmt.executeQuery(DbQuery.getMyOrder(idClient));
 
             while (rs.next()) {
                 if (!(listOrder.contains(DbManagement.costructOrder(rs)))) {
@@ -352,12 +323,7 @@ public class DbCartManagment {
             System.out.println("Which order do you want to display ? Indicate ID ");
             int idOrder = in.nextInt();
 
-            String visualOrderQuery = "SELECT p.id, p.`type`, p.brand, p.model, p.description, p.displaysize, p.storagecap, p.purchaseprice, p.sellprice FROM orders AS o\n" +
-                    "JOIN cart AS c ON o.idCart = c.idCart\n" +
-                    "JOIN product AS p ON c.idProduct = p.id\n" +
-                    "WHERE c.idClient = " + idClient + " AND c.idCart = " + idOrder + ";";
-
-            ResultSet rs1 = stmt.executeQuery(visualOrderQuery);
+            ResultSet rs1 = stmt.executeQuery(DbQuery.getVisualOrderQuery(idClient, idOrder));
 
             while (rs1.next()) {
                 choiceOrder.add(DbManagement.costructProd(rs1));
@@ -387,16 +353,11 @@ public class DbCartManagment {
             System.out.println("Please write the model of the product you would like to add to your cart.");
             String modelName = sc.nextLine();
             Statement stmt = DbManagement.makeConnection();
-            String query = "SELECT * FROM product" +
-                    " WHERE brand COLLATE utf8mb4_general_ci = '" + brandName +
-                    "' AND model COLLATE utf8mb4_general_ci = '" + modelName + "'";
-            ResultSet rs = stmt.executeQuery(query);
+
+            ResultSet rs = stmt.executeQuery(DbQuery.getSelectBrandModel(brandName, modelName));
             if (!rs.next()) {
                 System.out.println("We are sorry. We couldn't find any product matching your request.");
             } else {
-                /*    stmt.executeUpdate("INSERT INTO cart (idCart, idProduct, idClient)" +
-                            " VALUES ('" + idCart + "', '" + rs.getString("id") + "', '" + idClient + "')");
-*/
                 if (preventAdditionByNameIfCartBigger(createBooleanProductMap(countItemsByProduct(createCartProductList(idCart, idClient)), createMapStockQty(idCart, idClient)), brandName, modelName)) {
                     stmt.executeUpdate("INSERT INTO cart (idCart, idProduct, idClient)" +
                             " VALUES ('" + idCart + "', '" + rs.getString("id") + "', '" + idClient + "')");
@@ -435,11 +396,8 @@ public class DbCartManagment {
             stampYourCart(DbCartManagment.cartStatus(idClient));
             Scanner sc = new Scanner(System.in);
             int choice = sc.nextInt();
-            String query = "DELETE FROM `projectteam`.`cart` " +
-                    "WHERE `cart`.`idClient` = " + idClient + " " +
-                    "AND `cart`.`status` = 1 ;";
             if (choice == 1) {
-                stmt.execute(query);
+                stmt.execute(DbQuery.getEmptyCart(idClient));
             } else {
                 System.out.println("You have chosen not to empty your cart!");
             }
@@ -453,10 +411,7 @@ public class DbCartManagment {
         try {
             Statement stmt = DbManagement.makeConnection();
             System.out.println("Your avarage amount is : ");
-            String query = "SELECT SUM(p.sellprice) AS sum FROM cart AS c " +
-                    "JOIN product AS p ON c.idProduct = p.id " +
-                    "WHERE c.idClient = " + idClient + " AND c.idCart = " + idCart + ";";
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(DbQuery.getAverageSpent(idClient, idCart));
             while (rs.next()) {
                 sum = BigDecimal.valueOf(rs.getInt("sum"));
             }
@@ -472,7 +427,7 @@ public class DbCartManagment {
             DbCartManagment.cartUpdate(idCart, idClient);
             System.out.println("Dear customer, it appears that some of the items you added to the cart have become unavailable. Here's your cart based on the currently available products.");
             cartManagement.checkCartEmpty(idClient);
-            DbCartManagment.getTotalPrice(idCart, idClient);
+            DbCartManagment.getTotalPriceArr(cartStatus(idClient));
         } else {
             System.out.println("No changes have been detected in product availability.");
         }

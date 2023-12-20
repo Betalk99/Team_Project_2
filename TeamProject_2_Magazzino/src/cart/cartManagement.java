@@ -83,7 +83,7 @@ public class cartManagement {
                         DbCartManagment.addProductToCart(idCart, idClient);
                         break;
                     case 6://Prezzo totale dei prodotti nel carrello.
-                        DbCartManagment.getTotalPrice(idCart, idClient);
+                        DbCartManagment.getTotalPriceArr(DbCartManagment.cartStatus(idClient));
                         break;
                     case 7://Svuota carrello.
                         DbCartManagment.getEmptyCart(idClient);

@@ -39,9 +39,7 @@ public class DbManagement {
             System.out.println("What model are you interested in?");
             String model = in.nextLine();
 
-            ResultSet rs = stmt.executeQuery("SELECT * FROM product" +
-                                                 " INNER JOIN stock ON product.id = stock.idStock" +
-                                                 " WHERE stock.qty > 0 AND model = '" + model + "';");
+            ResultSet rs = stmt.executeQuery(DbQuery.getByModel(model));
 
             while (rs.next()) {
                 prodByModel.add(costructProd(rs));
@@ -66,10 +64,7 @@ public class DbManagement {
             range[1] = in.nextDouble();
             Arrays.sort(range);
 
-            String searchRange = "SELECT * FROM product " +
-                                 " INNER JOIN stock ON product.id = stock.idStock" +
-                                 " WHERE stock.qty > 0 AND product.sellprice > '" + range[0] + "' AND product.sellprice <= '" + range[1] + "';";
-            ResultSet rs = stmt.executeQuery(searchRange);
+            ResultSet rs = stmt.executeQuery(DbQuery.getBySellPriceRange(range));
 
             while (rs.next()) {
                 searchSellPrice.add(costructProd(rs));
@@ -90,9 +85,7 @@ public class DbManagement {
         try {
 
             Statement stmt = makeConnection();
-            ResultSet rs = stmt.executeQuery("SELECT * FROM product" +
-                    " INNER JOIN stock ON product.id = stock.idStock" +
-                    " WHERE stock.qty > 0;");
+            ResultSet rs = stmt.executeQuery(DbQuery.getStampStock());
 
             while (rs.next()) {
                 stock.add(costructProd(rs));
@@ -109,11 +102,8 @@ public class DbManagement {
 
         try {
             Statement stmt = DbManagement.makeConnection();
-            String query = "SELECT * FROM product" +
-                           " INNER JOIN stock ON product.id = stock.idStock" +
-                           " WHERE stock.qty > 0 AND type = '" + type + "';";
 
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(DbQuery.getByTypeProducts(type));
 
             while (rs.next()) {
                 devicesByType.add(costructProd(rs));
@@ -133,8 +123,7 @@ public class DbManagement {
 
         try {
             Statement stmt = DbManagement.makeConnection();
-            String query = "SELECT type FROM product";
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(DbQuery.getSelectType());
 
             while (rs.next()) {
                 typesFromDb.add(rs.getString("type"));
@@ -189,10 +178,7 @@ public class DbManagement {
 
                     try {
                         Statement stmt = DbManagement.makeConnection();
-                        String query = "SELECT * FROM product" +
-                                       " INNER JOIN stock ON product.id = stock.idStock" +
-                                       " WHERE stock.qty > 0 AND brand = '" + selectedBrand + "';";
-                        ResultSet rs = stmt.executeQuery(query);
+                        ResultSet rs = stmt.executeQuery(DbQuery.getByBrand(selectedBrand));
 
                         while (rs.next()) {
                             selectedProducts.add(DbManagement.costructProd(rs));
@@ -235,8 +221,7 @@ public class DbManagement {
         int idClient = 0;
         try{
             Statement stmt = DbManagement.makeConnection();
-            String query = "SELECT * FROM client WHERE email = '" + c.getEmail() + "';";
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(DbQuery.getIdClient(c));
             while (rs.next()){
                 idClient = rs.getInt("id");
             }
@@ -250,16 +235,12 @@ public class DbManagement {
         int idCart = -1;
         try{
             Statement stmt = DbManagement.makeConnection();
-            String query = "SELECT * FROM cart " +
-                    "WHERE cart.idClient = "+idClient+" " +
-                    "AND cart.status = 1 ;";
-            ResultSet rs = stmt.executeQuery(query);
+            ResultSet rs = stmt.executeQuery(DbQuery.getIdCart(idClient));
             while (rs.next()){
                 idCart = rs.getInt("idCart");
             }
             if(idCart == -1){
-                String query2 = "SELECT MAX(idCart) AS lastID FROM cart";
-                ResultSet rs2 = stmt.executeQuery(query2);
+                ResultSet rs2 = stmt.executeQuery(DbQuery.getIdCartMax());
                 while (rs2.next()){
                     idCart = rs2.getInt("lastID") + 1;
                 }
