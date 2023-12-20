@@ -434,7 +434,8 @@ public class DbCartManagment {
     }
 
     public static void inputAddCompany() throws SQLException {
-        String type = choiceType();
+
+
         Scanner in = new Scanner(System.in);
         System.out.println("");
         String brand = in.nextLine();
@@ -451,22 +452,46 @@ public class DbCartManagment {
         System.out.println("");
         BigDecimal sellPrice = in.nextBigDecimal();
 
-        insertAddCompany();
+        String query = choiceType(brand, model, descr, displaySize, storageCap, purchasePrice, sellPrice);
 
+        insertAddCompany(query);
 
-
-    }
-
-    public static String choiceType(){
-        System.out.println("");
+        System.out.println(" Product added to the warehouse. ");
 
     }
 
-    public static void insertAddCompany() throws  SQLException{
+    public static String choiceType(String brand, String model, String descr, double displaySize, int storageCap, BigDecimal purchasePrice, BigDecimal sellPrice){
+        String ret = null;
+        try {
+            Scanner in = new Scanner(System.in);
+            System.out.println("What type of product do you want to select ? 1) tablet - 2) notebook - 3) smartphone");
+            int type = in.nextInt();
+            switch (type){
+                case 1 :
+                    ret = DbQuery.getInsertAddCompanyTablet(brand, model, descr, displaySize, storageCap, purchasePrice, sellPrice);
+                    break;
+                case 2 :
+                    ret = DbQuery.getInsertAddCompanyNotebook(brand, model, descr, displaySize, storageCap, purchasePrice, sellPrice);
+                    break;
+                case 3 :
+                    ret = DbQuery.getInsertAddCompanySmartphonne(brand, model, descr, displaySize, storageCap, purchasePrice, sellPrice);
+                    break;
+            }
+        }catch (InputMismatchException e){
+            System.out.println(e.getMessage());
+        }
+        return ret;
+    }
+
+    public static void insertAddCompany(String query){
         try{
             Statement stmt = DbManagement.makeConnection();
 
-
+            stmt.executeUpdate(query);
+            ResultSet rs2 = stmt.executeQuery(DbQuery.getProdIdMax());
+            while (rs2.next()){
+                int id = rs2.getInt("lastID") + 1;
+            }
 
 
 

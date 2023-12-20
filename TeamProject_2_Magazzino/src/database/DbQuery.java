@@ -57,6 +57,10 @@ public class DbQuery {
         return "SELECT MAX(idCart) AS lastID FROM cart";
     }
 
+    public static String getProdIdMax() {
+        return "SELECT MAX(id) AS lastID FROM product";
+    }
+
     public static String getCartStatus(int idClient) {
         return "SELECT * FROM product\n" +
                 "JOIN cart ON cart.idProduct = product.id\n" +
