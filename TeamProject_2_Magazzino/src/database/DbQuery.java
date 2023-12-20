@@ -198,7 +198,10 @@ public class DbQuery {
                 "VALUES ('smartphone', '" + brand + "', '" + model + "', '" + descr + "', " + displaySize  + ", " + storageCap  + ", " + purchasePrice   + ", " + sellPrice + ");";
     }
 
-
+    public static String getInsertNewProdStock(int id, int qty){
+        return "INSERT INTO `projectteam`.`stock` (`idStock`, `qty`) " +
+                "VALUES ('" + id + "','" + qty + "');";
+    }
 
 
 

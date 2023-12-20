@@ -433,28 +433,32 @@ public class DbCartManagment {
         }
     }
 
+    // Metodi agginta prodotto al magazzino con relativa quantità
+
     public static void inputAddCompany() throws SQLException {
 
 
         Scanner in = new Scanner(System.in);
-        System.out.println("");
+        System.out.println("Which brand do you want to add? ");
         String brand = in.nextLine();
-        System.out.println("");
+        System.out.println("Which model do you want to add? ");
         String model = in.nextLine();
-        System.out.println("");
+        System.out.println("Which description do you want to add? ");
         String descr = in.nextLine();
-        System.out.println("");
+        System.out.println("What size of display do you want to add? ");
         double displaySize = in.nextDouble();
-        System.out.println("");
+        System.out.println("What capacity do you want to add? ");
         int storageCap = in.nextInt();
-        System.out.println("");
+        System.out.println("What purchase price do you want to add? ");
         BigDecimal purchasePrice = in.nextBigDecimal();
-        System.out.println("");
+        System.out.println("What sell price do you want to add?");
         BigDecimal sellPrice = in.nextBigDecimal();
+        System.out.println("How many products do you want to add");
+        int qty = in.nextInt();
 
         String query = choiceType(brand, model, descr, displaySize, storageCap, purchasePrice, sellPrice);
 
-        insertAddCompany(query);
+        insertAddCompany(query, qty);
 
         System.out.println(" Product added to the warehouse. ");
 
@@ -483,16 +487,18 @@ public class DbCartManagment {
         return ret;
     }
 
-    public static void insertAddCompany(String query){
+    public static void insertAddCompany(String query, int qty){
         try{
             Statement stmt = DbManagement.makeConnection();
-
+            int id = -1;
             stmt.executeUpdate(query);
             ResultSet rs2 = stmt.executeQuery(DbQuery.getProdIdMax());
             while (rs2.next()){
-                int id = rs2.getInt("lastID") + 1;
+                id = rs2.getInt("lastID");
             }
-
+            System.out.println(id);
+            System.out.println(qty);
+            stmt.executeUpdate(DbQuery.getInsertNewProdStock(id, qty));
 
 
         }catch (SQLException e ){

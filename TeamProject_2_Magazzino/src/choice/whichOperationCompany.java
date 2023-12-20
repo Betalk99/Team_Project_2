@@ -1,7 +1,10 @@
 package choice;
 
 import clients.Clients;
+import database.DbCartManagment;
 import database.DbManagement;
+
+import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -25,7 +28,7 @@ public class whichOperationCompany {
                 int category = in.nextInt();
                 switch (category) {
                     case 1: //aggiunta prodotto a magazzino
-//                        addProduct(stock);
+                        DbCartManagment.inputAddCompany();
                         break;
                     case 2: //scarico merce da magazzino
 //                        removeProduct(stock);
@@ -59,6 +62,8 @@ public class whichOperationCompany {
             } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
                 isTrue = false;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
     }
