@@ -203,7 +203,13 @@ public class DbQuery {
                 "VALUES ('" + id + "','" + qty + "');";
     }
 
+    public static String deleteInStock(int id){
+        return "DELETE FROM stock AS s WHERE s.idStock = " + id + ";";
+    }
 
+    public static String deleteInTableProduct(int id){
+        return "DELETE FROM product AS p WHERE p.id = " + id + ";";
+    }
 
 
 

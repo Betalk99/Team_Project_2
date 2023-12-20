@@ -506,4 +506,22 @@ public class DbCartManagment {
         }
     }
 
+    public static void removeCompanyProd(){
+        try{
+            Scanner in = new Scanner(System.in);
+            Statement stmt = DbManagement.makeConnection();
+            whichOperationCustomer.stampResult(DbManagement.stampStockDb());
+            System.out.println("\nWhich product do you want to remove from the stock? Indicate the ID");
+            int id = in.nextInt();
+
+            stmt.executeUpdate(DbQuery.deleteInStock(id));
+            stmt.executeUpdate(DbQuery.deleteInTableProduct(id));
+
+        }catch (SQLException e){
+
+        }
+    }
+
+
+
 }

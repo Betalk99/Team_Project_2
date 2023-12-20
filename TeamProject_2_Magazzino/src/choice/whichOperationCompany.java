@@ -31,10 +31,10 @@ public class whichOperationCompany {
                         DbCartManagment.inputAddCompany();
                         break;
                     case 2: //scarico merce da magazzino
-//                        removeProduct(stock);
+                        DbCartManagment.removeCompanyProd();
                         break;
                     case 3: //creazione carrello
-//                        cartManagement.inz(stock,cart,arrayTemp);
+
                         break;
                     case 4: // stampare tutti i dispositivi nel magazzino
                         break;
