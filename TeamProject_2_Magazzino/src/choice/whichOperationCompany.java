@@ -1,14 +1,24 @@
 package choice;
 
+import cart.cartManagement;
 import clients.Clients;
 import database.DbCartManagment;
 import database.DbManagement;
+import product.Product;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class whichOperationCompany {
+
+    public static void stampResult(ArrayList<Product> a){
+        for (Product i : a){
+            System.out.println(i);
+        }
+    }
+
     public static void oper(Clients c) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {
@@ -34,21 +44,24 @@ public class whichOperationCompany {
                         DbCartManagment.removeCompanyProd();
                         break;
                     case 3: //creazione carrello
-
+                        int idCliente = DbManagement.idClient(c);
+                        int idCart = DbManagement.idCart(idCliente);
+                        cartManagement.operCar(idCart,idCliente);
                         break;
                     case 4: // stampare tutti i dispositivi nel magazzino
+                        stampResult(DbManagement.stampStockDb());
                         break;
                     case 5: // ricerca per tipo di dispositivo fatta da Antonio Troiano
                         DbManagement.byType(); //updated on 03.12.23, correctly working based on DB.
                         break;
                     case 6: // ricerca per brand
-                        DbManagement.byBrand(); //updated on 02.12.23, correctly working based on DB.
+                        stampResult(DbManagement.byBrand()); //updated on 02.12.23, correctly working based on DB.
                         break;
                     case 7: // ricerca per modello
-
+                        stampResult(DbManagement.byModelDb());
                         break;
                     case 8: // ricerca per range di prezzo di acquisto
-
+                        stampResult(DbManagement.bySellPriceRangeDbCompany());
                         break;
                     default:
                         System.out.println("Unlisted operation");

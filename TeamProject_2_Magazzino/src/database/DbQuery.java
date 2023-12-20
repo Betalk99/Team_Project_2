@@ -31,6 +31,12 @@ public class DbQuery {
                 " WHERE stock.qty > 0 AND product.sellprice > '" + range[0] + "' AND product.sellprice <= '" + range[1] + "';";
     }
 
+    public static String getBySellPriceRangeCompany(double[] range) {
+        return "SELECT * FROM product " +
+                " INNER JOIN stock ON product.id = stock.idStock" +
+                " WHERE stock.qty > 0 AND product.purchaseprice > '" + range[0] + "' AND product.purchaseprice <= '" + range[1] + "';";
+    }
+
     public static String getByTypeProducts(String type) {
         return "SELECT * FROM product" +
                 " INNER JOIN stock ON product.id = stock.idStock" +

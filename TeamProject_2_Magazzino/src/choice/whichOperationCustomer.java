@@ -53,7 +53,7 @@ public class whichOperationCustomer {
                         DbManagement.byType();//updated on 03.12.23, correctly working based on DB.
                         break;
                     case 4: // ricerca per brand
-                            stampResult(DbManagement.byBrand()); //updated on 02.12.23, correctly working based on DB.
+                        stampResult(DbManagement.byBrand()); //updated on 02.12.23, correctly working based on DB.
                         break;
                     case 5: // ricerca per modello
                         stampResult(DbManagement.byModelDb());

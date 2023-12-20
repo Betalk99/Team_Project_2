@@ -79,6 +79,34 @@ public class DbManagement {
         return searchSellPrice;
     }
 
+    public static ArrayList<Product> bySellPriceRangeDbCompany() throws SQLException {
+        ArrayList<Product> searchSellPrice = new ArrayList<>();
+        double[] range = new double[2];
+        try {
+            Scanner in = new Scanner(System.in);
+            Statement stmt = makeConnection();
+            System.out.println("Search products by price range");
+            System.out.println("From");
+            range[0] = in.nextDouble();
+            System.out.println("to");
+            range[1] = in.nextDouble();
+            Arrays.sort(range);
+
+            ResultSet rs = stmt.executeQuery(DbQuery.getBySellPriceRangeCompany(range));
+
+            while (rs.next()) {
+                searchSellPrice.add(costructProd(rs));
+            }
+
+        } catch (InputMismatchException e) {
+            System.out.println("Please use an integer number (e.g. 250");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return searchSellPrice;
+    }
+
     public static ArrayList<Product> stampStockDb() throws SQLException {
         Scanner in = new Scanner(System.in);
         ArrayList<Product> stock = new ArrayList<>();
