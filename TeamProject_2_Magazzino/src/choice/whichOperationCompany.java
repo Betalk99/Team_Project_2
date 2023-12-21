@@ -46,7 +46,7 @@ public class whichOperationCompany {
                     case 3: //creazione carrello
                         int idCliente = DbManagement.idClient(c);
                         int idCart = DbManagement.idCart(idCliente);
-                        cartManagement.operCar(idCart,idCliente);
+                        cartManagement.operCar(idCart,idCliente,c);
                         break;
                     case 4: // stampare tutti i dispositivi nel magazzino
                         stampResult(DbManagement.stampStockDb());

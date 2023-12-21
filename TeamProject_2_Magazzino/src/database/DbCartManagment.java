@@ -2,6 +2,8 @@ package database;
 
 import cart.cartManagement;
 import choice.whichOperationCustomer;
+import clients.ClientType;
+import clients.Clients;
 import order.Orders;
 import product.*;
 
@@ -114,10 +116,10 @@ public class DbCartManagment {
 
     ////////CHECKOUT BLOCK
 
-    public static void checkOut(int idCart, int idClient) throws SQLException {
+    public static void checkOut(int idCart, int idClient, Clients c) throws SQLException {
         Scanner in = new Scanner(System.in);
         cartManagement.checkCartEmpty(idClient);
-        getTotalPrice(idCart, idClient);
+        getTotalPrice(idCart, idClient,c);
         System.out.println("Are you sure you want to proceed to checkout?  YES / NO");
 
         String ans = in.nextLine();
@@ -134,7 +136,7 @@ public class DbCartManagment {
                         cartUpdate(idCart, idClient);
                         System.out.println("It seems that while you were finalizing your purchases some of the items from your cart have become unavailable.\nThis is your current cart based on the currently available products.");
                         cartManagement.checkCartEmpty(idClient);
-                        DbCartManagment.getTotalPrice(idCart, idClient);
+                        DbCartManagment.getTotalPrice(idCart, idClient, c);
                         System.out.println("Do you still want to proceed to checkout?      YES / NO");
                         String ansTwo = in.nextLine();
 
@@ -272,23 +274,33 @@ public class DbCartManagment {
 
     //////////////////////CHECKOUT BLOCK
 
-    public static BigDecimal getTotalPrice(int idCart, int idClient) throws SQLException {
+    public static BigDecimal getTotalPrice(int idCart, int idClient, Clients c) throws SQLException {
         BigDecimal totalPrice = null;
-        Statement stmt = DbManagement.makeConnection();
-        String query = "SELECT SUM(product.sellprice) AS totalprice" +
-                " FROM cart" +
-                " JOIN product ON cart.idProduct = product.id" +
-                " WHERE cart.idClient = " + idClient + " AND cart.idCart = " + idCart + " AND cart.status = 1;";
-        ResultSet rs = stmt.executeQuery(query);
-        while (rs.next()) {
-            totalPrice = rs.getBigDecimal("totalprice");
+        try {
+            Statement stmt = DbManagement.makeConnection();
+            String query = null;
+            if(c.getType().equals(ClientType.Company)){
+                query = DbQuery.totalPriceCompany(idCart, idClient);
+            } else if (c.getType().equals(ClientType.Customer)) {
+                query = DbQuery.totalPriceCustomer(idCart, idClient);
+            }
+
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                totalPrice = rs.getBigDecimal("totalprice");
+            }
+            if (totalPrice == null) {
+                totalPrice = BigDecimal.valueOf(0);
+            }
+            System.out.println("The total price of the items in your cart is " + totalPrice);
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
         }
-        if (totalPrice == null) {
-            totalPrice = BigDecimal.valueOf(0);
-        }
-        System.out.println("The total price of the items in your cart is " + totalPrice);
         return totalPrice;
     }
+
+
+
 
     public static BigDecimal getTotalPriceArr(ArrayList<Product> listProdCart) throws SQLException {
         BigDecimal totalPrice = null;

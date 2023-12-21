@@ -1,5 +1,6 @@
 package cart;
 
+import clients.Clients;
 import database.DbCartManagment;
 import database.DbManagement;
 import order.Orders;
@@ -38,7 +39,7 @@ public class cartManagement {
     }
 
 
-    public static void operCar(int idCart, int idClient) {
+    public static void operCar(int idCart, int idClient, Clients c) {
 
 //        System.out.println("CART ID " + idCart);
 //
@@ -77,13 +78,13 @@ public class cartManagement {
                         DbCartManagment.removeProdById(idCart, idClient);
                         break;
                     case 4://Finalizza acquisti
-                        DbCartManagment.checkOut(idCart, idClient);
+                        DbCartManagment.checkOut(idCart, idClient,c);
                         break;
                     case 5://Aggiunta prodotti al carrello
                         DbCartManagment.addProductToCart(idCart, idClient);
                         break;
                     case 6://Prezzo totale dei prodotti nel carrello.
-                        DbCartManagment.getTotalPrice(idCart, idClient);
+                        DbCartManagment.getTotalPrice(idCart, idClient, c);
                         break;
                     case 7://Svuota carrello.
                         DbCartManagment.getEmptyCart(idClient);

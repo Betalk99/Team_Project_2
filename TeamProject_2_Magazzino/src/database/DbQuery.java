@@ -217,8 +217,19 @@ public class DbQuery {
         return "DELETE FROM product AS p WHERE p.id = " + id + ";";
     }
 
+    public static String totalPriceCustomer(int idCart, int idClient){
+        return "SELECT SUM(product.sellprice) AS totalprice" +
+                " FROM cart" +
+                " JOIN product ON cart.idProduct = product.id" +
+                " WHERE cart.idClient = " + idClient + " AND cart.idCart = " + idCart + " AND cart.status = 1;";
+    }
 
-
+    public static String totalPriceCompany(int idCart, int idClient){
+        return "SELECT SUM(product.purchaseprice) AS totalprice" +
+                " FROM cart" +
+                " JOIN product ON cart.idProduct = product.id" +
+                " WHERE cart.idClient = " + idClient + " AND cart.idCart = " + idCart + " AND cart.status = 1;";
+    }
 
 
 }
