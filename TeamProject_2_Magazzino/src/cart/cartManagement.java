@@ -50,6 +50,7 @@ public class cartManagement {
 
             Scanner sc = new Scanner(System.in);
             boolean stay = true;
+            boolean stay2 = true;
             while (stay) {
 
                 System.out.println("""
@@ -63,7 +64,8 @@ public class cartManagement {
                          7) Get empty cart
                          8) Get the average amount spent
                          9) My order
-                         10) Refresh cart to reflect current product availability""");
+                         10) Refresh cart to reflect current product availability
+                         11) Exit to previous menu""");
 
 
                 int operCarr = sc.nextInt();
@@ -78,7 +80,7 @@ public class cartManagement {
                         DbCartManagment.removeProdById(idCart, idClient);
                         break;
                     case 4://Finalizza acquisti
-                        DbCartManagment.checkOut(idCart, idClient,c);
+                        DbCartManagment.checkOut(idCart, idClient, c);
                         break;
                     case 5://Aggiunta prodotti al carrello
                         DbCartManagment.addProductToCart(idCart, idClient);
@@ -98,25 +100,12 @@ public class cartManagement {
                     case 10:// aggiorna il carrello in base alla disponibilità attuale dei prodotti in magazzino.
                         DbCartManagment.refreshCart(idCart, idClient);
                         break;
+                    case 11: // ritorna al menù precedente
+                        stay = false;
+                        break;
                     default:
                         System.out.println("Invalid input.");
                         break;
-                }
-            }
-            boolean stay2 = true;
-            while (stay2) {
-                System.out.println("If you'd like to perform other cart-related operations, type '1'.\nIf you wish to go back to the user's menu, type '2'.");
-                String selectOption = sc.nextLine();
-                if (Objects.equals(selectOption, "1")) {
-                    stay = true;
-                    stay2 = false;
-                } else if (Objects.equals(selectOption, "2")) {
-                    stay = false;
-                    stay2 = false;
-                } else {
-                    System.out.println("Invalid input.");
-                    stay = true;
-                    stay2 = true;
                 }
             }
         } catch (InputMismatchException e) {
