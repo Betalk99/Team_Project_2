@@ -41,8 +41,13 @@ public class DbManagement {
 
             ResultSet rs = stmt.executeQuery(DbQuery.getByModel(model));
 
-            while (rs.next()) {
-                prodByModel.add(costructProd(rs));
+
+            if(rs.next()) {
+                while (rs.next()) {
+                    prodByModel.add(costructProd(rs));
+                }
+            } else {
+                System.out.println("It seems that no item from our stock matches your query.");
             }
 
         } catch (SQLException e) {
