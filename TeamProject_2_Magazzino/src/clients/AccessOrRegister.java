@@ -1,24 +1,25 @@
 package clients;
 
-import cart.Cart;
-import stock.Stock;
-import product.Product;
+import database.DbManagement;
 import choice.whichOperationCompany;
 import choice.whichOperationCustomer;
+import database.DbQuery;
 
 import java.math.BigInteger;
-import java.util.ArrayList;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class AccessOrRegister {
 
-    public static void inputSelect(ListClients list, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
+    public static void inputSelect() {
         boolean isTrue = false;
         while (!isTrue) {
             try {
                 Scanner in = new Scanner(System.in);
-                registerAcces(list, stock, cart, arrayTemp);
+                registerAcces();
                 System.out.println("Would you like to make other researches? 1)Yes   2)No");
                 int stay = in.nextInt();
                 if (stay == 2) {
@@ -31,7 +32,7 @@ public class AccessOrRegister {
         }
     }
 
-    public static void registerAcces(ListClients list, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
+    public static void registerAcces() {
        try {
            Scanner in = new Scanner(System.in);
            boolean stay = false;
@@ -45,15 +46,15 @@ public class AccessOrRegister {
                int selection = in.nextInt();
                switch (selection) {
                    case 1 :
-                       accessPage(list, stock, cart, arrayTemp);
+                       accessPage();
                        stay = true;
                        break;
                    case 2 :
-                       registerPage(list);
+                       registerPage();
                        stay = true;
                        break;
                    case 3 :
-                       checkresetPsw(list);
+                       resetPswDb();
                        stay = true;
                        break;
                    default:
@@ -63,26 +64,28 @@ public class AccessOrRegister {
            }
        }catch (InputMismatchException e){
            System.out.println("Please use a character between 1 or 3");
+       } catch (SQLException e) {
+           throw new RuntimeException(e);
        }
 
     }
 
 
-    public static void accessPage(ListClients list, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
+    public static void accessPage() throws SQLException {
         Scanner in = new Scanner(System.in);
         boolean isTrue = false;
         boolean isOk = false;
         while (!isTrue) {
             boolean find = false;
             System.out.println("Insert Email: ");
-            String a = in.next();
-            if (checkMail(list, a)) {
-                Clients c = getClientByUsername(list, a);
+            String mail = in.next();
+            if (checkMailDb(mail)) {
+                Clients c = getClientByUsernameDb(mail);
                 while(!isOk) {
                 System.out.println("Insert Password: ");
                 String b = in.next();
                     if (checkPassword(b, c)) {
-                        whatType(c, stock, cart, arrayTemp);
+                        whatType(c);
                         isOk = true;
                     } else {
                         System.out.println("\nPassword error");
@@ -96,106 +99,136 @@ public class AccessOrRegister {
         }
     }
 
-    public static Clients getClientByUsername(ListClients list, String a){
-        Clients c1 = null;
-        for(Clients i : list.getList()){
-            if(i.getEmail().equals(a)){
-                c1 = i;
-                return c1;
+
+    public static Clients getClientByUsernameDb(String mail){
+
+        try{
+            Statement stmt = DbManagement.makeConnection();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM client WHERE email = '" + mail + "';");
+
+            while (rs.next()){
+                String checkMail = rs.getString("email");
+                String typeClient = rs.getString("type");
+                if(checkMail.equals(mail)){
+                    if(typeClient.equals("Customer")){
+                        Customer c1 = new Customer(ClientType.valueOf(rs.getString("type")), rs.getString("name"), rs.getString("surname"), rs.getString("email"), rs.getString("username"),rs.getString("password"), BigInteger.valueOf(rs.getInt("phoneNumber")));
+                        return c1;
+                    }else {
+                        Company cc1 = new Company(ClientType.valueOf(rs.getString("type")), rs.getString("name"), rs.getString("email"), rs.getString("vat"), rs.getString("username"), rs.getString("password"), BigInteger.valueOf(rs.getInt("phoneNumber")));
+                        return cc1;
+                    }
+                }
             }
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
         }
-        return c1;
+        return null;
     }
 
-    public static ListClients registerPage(ListClients list) {
+
+
+
+    public static void registerPage() {
         try{
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome to registration, you are Company or Customer? 1/Company - 2/Customer");
         int b = in.nextInt();
         if (b == 1) {
-            list.getList().add(registerCompany());
+            registerCompanyDb();
         } else if (b == 2) {
-            list.getList().add(registerCustomer());
+            registerCustomerDb();
         }
 
-        return list;
         }catch (InputMismatchException e){
             System.out.println("Please use a character between 1 or 2");
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
 
-        return list;
     }
 
-    public static Company registerCompany() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Insert name Company: ");
-        String name = in.next();
-        System.out.println("Insert email Company: ");
-        String email = in.next();
-        System.out.println("Insert pIVA Company: ");
-        String pIVA = in.next();
-        System.out.println("Insert username Company: ");
-        String username = in.next();
-        System.out.println("Insert password Company: ");
-        String password = in.next();
-        System.out.println("Insert number phone Company: ");
-        BigInteger numTel = in.nextBigInteger();
 
+    public static void registerCustomerDb() throws SQLException{
+        try{
 
-        Company c1 = new Company(ClientType.Company, name, email, pIVA, username, password, numTel);
+            Statement stmt = DbManagement.makeConnection();
 
-        return c1;
+            Scanner in = new Scanner(System.in);
+            System.out.println("Insert name Customer: ");
+            String name = in.nextLine();
+            System.out.println("Insert surname Customer: ");
+            String surname = in.nextLine();
+            System.out.println("Insert email Customer: ");
+            String email = in.nextLine();
+            System.out.println("Insert username Customer: ");
+            String username = in.nextLine();
+            System.out.println("Insert password Customer: ");
+            String password = in.nextLine();
+            System.out.println("Insert number phone Customer: ");
+            String numTel = in.nextLine();
+
+            stmt.execute(DbQuery.getAddUserCustom(name, surname, email, username, password, numTel));
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 
-    public static Customer registerCustomer() {
-        Scanner in = new Scanner(System.in);
-        System.out.println("Insert name Customer: ");
-        String name = in.next();
-        System.out.println("Insert surname Customer: ");
-        String surname = in.next();
-        System.out.println("Insert email Customer: ");
-        String email = in.next();
-        System.out.println("Insert username Customer: ");
-        String username = in.next();
-        System.out.println("Insert password Customer: ");
-        String password = in.next();
-        System.out.println("Insert number phone Customer: ");
-        BigInteger numTel = in.nextBigInteger();
+    public static void registerCompanyDb() throws SQLException{
+        try{
 
-        Customer c1 = new Customer(ClientType.Customer, name, surname, email, username, password, numTel);
+            Statement stmt = DbManagement.makeConnection();
 
-        return c1;
+            Scanner in = new Scanner(System.in);
+            System.out.println("Insert name Company: ");
+            String name = in.nextLine();
+            System.out.println("Insert email Company: ");
+            String email = in.nextLine();
+            System.out.println("Insert username Company: ");
+            String username = in.nextLine();
+            System.out.println("Insert password Company: ");
+            String password = in.nextLine();
+            System.out.println("Insert numTel Company: ");
+            String numTel = in.nextLine();
+            System.out.println("Insert vat Company: ");
+            String vat = in.nextLine();
+
+            stmt.execute(DbQuery.getAddUserCompany(name, vat, email, username, password, numTel));
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 
-    public static void whatType(Clients c1, Stock stock, Cart cart, ArrayList<Product> arrayTemp) {
+
+
+    public static void whatType(Clients c1) {
         if (c1.getType().equals(ClientType.Customer)) {
-            whichOperationCustomer.oper(stock, cart, arrayTemp);
+            whichOperationCustomer.oper(c1);
         } else if (c1.getType().equals(ClientType.Company)) {
-            whichOperationCompany.oper(stock, cart, arrayTemp);
+            whichOperationCompany.oper(c1);
         }
     }
 
-    public static ListClients checkresetPsw(ListClients list) {
-        Scanner in = new Scanner(System.in);
-        System.out.println("To reset your password, give me the email address associated with your account: ");
-        String mail = in.next();
-        if (checkMail(list, mail)) {
-            resetPsw(list, mail);
-        } else {
-            System.out.println("Invalid Mail");
-        }
-        return list;
-    }
+    public static boolean checkMailDb(String mail)throws SQLException {
+        try{
+            Statement stmt = DbManagement.makeConnection();
+            ResultSet rs = stmt.executeQuery(DbQuery.getCheckMail(mail));
 
-    public static boolean checkMail(ListClients list, String mail) {
-        for (Clients i : list.getList()) {
-            if (i.getEmail().equals(mail)) {
-                System.out.println("Correct Mail");
-                return true;
+            while (rs.next()){
+                String checkMail = rs.getString("email");
+                if(checkMail.equals(mail)){
+                    System.out.println("Correct Mail");
+                    return true;
+                }
             }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
         }
         return false;
     }
+
 
     public static boolean checkPassword(String psw, Clients c) {
             if (c.getPassword().equals(psw)) {
@@ -206,16 +239,25 @@ public class AccessOrRegister {
         return false;
     }
 
-    public static ListClients resetPsw(ListClients list, String mail) {
+
+    public static void resetPswDb() throws SQLException{
         Scanner in = new Scanner(System.in);
-        for (Clients i : list.getList()) {
-            if (i.getEmail().equals(mail)) {
+        try{
+            Statement stmt = DbManagement.makeConnection();
+            System.out.println("Insert Email: ");
+            String mail = in.nextLine();
+            if(checkMailDb(mail)){
                 System.out.println("Insert new password: ");
-                String psw = in.next();
-                i.setPassword(psw);
+                String psw = in.nextLine();
+                stmt.execute(DbQuery.getResetPsw(mail, psw));
+            }else{
+                System.out.println("email not present");
             }
+
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
         }
-        return list;
     }
 
 }
