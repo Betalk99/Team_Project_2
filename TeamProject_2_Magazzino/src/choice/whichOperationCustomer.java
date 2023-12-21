@@ -36,7 +36,8 @@ public class whichOperationCustomer {
                          3) Search by product type\s
                          4) Search by product brand\s
                          5) Search by product model\s
-                         6) Search by product's price range""");
+                         6) Search by product's price range
+                         7) Exit to previous menu""");
 
 
                 int category = in.nextInt();
@@ -61,14 +62,12 @@ public class whichOperationCustomer {
                     case 6: // ricerca per range di prezzo (sell price/prezzo di vendita)
                         stampResult(DbManagement.bySellPriceRangeDb());
                         break;
+                    case 7: // ritorna al menu precedente
+                    isTrue = true;
+                        break;
                     default:
                         System.out.println("Unlisted operation");
                         break;
-                }
-                System.out.println("Would you like to do other operations? 1)Yes   2)No");
-                int stay = in.nextInt();
-                if (stay == 2) {
-                    isTrue = true;
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
