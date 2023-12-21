@@ -62,7 +62,7 @@ public class whichOperationCustomer {
                     case 6: // ricerca per range di prezzo (sell price/prezzo di vendita)
                         stampResult(DbManagement.bySellPriceRangeDb());
                         break;
-                    case 7: // ritorna al menu precedente
+                    case 7: // ritorna al menù precedente
                     isTrue = true;
                         break;
                     default:

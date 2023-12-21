@@ -20,11 +20,11 @@ public class AccessOrRegister {
             try {
                 Scanner in = new Scanner(System.in);
                 registerAcces();
-                System.out.println("Would you like to make other researches? 1)Yes   2)No");
+               /* System.out.println("Would you like to make other researches? 1)Yes   2)No");
                 int stay = in.nextInt();
                 if (stay == 2) {
                     isTrue = true;
-                }
+                }*/
             } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
                 isTrue = false;
@@ -87,6 +87,7 @@ public class AccessOrRegister {
                     if (checkPassword(b, c)) {
                         whatType(c);
                         isOk = true;
+                        isTrue = true;
                     } else {
                         System.out.println("\nPassword error");
                         System.out.println("Please re-enter your password \n");
