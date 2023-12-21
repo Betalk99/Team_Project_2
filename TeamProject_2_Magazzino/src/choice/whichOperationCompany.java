@@ -33,7 +33,8 @@ public class whichOperationCompany {
                          5) Search by product type\s
                          6) Search by product brand\s
                          7) Search by product model\s
-                         8) Search by product's cost range""");
+                         8) Search by product's cost range
+                         9) Exit to previous menu""");
 
                 int category = in.nextInt();
                 switch (category) {
@@ -63,14 +64,12 @@ public class whichOperationCompany {
                     case 8: // ricerca per range di prezzo di acquisto
                         stampResult(DbManagement.bySellPriceRangeDbCompany() );
                         break;
+                    case 9: // ritorna al menù precedente
+                        isTrue = true;
+                        break;
                     default:
                         System.out.println("Unlisted operation");
                         break;
-                }
-                System.out.println("Would you like to make other researches? 1)Yes   2)No");
-                int stay = in.nextInt();
-                if (stay == 2) {
-                    isTrue = true;
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
