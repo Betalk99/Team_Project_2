@@ -2,6 +2,8 @@ package database;
 
 import cart.cartManagement;
 import choice.whichOperationCustomer;
+import clients.ClientType;
+import clients.Clients;
 import order.Orders;
 import product.*;
 
@@ -114,10 +116,10 @@ public class DbCartManagment {
 
     ////////CHECKOUT BLOCK
 
-    public static void checkOut(int idCart, int idClient) throws SQLException {
+    public static void checkOut(int idCart, int idClient, Clients c) throws SQLException {
         Scanner in = new Scanner(System.in);
         cartManagement.checkCartEmpty(idClient);
-        getTotalPrice(idCart, idClient);
+        getTotalPrice(idCart, idClient,c);
         System.out.println("Are you sure you want to proceed to checkout?  YES / NO");
 
         String ans = in.nextLine();
@@ -134,7 +136,7 @@ public class DbCartManagment {
                         cartUpdate(idCart, idClient);
                         System.out.println("It seems that while you were finalizing your purchases some of the items from your cart have become unavailable.\nThis is your current cart based on the currently available products.");
                         cartManagement.checkCartEmpty(idClient);
-                        DbCartManagment.getTotalPrice(idCart, idClient);
+                        DbCartManagment.getTotalPrice(idCart, idClient, c);
                         System.out.println("Do you still want to proceed to checkout?      YES / NO");
                         String ansTwo = in.nextLine();
 
@@ -272,28 +274,38 @@ public class DbCartManagment {
 
     //////////////////////CHECKOUT BLOCK
 
-    public static BigDecimal getTotalPrice(int idCart, int idClient) throws SQLException {
+    public static BigDecimal getTotalPrice(int idCart, int idClient, Clients c) throws SQLException {
         BigDecimal totalPrice = null;
-        Statement stmt = DbManagement.makeConnection();
-        String query = "SELECT SUM(product.sellprice) AS totalprice" +
-                " FROM cart" +
-                " JOIN product ON cart.idProduct = product.id" +
-                " WHERE cart.idClient = " + idClient + " AND cart.idCart = " + idCart + " AND cart.status = 1;";
-        ResultSet rs = stmt.executeQuery(query);
-        while (rs.next()) {
-            totalPrice = rs.getBigDecimal("totalprice");
+        try {
+            Statement stmt = DbManagement.makeConnection();
+            String query = null;
+            if(c.getType().equals(ClientType.Company)){
+                query = DbQuery.totalPriceCompany(idCart, idClient);
+            } else if (c.getType().equals(ClientType.Customer)) {
+                query = DbQuery.totalPriceCustomer(idCart, idClient);
+            }
+
+            ResultSet rs = stmt.executeQuery(query);
+            while (rs.next()) {
+                totalPrice = rs.getBigDecimal("totalprice");
+            }
+            if (totalPrice == null) {
+                totalPrice = BigDecimal.valueOf(0);
+            }
+            System.out.println("The total price of the items in your cart is " + totalPrice);
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
         }
-        if (totalPrice == null) {
-            totalPrice = BigDecimal.valueOf(0);
-        }
-        System.out.println("The total price of the items in your cart is " + totalPrice);
         return totalPrice;
     }
+
+
+
 
     public static BigDecimal getTotalPriceArr(ArrayList<Product> listProdCart) throws SQLException {
         BigDecimal totalPrice = null;
         for(Product i : listProdCart){
-            totalPrice.add(i.getSellPrice());
+            totalPrice = totalPrice.add(i.getSellPrice());
         }
         if (totalPrice == null) {
             totalPrice = BigDecimal.valueOf(0);
@@ -432,4 +444,96 @@ public class DbCartManagment {
             System.out.println("No changes have been detected in product availability.");
         }
     }
+
+    // Metodi agginta prodotto al magazzino con relativa quantità
+
+    public static void inputAddCompany() throws SQLException {
+
+
+        Scanner in = new Scanner(System.in);
+        System.out.println("Which brand do you want to add? ");
+        String brand = in.nextLine();
+        System.out.println("Which model do you want to add? ");
+        String model = in.nextLine();
+        System.out.println("Which description do you want to add? ");
+        String descr = in.nextLine();
+        System.out.println("What size of display do you want to add? ");
+        double displaySize = in.nextDouble();
+        System.out.println("What capacity do you want to add? ");
+        int storageCap = in.nextInt();
+        System.out.println("What purchase price do you want to add? ");
+        BigDecimal purchasePrice = in.nextBigDecimal();
+        System.out.println("What sell price do you want to add?");
+        BigDecimal sellPrice = in.nextBigDecimal();
+        System.out.println("How many products do you want to add");
+        int qty = in.nextInt();
+
+        String query = choiceType(brand, model, descr, displaySize, storageCap, purchasePrice, sellPrice);
+
+        insertAddCompany(query, qty);
+
+        System.out.println(" Product added to the warehouse. ");
+
+    }
+
+    public static String choiceType(String brand, String model, String descr, double displaySize, int storageCap, BigDecimal purchasePrice, BigDecimal sellPrice){
+        String ret = null;
+        try {
+            Scanner in = new Scanner(System.in);
+            System.out.println("What type of product do you want to select ? 1) tablet - 2) notebook - 3) smartphone");
+            int type = in.nextInt();
+            switch (type){
+                case 1 :
+                    ret = DbQuery.getInsertAddCompanyTablet(brand, model, descr, displaySize, storageCap, purchasePrice, sellPrice);
+                    break;
+                case 2 :
+                    ret = DbQuery.getInsertAddCompanyNotebook(brand, model, descr, displaySize, storageCap, purchasePrice, sellPrice);
+                    break;
+                case 3 :
+                    ret = DbQuery.getInsertAddCompanySmartphonne(brand, model, descr, displaySize, storageCap, purchasePrice, sellPrice);
+                    break;
+            }
+        }catch (InputMismatchException e){
+            System.out.println(e.getMessage());
+        }
+        return ret;
+    }
+
+    public static void insertAddCompany(String query, int qty){
+        try{
+            Statement stmt = DbManagement.makeConnection();
+            int id = -1;
+            stmt.executeUpdate(query);
+            ResultSet rs2 = stmt.executeQuery(DbQuery.getProdIdMax());
+            while (rs2.next()){
+                id = rs2.getInt("lastID");
+            }
+            System.out.println(id);
+            System.out.println(qty);
+            stmt.executeUpdate(DbQuery.getInsertNewProdStock(id, qty));
+
+
+        }catch (SQLException e ){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static void removeCompanyProd(){
+        try{
+            Scanner in = new Scanner(System.in);
+            Statement stmt = DbManagement.makeConnection();
+            whichOperationCustomer.stampResult(DbManagement.stampStockDb());
+            System.out.println("\nWhich product do you want to remove from the stock? Indicate the ID");
+            int id = in.nextInt();
+
+            stmt.executeUpdate(DbQuery.deleteInStock(id));
+            stmt.executeUpdate(DbQuery.deleteInTableProduct(id));
+
+        }catch (SQLException e){
+
+        }
+    }
+
+
+
 }

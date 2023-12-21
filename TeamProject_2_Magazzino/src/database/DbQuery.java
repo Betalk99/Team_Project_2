@@ -3,6 +3,7 @@ package database;
 import clients.Clients;
 import product.Product;
 
+import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -30,6 +31,12 @@ public class DbQuery {
                 " WHERE stock.qty > 0 AND product.sellprice > '" + range[0] + "' AND product.sellprice <= '" + range[1] + "';";
     }
 
+    public static String getBySellPriceRangeCompany(double[] range) {
+        return "SELECT * FROM product " +
+                " INNER JOIN stock ON product.id = stock.idStock" +
+                " WHERE stock.qty > 0 AND product.purchaseprice > '" + range[0] + "' AND product.purchaseprice <= '" + range[1] + "';";
+    }
+
     public static String getByTypeProducts(String type) {
         return "SELECT * FROM product" +
                 " INNER JOIN stock ON product.id = stock.idStock" +
@@ -54,6 +61,10 @@ public class DbQuery {
 
     public static String getIdCartMax() {
         return "SELECT MAX(idCart) AS lastID FROM cart";
+    }
+
+    public static String getProdIdMax() {
+        return "SELECT MAX(id) AS lastID FROM product";
     }
 
     public static String getCartStatus(int idClient) {
@@ -180,14 +191,45 @@ public class DbQuery {
         return "UPDATE client SET password = '" + psw + "' WHERE email = '" + mail + "';";
     }
 
+    public static String getInsertAddCompanyTablet(String brand, String model, String descr, double displaySize, int storageCap, BigDecimal purchasePrice, BigDecimal sellPrice){
+        return "INSERT INTO `projectteam`.`product` (`type`, `brand`, `model`, `description`, `displaysize`, `storagecap`, `purchaseprice`, `sellprice`) " +
+                "VALUES ('tablet', '" + brand + "', '" + model + "', '" + descr + "', " + displaySize  + ", " + storageCap  + ", " + purchasePrice   + ", " + sellPrice + ");";
+    }
+    public static String getInsertAddCompanyNotebook(String brand, String model, String descr, double displaySize, int storageCap, BigDecimal purchasePrice, BigDecimal sellPrice){
+        return "INSERT INTO `projectteam`.`product` (`type`, `brand`, `model`, `description`, `displaysize`, `storagecap`, `purchaseprice`, `sellprice`) " +
+                "VALUES ('notebook', '" + brand + "', '" + model + "', '" + descr + "', " + displaySize  + ", " + storageCap  + ", " + purchasePrice   + ", " + sellPrice + ");";
+    }
+    public static String getInsertAddCompanySmartphonne(String brand, String model, String descr, double displaySize, int storageCap, BigDecimal purchasePrice, BigDecimal sellPrice){
+        return "INSERT INTO `projectteam`.`product` (`type`, `brand`, `model`, `description`, `displaysize`, `storagecap`, `purchaseprice`, `sellprice`) " +
+                "VALUES ('smartphone', '" + brand + "', '" + model + "', '" + descr + "', " + displaySize  + ", " + storageCap  + ", " + purchasePrice   + ", " + sellPrice + ");";
+    }
 
+    public static String getInsertNewProdStock(int id, int qty){
+        return "INSERT INTO `projectteam`.`stock` (`idStock`, `qty`) " +
+                "VALUES ('" + id + "','" + qty + "');";
+    }
 
+    public static String deleteInStock(int id){
+        return "DELETE FROM stock AS s WHERE s.idStock = " + id + ";";
+    }
 
+    public static String deleteInTableProduct(int id){
+        return "DELETE FROM product AS p WHERE p.id = " + id + ";";
+    }
 
+    public static String totalPriceCustomer(int idCart, int idClient){
+        return "SELECT SUM(product.sellprice) AS totalprice" +
+                " FROM cart" +
+                " JOIN product ON cart.idProduct = product.id" +
+                " WHERE cart.idClient = " + idClient + " AND cart.idCart = " + idCart + " AND cart.status = 1;";
+    }
 
-
-
-
+    public static String totalPriceCompany(int idCart, int idClient){
+        return "SELECT SUM(product.purchaseprice) AS totalprice" +
+                " FROM cart" +
+                " JOIN product ON cart.idProduct = product.id" +
+                " WHERE cart.idClient = " + idClient + " AND cart.idCart = " + idCart + " AND cart.status = 1;";
+    }
 
 
 }

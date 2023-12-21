@@ -1,11 +1,24 @@
 package choice;
 
+import cart.cartManagement;
 import clients.Clients;
+import database.DbCartManagment;
 import database.DbManagement;
+import product.Product;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class whichOperationCompany {
+
+    public static void stampResult(ArrayList<Product> a){
+        for (Product i : a){
+            System.out.println(i);
+        }
+    }
+
     public static void oper(Clients c) throws InputMismatchException {
         boolean isTrue = false;
         while (!isTrue) {
@@ -25,27 +38,30 @@ public class whichOperationCompany {
                 int category = in.nextInt();
                 switch (category) {
                     case 1: //aggiunta prodotto a magazzino
-//                        addProduct(stock);
+                        DbCartManagment.inputAddCompany();
                         break;
                     case 2: //scarico merce da magazzino
-//                        removeProduct(stock);
+                        DbCartManagment.removeCompanyProd();
                         break;
                     case 3: //creazione carrello
-//                        cartManagement.inz(stock,cart,arrayTemp);
+                        int idCliente = DbManagement.idClient(c);
+                        int idCart = DbManagement.idCart(idCliente);
+                        cartManagement.operCar(idCart,idCliente,c);
                         break;
                     case 4: // stampare tutti i dispositivi nel magazzino
+                        stampResult(DbManagement.stampStockDb());
                         break;
                     case 5: // ricerca per tipo di dispositivo fatta da Antonio Troiano
                         DbManagement.byType(); //updated on 03.12.23, correctly working based on DB.
                         break;
                     case 6: // ricerca per brand
-                        DbManagement.byBrand(); //updated on 02.12.23, correctly working based on DB.
+                        stampResult(DbManagement.byBrand()); //updated on 02.12.23, correctly working based on DB.
                         break;
                     case 7: // ricerca per modello
-
+                        stampResult(DbManagement.byModelDb());
                         break;
                     case 8: // ricerca per range di prezzo di acquisto
-
+                        stampResult(DbManagement.bySellPriceRangeDbCompany() );
                         break;
                     default:
                         System.out.println("Unlisted operation");
@@ -59,6 +75,8 @@ public class whichOperationCompany {
             } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
                 isTrue = false;
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
             }
         }
     }
