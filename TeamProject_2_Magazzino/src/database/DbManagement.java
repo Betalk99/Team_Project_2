@@ -42,11 +42,10 @@ public class DbManagement {
             ResultSet rs = stmt.executeQuery(DbQuery.getByModel(model));
 
 
-            if(rs.next()) {
-                while (rs.next()) {
-                    prodByModel.add(costructProd(rs));
-                }
-            } else {
+            while(rs.next()) {
+                prodByModel.add(costructProd(rs));
+            }
+            if(prodByModel.isEmpty()) {
                 System.out.println("It seems that no item from our stock matches your query.");
             }
 
@@ -187,7 +186,7 @@ public class DbManagement {
                     DbManagement.byTypeProductsFromDb(type, devicesByType);
                     isTrue = true;
                 } else {
-                    System.out.println("This type does not exists.");
+                    System.out.println("This type does not exist.");
                 }
             } catch (InputMismatchException e) {
                 System.out.println("Please select an existing type (e.g. Tablet)");
@@ -206,7 +205,7 @@ public class DbManagement {
             while (!stay2) {
                 try {
                     ArrayList<Product> selectedProducts = new ArrayList<>();
-                    System.out.println("Please write the brand for which you want to search for products");
+                    System.out.println("What brand are you interested in?");
                     String selectedBrand = sc.nextLine();
 
                     try {
@@ -217,7 +216,7 @@ public class DbManagement {
                             selectedProducts.add(DbManagement.costructProd(rs));
                         }
                         if (selectedProducts.isEmpty()) {
-                            throw new InputMismatchException("The selected brand is not available.\n");
+                            throw new InputMismatchException("It seems that no item from our stock matches your query.\n");
                         } else {
                             return selectedProducts;
                         }
