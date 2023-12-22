@@ -418,20 +418,26 @@ public class DbCartManagment {
         }
     }
 
-    public static BigDecimal avarageAmountSpent(int idClient, int idCart) {
-        BigDecimal sum = null;
+    public static BigDecimal avarageAmountSpent(int idClient, int idCart, Clients c) {
+        BigDecimal sumTot = null;
         try {
+            String query = null;
             Statement stmt = DbManagement.makeConnection();
-            System.out.println("Your avarage amount is : ");
-            ResultSet rs = stmt.executeQuery(DbQuery.getAverageSpent(idClient, idCart));
+            System.out.println("Total spent in your previous orders is:  : ");
+            if(c.getType().equals(ClientType.Company)){
+                query = DbQuery.totalAverageSpendingCompany(idClient);
+            } else if (c.getType().equals(ClientType.Customer)) {
+                query = DbQuery.totalAverageSpendingCustomer(idClient);
+            }
+            ResultSet rs = stmt.executeQuery(query);
             while (rs.next()) {
-                sum = BigDecimal.valueOf(rs.getInt("sum"));
+                sumTot = BigDecimal.valueOf(rs.getInt("totalSpent"));
             }
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        return sum;
+        return sumTot;
     }
 
     public static void refreshCart(int idCart, int idClient) throws SQLException {

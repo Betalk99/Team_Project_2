@@ -62,7 +62,7 @@ public class cartManagement {
                          5) Add products to your cart\s
                          6) Get the total price of the items in the cart\s
                          7) Get empty cart
-                         8) Get the average amount spent
+                         8) Total expense by user 
                          9) My order
                          10) Refresh cart to reflect current product availability
                          11) Exit to previous menu""");
@@ -92,7 +92,7 @@ public class cartManagement {
                         DbCartManagment.getEmptyCart(idClient);
                         break;
                     case 8: //averageSpending(cart);
-                        System.out.println(DbCartManagment.avarageAmountSpent(idClient, idCart));
+                        System.out.println(DbCartManagment.avarageAmountSpent(idClient, idCart, c));
                         break;
                     case 9:// visualizzare ordini precedenti
                         stampYourCart(DbCartManagment.myOrder(idClient));
