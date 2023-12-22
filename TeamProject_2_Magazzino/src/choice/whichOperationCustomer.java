@@ -1,15 +1,29 @@
 package choice;
 
-import cart.*;
-import stock.*;
+import cart.cartManagement;
+import clients.Clients;
+import database.DbManagement;
+
 import product.*;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class whichOperationCustomer {
-    public static void oper(Stock stock, Cart cart, ArrayList<Product> arrayTemp) throws InputMismatchException {
+
+
+    public static void stampResult(ArrayList<Product> a){
+        for (Product i : a){
+            System.out.println(i);
+        }
+    }
+
+    public static void oper(Clients c) throws InputMismatchException {
+
+
+
         boolean isTrue = false;
         while (!isTrue) {
             try {
@@ -22,41 +36,44 @@ public class whichOperationCustomer {
                          3) Search by product type\s
                          4) Search by product brand\s
                          5) Search by product model\s
-                         6) Search by product's price range""");
+                         6) Search by product's price range
+                         7) Exit to previous menu""");
 
 
                 int category = in.nextInt();
                 switch (category) {
                     case 1: //gestisci il tuo carello
-                        cartManagement.inz(stock,cart,arrayTemp);
+                        int idCliente = DbManagement.idClient(c);
+                        int idCart = DbManagement.idCart(idCliente);
+                        cartManagement.operCar(idCart,idCliente,c);
                         break;
                     case 2: // stampare tutti i dispositivi nel magazzino
-                        System.out.println(stock);
+                        stampResult(DbManagement.stampStockDb());
                         break;
                     case 3: // ricerca per tipo di dispositivo
-                        System.out.println(Search.byType(stock));
+                        DbManagement.byType();//updated on 03.12.23, correctly working based on DB.
                         break;
                     case 4: // ricerca per brand
-                            Search.byBrand(stock);
+                        stampResult(DbManagement.byBrand()); //updated on 02.12.23, correctly working based on DB.
                         break;
                     case 5: // ricerca per modello
-                        Search.inputByModel(stock);
+                        stampResult(DbManagement.byModelDb());
                         break;
                     case 6: // ricerca per range di prezzo (sell price/prezzo di vendita)
-                        Search.bySellPriceRange(stock);
+                        stampResult(DbManagement.bySellPriceRangeDb());
+                        break;
+                    case 7: // ritorna al menù precedente
+                    isTrue = true;
                         break;
                     default:
                         System.out.println("Unlisted operation");
                         break;
                 }
-                System.out.println("Would you like to do other operations? 1)Yes   2)No");
-                int stay = in.nextInt();
-                if (stay == 2) {
-                    isTrue = true;
-                }
             } catch (InputMismatchException e) {
                 System.out.println("Please use a character between 1, 2 or 3");
                 isTrue = false;
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
