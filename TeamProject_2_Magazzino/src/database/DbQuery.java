@@ -231,5 +231,19 @@ public class DbQuery {
                 " WHERE cart.idClient = " + idClient + " AND cart.idCart = " + idCart + " AND cart.status = 1;";
     }
 
+    public static String totalAverageSpendingCustomer(int idClient){
+        return "SELECT SUM(p.sellprice) AS totalSpent FROM orders AS o\n" +
+                "JOIN cart AS c ON o.idCart = c.idCart\n" +
+                "JOIN product AS p ON c.idProduct = p.id\n" +
+                "WHERE c.idClient = " + idClient + ";";
+    }
+
+    public static String totalAverageSpendingCompany(int idClient){
+        return "SELECT SUM(p.purchaseprice) AS totalSpent FROM orders AS o\n" +
+                "JOIN cart AS c ON o.idCart = c.idCart\n" +
+                "JOIN product AS p ON c.idProduct = p.id\n" +
+                "WHERE c.idClient = " + idClient + ";";
+    }
+
 
 }
