@@ -245,5 +245,13 @@ public class DbQuery {
                 "WHERE c.idClient = " + idClient + ";";
     }
 
+    public static String idClientEmail(String email){
+        return "SELECT * FROM client AS c\n" +
+                "WHERE c.email = '" + email +  "';";
+    }
+
+
+
+
 
 }

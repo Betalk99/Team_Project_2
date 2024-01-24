@@ -1,5 +1,6 @@
 package database;
 
+import choice.whichOperationCustomer;
 import clients.Clients;
 import clients.Customer;
 import com.sun.source.tree.Tree;
@@ -140,10 +141,13 @@ public class DbManagement {
             while (rs.next()) {
                 devicesByType.add(costructProd(rs));
             }
-            for (Product p : devicesByType) {
-                System.out.println(p);
-            }
-            System.out.println(" ");
+
+            whichOperationCustomer.stampResult(devicesByType);
+
+//            for (Product p : devicesByType) {
+//                System.out.println(p);
+//            }
+//            System.out.println(" ");
 
         } catch (SQLException e) {
             e.getStackTrace();
@@ -281,6 +285,29 @@ public class DbManagement {
             System.out.println(e.getMessage());
         }
         return idCart;
+    }
+
+    public static ArrayList<Product> customerOrdersEmail(){
+        int idCustomer = 0;
+        try{
+
+            Scanner in = new Scanner(System.in);
+            Statement stmt = DbManagement.makeConnection();
+
+            System.out.println("Insert Customer's  email:  ");
+            String mail = in.nextLine();
+
+            ResultSet rs = stmt.executeQuery(DbQuery.idClientEmail(mail));
+
+            while(rs.next()){
+                idCustomer = rs.getInt("id");
+            }
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return DbCartManagment.myOrder(idCustomer);
     }
 
 

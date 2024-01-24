@@ -15,9 +15,15 @@ public class whichOperationCustomer {
 
 
     public static void stampResult(ArrayList<Product> a){
+        System.out.printf("%-8s %-15s %-15s %-25s %-15s %-15s %-15s","ID", "Type", "Brand", "Model", "Display Size","Storage Cap", "Sell Price");
+        System.out.println();
         for (Product i : a){
-            System.out.println(i);
+            System.out.printf("%-8s %-15s %-15s %-25s %-15.1f %-15.2f %-15.2f", i.getItemId(), i.getType(), i.getBrand(),
+                    i.getModel(), i.getDisplaySize(), i.getStorageCap(),
+                    i.getSellPrice());
+            System.out.println();
         }
+        System.out.println();
     }
 
     public static void oper(Clients c) throws InputMismatchException {

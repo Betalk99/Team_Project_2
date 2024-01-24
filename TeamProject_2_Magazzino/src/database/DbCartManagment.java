@@ -292,7 +292,13 @@ public class DbCartManagment {
             if (totalPrice == null) {
                 totalPrice = BigDecimal.valueOf(0);
             }
-            System.out.println("The total price of the items in your cart is " + totalPrice);
+//            System.out.println("The total price of the items in your cart is: " + "%-20.2f" + totalPrice);
+            System.out.printf("%-20s", "The total price of the items in your cart is: ");
+            System.out.printf("%-20.2f", totalPrice);
+            System.out.println();
+            System.out.println();
+
+
         }catch (SQLException e){
             System.out.println(e.getMessage());
         }
@@ -349,9 +355,17 @@ public class DbCartManagment {
     }
 
     public static void stampMyOrder(ArrayList<Orders> listOrder) {
-        for (Orders i : listOrder) {
-            System.out.println(i);
+//        for (Orders i : listOrder) {
+//            System.out.println(i);
+//        }
+        System.out.printf("%-10s %-10s ","Cart ID", "Date");
+        System.out.println();
+        for (Orders i : listOrder){
+            System.out.printf("%-10s %-10s", i.getIdCart(), i.getDate());
+            System.out.println();
         }
+        System.out.println();
+
     }
 
     public static void addProductToCart(int idCart, int idClient) throws SQLException {

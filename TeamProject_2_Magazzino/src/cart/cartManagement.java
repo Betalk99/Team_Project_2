@@ -23,10 +23,15 @@ public class cartManagement {
 
     public static void stampYourCart(ArrayList<Product> cart) {
         System.out.println("Your Cart :  \n");
-        for (Product i : cart) {
-            System.out.println(i);
+        System.out.printf("%-15s %-15s %-15s %-25s %-20s %-20s %-20s","ID", "Type", "Brand", "Model", "Display Size","Storage Cap", "Sell Price");
+        System.out.println();
+        for (Product i : cart){
+            System.out.printf("%-15s %-15s %-15s %-25s %-20.1f %-20.2f %-20.2f", i.getItemId(), i.getType(), i.getBrand(),
+                    i.getModel(), i.getDisplaySize(), i.getStorageCap(),
+                    i.getSellPrice());
+            System.out.println();
         }
-        System.out.println("\n");
+        System.out.println();;
     }
 
     public static void checkCartEmpty(int idClient) throws SQLException {   // verifica se cart è vuoto
